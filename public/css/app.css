@@ -1,0 +1,13 @@
+.transition.transform {
+    -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    -ms-transition: -ms-transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
+    font-size: .875rem !important;
+}
