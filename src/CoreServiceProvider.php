@@ -41,6 +41,7 @@ class CoreServiceProvider extends ServiceProvider
 
         // Register Provider
         $this->app->register(RouteServiceProvider::class);
+        $this->app->register(\Shohel\Pluggable\PluggableServiceProvider::class);
 
         // Register the main class to use with the facade
         $this->app->singleton('core', function () {
@@ -63,6 +64,9 @@ class CoreServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../public' => public_path('vendor/core'),
             ], 'Core-assets');
+            $this->publishes([
+                __DIR__ . '/../database/database.sqlite' => database_path('database.sqlite'),
+            ], 'Core-databases');
 
             $this->commands([
                 Console\InstallCommand::class,
@@ -79,6 +83,5 @@ class CoreServiceProvider extends ServiceProvider
 
     private function registerBladeDirective()
     {
-    }   
-    
+    }
 }

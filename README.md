@@ -18,7 +18,7 @@ Run the following to use the latest stable version
 ```php
 php artisan core:install
 ```
-Edit config/auth.php and add the following lines:
+Edit config/auth.php and change the following lines:
 ```php
 'providers' => [
     'users' => [
@@ -37,6 +37,55 @@ To
 ],
 ```
 
+Edit .env and change the following lines:
+```php
+DB_CONNECTION=mysql
+```
+
+To
+```php
+DB_CONNECTION=sqlite
+```
+
+And remove the following lines:
+```php
+DB_DATABASE=laravel
+```
+
+Edit composer.json and change the following lines:
+```json
+"autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    }
+```
+
+To
+```json
+"autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/",
+            "Plugins\\": "plugins/"
+        }
+    }
+```
+
+Tip: don't forget to run composer dump-autoload afterwards
+
+Serve Laravel
+```php
+php artisan serve
+```
+
+Access the admin panel
+```php
+http://localhost:8000/panel
+```
 
 
 ### Changelog
