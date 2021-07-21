@@ -41,6 +41,7 @@ class CoreServiceProvider extends ServiceProvider
 
         // Register Provider
         $this->app->register(RouteServiceProvider::class);
+        $this->app->register(\Shohel\Pluggable\PluggableServiceProvider::class);
 
         // Register the main class to use with the facade
         $this->app->singleton('core', function () {
@@ -79,6 +80,5 @@ class CoreServiceProvider extends ServiceProvider
 
     private function registerBladeDirective()
     {
-    }   
-    
+    }
 }
