@@ -37,6 +37,15 @@ To
 ],
 ```
 
+Serve Laravel by
+```php
+php artisan serve
+```
+
+Access the admin panel by
+```php
+http://localhost:8000/panel
+```
 
 
 ### Changelog
