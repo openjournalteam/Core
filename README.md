@@ -1,4 +1,4 @@
-# Very short description of the package
+# Core System Core System for OpenJournalTeam 
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/openjournalteam/core.svg?style=flat-square)](https://packagist.org/packages/openjournalteam/core)
 [![Total Downloads](https://img.shields.io/packagist/dt/openjournalteam/core.svg?style=flat-square)](https://packagist.org/packages/openjournalteam/core)
@@ -20,12 +20,6 @@ composer require openjournalteam/core
 // Usage description here
 ```
 
-### Testing
-
-```bash
-composer test
-```
-
 ### Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
@@ -40,13 +34,9 @@ If you discover any security related issues, please email rahmanramsi19@gmail.co
 
 ## Credits
 
--   [Rahman Ramsi](https://github.com/openjournalteam)
+-   [Rahman Ramsi](https://github.com/rhmrms)
 -   [All Contributors](../../contributors)
 
 ## License
 
 The The Unlicense. Please see [License File](LICENSE.md) for more information.
-
-## Laravel Package Boilerplate
-
-This package was generated using the [Laravel Package Boilerplate](https://laravelpackageboilerplate.com).

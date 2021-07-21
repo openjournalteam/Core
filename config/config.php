@@ -24,15 +24,15 @@ return [
 
   /*
     |--------------------------------------------------------------------------
-    | Panel Backend Path
+    | Panel Path
     |--------------------------------------------------------------------------
     |
-    | This is the URI path where Panel Backend will be accessible from. Feel free
+    | This is the URI path where Panel will be accessible from. Feel free
     | to change this path to anything you like. 
     |
     */
 
-  'path' => env('CORE_PATH', 'backend'),
+  'path' => env('CORE_PATH', 'panel'),
 
   /**
    * 
@@ -70,6 +70,12 @@ return [
         ]
       ]
     ],
+    [
+      'title' => 'Administration',
+      'icon'  => '<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" /></svg>',
+      'route' => 'core.admin.administrator.index',
+      'role' => Role::ADMIN,
+    ]
   ],
 
   'scripts' => [
