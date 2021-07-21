@@ -4,8 +4,6 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/openjournalteam/core.svg?style=flat-square)](https://packagist.org/packages/openjournalteam/core)
 ![GitHub Actions](https://github.com/openjournalteam/core/actions/workflows/main.yml/badge.svg)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
-
 ## Installation
 
 You can install the package via composer:
@@ -16,9 +14,30 @@ composer require openjournalteam/core
 
 ## Usage
 
+Run the following to use the latest stable version
 ```php
-// Usage description here
+php artisan core:install
 ```
+Edit config/auth.php and add the following lines:
+```php
+'providers' => [
+    'users' => [
+        'driver' => 'eloquent',
+        'model' => App\User::class,
+    ],
+],
+```
+To 
+```php
+'providers' => [
+  'users' => [
+            'driver' => 'eloquent',
+            'model' => OpenJournalTeam\Core\Models\User::class,
+        ],
+],
+```
+
+
 
 ### Changelog
 
@@ -36,7 +55,3 @@ If you discover any security related issues, please email rahmanramsi19@gmail.co
 
 -   [Rahman Ramsi](https://github.com/rhmrms)
 -   [All Contributors](../../contributors)
-
-## License
-
-The The Unlicense. Please see [License File](LICENSE.md) for more information.
