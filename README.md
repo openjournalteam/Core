@@ -52,6 +52,30 @@ And remove the following lines:
 DB_DATABASE=laravel
 ```
 
+Edit composer.json and change the following lines:
+```json
+"autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    }
+```
+
+To
+```json
+"autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/",
+            "Plugins\\": "plugins/"
+        }
+    }
+```
+
+Tip: don't forget to run composer dump-autoload afterwards
 
 Serve Laravel
 ```php
