@@ -36,6 +36,9 @@ class InstallCommand extends Command
         $this->comment('Publishing Core Configuration...');
         $this->callSilent('vendor:publish', ['--tag' => 'Core-config']);
 
+        $this->comment('Publishing Core Databases...');
+        $this->callSilent('vendor:publish', ['--tag' => 'Core-databases']);
+
         $this->info('Core scaffolding installed successfully.');
     }
 }

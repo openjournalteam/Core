@@ -64,6 +64,9 @@ class CoreServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../public' => public_path('vendor/core'),
             ], 'Core-assets');
+            $this->publishes([
+                __DIR__ . '/../database/database.sqlite' => database_path('database.sqlite'),
+            ], 'Core-databases');
 
             $this->commands([
                 Console\InstallCommand::class,

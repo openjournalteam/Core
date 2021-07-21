@@ -18,7 +18,7 @@ Run the following to use the latest stable version
 ```php
 php artisan core:install
 ```
-Edit config/auth.php and add the following lines:
+Edit config/auth.php and change the following lines:
 ```php
 'providers' => [
     'users' => [
@@ -37,12 +37,28 @@ To
 ],
 ```
 
-Serve Laravel by
+Edit .env and change the following lines:
+```php
+DB_CONNECTION=mysql
+```
+
+To
+```php
+DB_CONNECTION=sqlite
+```
+
+And remove the following lines:
+```php
+DB_DATABASE=laravel
+```
+
+
+Serve Laravel
 ```php
 php artisan serve
 ```
 
-Access the admin panel by
+Access the admin panel
 ```php
 http://localhost:8000/panel
 ```

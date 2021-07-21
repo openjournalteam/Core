@@ -12,6 +12,8 @@ class DashboardController extends BaseController
             return render('core::pages.auth.login');
         }
 
+        add_script('core::assets/js/jquery.min.js');
+
         return render('core::pages.dashboard.index');
     }
 }
