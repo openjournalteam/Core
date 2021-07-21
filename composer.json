@@ -6,7 +6,7 @@
         "packages"
     ],
     "homepage": "https://github.com/openjournalteam/core",
-    "license": "The Unlicense",
+    "license": "Apache-2.0",
     "type": "library",
     "authors": [
         {
