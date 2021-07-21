@@ -5,18 +5,16 @@ namespace OpenJournalTeam\Core\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use OpenJournalTeam\Core\Http\Controllers\BaseController;
 use OpenJournalTeam\Core\Http\Resources\JsonResponse;
 use OpenJournalTeam\Core\Models\Role;
 use OpenJournalTeam\Core\Models\User;
 use Yajra\DataTables\DataTables;
 
-class AccessSettingsController extends BaseController
+class AccessSettingsController extends AdminController
 {
   public function index()
   {
     add_script('vendor/core/js/pages/settings/access.js');
-    // add_style('vendor/core/css/pages/test.css');
 
     return render('core::pages.settings.access.index');
   }

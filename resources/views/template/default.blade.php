@@ -12,13 +12,13 @@
             <div class="page-wrapper" style="min-height: 100vh;">
                 <div class="container-fluid">
 
-                    {{ apply_filters('Panelbackend::template::default::content::before', false) }}
+                    {{ apply_filters('core::template::default::content::before', false) }}
 
                     @if ($view)
                         {{ view($view, $data, $mergeData) }}
                     @endif
 
-                    {{ apply_filters('Panelbackend::template::default::content::false', false) }}
+                    {{ apply_filters('core::template::default::content::false', false) }}
 
                 </div>
                 @include('core::template.partials.footer')

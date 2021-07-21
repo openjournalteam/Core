@@ -3,10 +3,8 @@
 namespace OpenJournalTeam\Core\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Cache;
-use OpenJournalTeam\Core\Http\Controllers\BaseController as Controller;
 
-class AdministrationController extends Controller
+class AdministrationController extends AdminController
 {
   public function index()
   {

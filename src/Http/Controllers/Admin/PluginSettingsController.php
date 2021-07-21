@@ -4,16 +4,24 @@ namespace OpenJournalTeam\Core\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Nwidart\Modules\Facades\Module;
+use Illuminate\Support\Facades\Cache;
 use OpenJournalTeam\Core\Classes\PluginManager;
-use OpenJournalTeam\Core\Http\Controllers\BaseController;
 use OpenJournalTeam\Core\Http\Resources\JsonResponse;
 
-class PluginSettingsController extends BaseController
+class PluginSettingsController extends AdminController
 {
+    private $pluginManager;
+
+    public function __construct(PluginManager $pluginManager)
+    {
+        $this->pluginManager = $pluginManager;
+    }
+
     public function index()
     {
-        $plugins = Module::toCollection();
+        // dd(Cache::get('laravel-modules'));
+
+        $plugins = $this->pluginManager->getPlugins();
 
         $data['plugins'] = $plugins;
 
@@ -22,7 +30,7 @@ class PluginSettingsController extends BaseController
 
     public function toggle(Request $request)
     {
-        $plugin = Module::find($request->name);
+        $plugin = $this->pluginManager->find($request->name);
 
         if ($request->enable === 'true') {
             $plugin->enable();
@@ -39,7 +47,7 @@ class PluginSettingsController extends BaseController
 
     public function delete(Request $request)
     {
-        $plugin = Module::find($request->name);
+        $plugin = $this->pluginManager->find($request->name);
 
         $plugin->delete();
 
@@ -49,4 +57,7 @@ class PluginSettingsController extends BaseController
 
         return response()->json($json, Response::HTTP_OK);
     }
+
+
+    
 }

@@ -11,7 +11,7 @@
             </div>
             <!-- Page title actions -->
             <div class="col-auto ms-auto d-print-none">
-                {{ apply_filters('Panelbackend::pages::settings::plugins::actions', false) }}
+                {{ apply_filters('core::pages::settings::plugins::actions', false) }}
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
                 <li class="nav-item">
                     <a href="#tab-borderless-2" class="nav-link p-3" data-bs-toggle="tab">Plugin Gallery</a>
                 </li>
-                {{ apply_filters('Panelbackend::pages::settings::plugins::nav-tabs', false) }}
+                {{ apply_filters('core::pages::settings::plugins::nav-tabs', false) }}
             </ul>
             <div class="tab-content">
                 <!-- Content of card #1 -->
@@ -69,7 +69,7 @@
                                     <div class="col">
                                         <a href="#" @@click="deletePlugin" class="text-danger">Delete</a>
                                     </div>
-                                    {{ apply_filters('Panelbackend::pages::settings::plugins::option::' . $attributes['name'], false) }}
+                                    {{ apply_filters('core::pages::settings::plugins::option::' . $attributes['name'], false) }}
                                 </div>
                             </div>
                         @endforeach
@@ -84,7 +84,7 @@
                         <h1 class="empty-title">Coming Soon</h1>
                     </div>
                 </div>
-                {{ apply_filters('Panelbackend::pages::settings::plugins::tab-content', false) }}
+                {{ apply_filters('core::pages::settings::plugins::tab-content', false) }}
             </div>
         </div>
     </div>

@@ -20,7 +20,7 @@
 
     @yield('styles')
 
-    {{ apply_filters('Panelbackend::template::partials::header', false) }}
+    {{ apply_filters('core::template::partials::header', false) }}
 
 
 </head>

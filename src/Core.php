@@ -43,7 +43,7 @@ class Core
     {
         $styles = config('core.styles');
 
-        $styles = apply_filters('Panelbackend::styles', $styles);
+        $styles = apply_filters('core::styles', $styles);
 
         $html = '';
 
@@ -61,7 +61,7 @@ class Core
 
     public static function addStyle(string | array $href, $async = false)
     {
-        add_filter('Panelbackend::styles', function ($styles) use ($href, $async) {
+        add_filter('core::styles', function ($styles) use ($href, $async) {
             if (is_array($href)) {
                 $styles[] = $href;
             }

@@ -9,7 +9,7 @@
             </h2>
         </div>
         <div class="col-auto ms-auto d-print-none">
-            {{ apply_filters('Panelbackend::pages::settings::access::actions', '') }}
+            {{ apply_filters('core::pages::settings::access::actions', '') }}
         </div>
     </div>
 </div>
@@ -22,7 +22,7 @@
             <li class="nav-item">
                 <a href="#tab-roles" class="nav-link p-3" data-bs-toggle="tab">Roles</a>
             </li>
-            {{ apply_filters('Panelbackend::pages::settings::access::nav-tabs', false) }}
+            {{ apply_filters('core::pages::settings::access::nav-tabs', false) }}
 
         </ul>
         <div class="card-body">
@@ -98,11 +98,11 @@
                         </thead>
                     </table>
                 </div>
-                {{ apply_filters('Panelbackend::pages::settings::access::tab-content', false) }}
+                {{ apply_filters('core::pages::settings::access::tab-content', false) }}
             </div>
         </div>
     </div>
-    {{ apply_filters('Panelbackend::pages::settings::access::page-body', false) }}
+    {{ apply_filters('core::pages::settings::access::page-body', false) }}
 </div>
 
 <div class="modal modal-blur fade" id="modal-form-user" tabindex="-1" aria-hidden="true">

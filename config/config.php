@@ -126,7 +126,7 @@ return [
   'styles' => [
     [
       'href' => 'vendor/core/css/tabler.min.css',
-      'async' => true,
+      'async' => false,
     ],
     [
       'href' => 'vendor/core/css/tabler-flags.min.css',

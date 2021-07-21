@@ -9,7 +9,7 @@
             </h2>
         </div>
         <div class="col-auto ms-auto d-print-none">
-            {{ apply_filters('Panelbackend::pages::administration::actions', '') }}
+            {{ apply_filters('core::pages::administration::actions', '') }}
         </div>
     </div>
 </div>
@@ -39,7 +39,7 @@
         </div>
         <div class="card-body">
             <a href="{{ route('core.admin.administrator.clear_cache') }}">Clear Cache</a>
-            {{ apply_filters('Panelbackend::pages::administration::card-body', '') }}
+            {{ apply_filters('core::pages::administration::card-body', '') }}
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-{{ apply_filters('Panelbackend::template::partials::footer::before', '') }}
+{{ apply_filters('core::template::partials::footer::before', '') }}
 
 <footer class="footer footer-transparent d-print-none">
     <div class="container-fluid">
@@ -19,4 +19,4 @@
     </div>
 </footer>
 
-{{ apply_filters('Panelbackend::template::partials::footer::after', '') }}
+{{ apply_filters('core::template::partials::footer::after', '') }}

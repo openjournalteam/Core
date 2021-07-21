@@ -23,7 +23,7 @@ class CoreServiceProvider extends ServiceProvider
 
         View::addExtension('php', 'blade');
 
-        $kernel->prependMiddleware(OpenJournalTeam\Core\Http\Middleware\ThemeLoader::class);
+        // $kernel->prependMiddleware(OpenJournalTeam\Core\Http\Middleware\ThemeLoader::class);
 
         $this->registerMiddlewareAlias();
         $this->registerBladeDirective();
@@ -58,6 +58,7 @@ class CoreServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/config.php' => config_path('core.php'),
+                __DIR__ . '/../config/modules.php' => config_path('modules.php'),
             ], 'Core-config');
             $this->publishes([
                 __DIR__ . '/../public' => public_path('vendor/core'),
@@ -78,5 +79,6 @@ class CoreServiceProvider extends ServiceProvider
 
     private function registerBladeDirective()
     {
-    }
+    }   
+    
 }

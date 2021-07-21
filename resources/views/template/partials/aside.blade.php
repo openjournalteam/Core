@@ -80,7 +80,7 @@
             </ul>
             <div class="mt-auto">
                 <ul class="navbar-nav">
-                    {{ apply_filters('Panelbackend::template::partials::aside::ul', false) }}
+                    {{ apply_filters('core::template::partials::aside::ul', false) }}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('core.logout') }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
