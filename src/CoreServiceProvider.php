@@ -21,14 +21,17 @@ class CoreServiceProvider extends ServiceProvider
             return;
         }
 
+        // dd(__DIR__ . '/../database/migrations');
+
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'core');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
         View::addExtension('php', 'blade');
 
         // $kernel->prependMiddleware(OpenJournalTeam\Core\Http\Middleware\ThemeLoader::class);
 
         $this->registerMiddlewareAlias();
         $this->registerBladeDirective();
-
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'core');
     }
 
     /**
@@ -36,6 +39,12 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        if (!config('core.enabled')) {
+            return;
+        }
+
+        // dd('test');
+
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'core');
 
