@@ -93,8 +93,6 @@ class AccessSettingsController extends AdminController
       'email' => $request->input('email'),
     ];
 
-
-
     if ($request->input('password')) {
       $inputArray = array_merge($inputArray, [
         'password' => Hash::make($request->password),

@@ -6,7 +6,6 @@
 var OJTForm = function () {
   // Private functions
   var ajaxError = function (data, statusText, xhr, form) {
-    console.log(data);
     let json = data.responseJSON;
 
     if (data.status == 422) {
@@ -94,6 +93,10 @@ var OJTForm = function () {
         xhr.done(function (response) {
           if (typeof OJTDatatables !== 'undefined') {
             OJTDatatables.reload();
+          }
+
+          if (Livewire) {
+            Livewire.emit('refresh');
           }
 
           Toast.fire({
@@ -232,7 +235,9 @@ var OJTForm = function () {
               icon: response?.success ? 'success' : 'error',
               title: response?.success ? response.data.msg : response.error,
             })
-
+            if (Livewire) {
+              Livewire.emit('refresh');
+            }
             if (typeof OJTDatatables !== 'undefined') OJTDatatables.reload();
 
             if (typeof callback !== typeof undefined && callback !== false)
@@ -286,6 +291,19 @@ var OJTForm = function () {
 
   }
 
+  var initGenerateToken = function () {
+    $(".generate_token").on("click", function () {
+      let id = $(this).attr("data-bs-target");
+      let random_string = OJTApp.generateToken(20);
+      $(id).find("input.generatedToken").val(random_string);
+      $(id).find("input[name='token']").val(random_string);
+      // $(id).find("input.fileupload").attr("table_token", random_string);
+      // $(id).find("input.multi_uploader").attr("table_token", random_string);
+      // $(id).find(".single_uploader").attr("data-token", random_string);
+    })
+  }
+
+
   return {
     // public functions
     init: function () {
@@ -293,6 +311,7 @@ var OJTForm = function () {
       initModalEditForm();
       initDeleteConfirm();
       initSelect2Ajax();
+      initGenerateToken();
     },
     initFormValidation: function (dom) {
       initFormValidation(dom);

@@ -4,6 +4,9 @@
 <script src="{{ asset('vendor/core/libs/jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ asset('vendor/core/libs/jquery-form/jquery.form.min.js') }}"></script>
 <script src="{{ asset('vendor/core/libs/jquery-validate/jquery.validate.min.js') }}"></script>
+
+@livewireScripts
+
 {!! Core::renderScript() !!}
 
 <script>
@@ -12,6 +15,7 @@
     @else
         const baseUrl = "{{ url('/') }}";
     @endif
+
     const adminUrl = baseUrl + '/admin';
 
     $.ajaxSetup({

@@ -33,3 +33,11 @@ Route::group(['prefix' => 'administrator', 'as' => 'administrator.'], function (
     Route::get('/', 'AdministrationController@index')->name('index');
     Route::get('/clear_cache', 'AdministrationController@clear_cache')->name('clear_cache');
 });
+
+Route::group(['prefix' => 'menu', 'as' => 'menu.'], function () {
+    Route::get('/', 'MenuController@index')->name('index');
+    Route::post('/save', 'MenuController@save')->name('save');
+    Route::post('/delete', 'MenuController@delete')->name('delete');
+    Route::post('/edit/{menu}', 'MenuController@edit')->name('edit');
+    Route::post('/sort', 'MenuController@sort')->name('sort');
+});
