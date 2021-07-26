@@ -8,25 +8,16 @@ use OpenJournalTeam\Core\Models\Menu;
 class MenuComponent extends Component
 {
     public $menus;
+    public $hookMenu = [];
 
-    protected $listeners = ['refresh' => '$refresh'];
+    protected $listeners = ['refreshMenu' => '$refresh'];
 
-    public function mount()
-    {
-    }
 
     public function render()
     {
         $this->menus = Menu::with('childs')->where('parent_id', 0)->orderBy('order')->get();
+        
+
         return view('core::livewire.menu.component');
-    }
-
-    public function save()
-    {
-    }
-
-    public function delete(Menu $menu)
-    {
-        $menu->delete();
     }
 }

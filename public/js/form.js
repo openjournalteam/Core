@@ -69,6 +69,7 @@ var OJTForm = function () {
       submitHandler: function (form) {
         let resetForm = $(form).attr('reset-form') ?? false;
         let clearForm = $(form).attr('clear-form') ?? false;
+        let callback = $(form).attr('callback') ?? false;
         let method = $(form).attr('method') ?? 'POST';
         let url = (method == 'PUT' || method == 'PATCH') ? $(form).attr('action') + '/' + $(form).data('id') : $(form).attr('action');
 
@@ -113,6 +114,10 @@ var OJTForm = function () {
           $('.modal').modal('hide')
 
 
+          if (typeof callback !== typeof undefined && callback !== false) {
+            window[callback]();
+          }
+
         });
       }
     });
@@ -125,9 +130,7 @@ var OJTForm = function () {
   }
 
   var assignFormInputByJsonKey = function (form, json) {
-    if (!(form instanceof jQuery)) {
-      form = $(form);
-    }
+    if (!(form instanceof jQuery)) form = $(form);
 
 
     $.each(json, function (key, value) {
@@ -135,11 +138,13 @@ var OJTForm = function () {
       var select = form.find(`select[name^="${key}"]`);
 
       if (select.data('control') == 'select2ajax') {
+
         $.each(value, function (key2, data) {
           let newOption = new Option(data.text, data.id, false, true);
           // Append it to the select
           select.append(newOption).trigger('change');
         })
+
       } else {
         select.val(value).trigger('click');
       }
@@ -150,12 +155,16 @@ var OJTForm = function () {
         assignFormInputByJsonKey(form, json2);
       }
 
-      if (input.attr('type') == 'checkbox' && input.val() == value) {
-        input.prop("checked", true);
-        return;
+      if (input.attr('type') == 'checkbox') {
+
+        // input.prop("checked", !!value);
+        // console.log(!!value);
+
+        // return;
+      } else {
+        input.val(value);
       }
 
-      input.val(value);
     });
   }
 

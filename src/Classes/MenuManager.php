@@ -2,6 +2,9 @@
 
 namespace OpenJournalTeam\Core\Classes;
 
+use Illuminate\Database\Eloquent\Collection;
+use OpenJournalTeam\Core\Models\Menu;
+
 class MenuManager
 {
     public static function list()
@@ -10,17 +13,20 @@ class MenuManager
         return apply_filters('MenuManager::add', $menu);
     }
 
-    // TODO add function to add submenus
-    // static public function addSubmenu($parent, $name, $route, $icon = false)
-    // {
-    //   add_filter('MenuManager::add', function ($menu) use ($parent, $name, $route, $icon) {
-
-    //     return $menu;
-    //   });
-    // }
-
     public static function add($name, $route, $icon = false, $role = false)
     {
-        add_filter('MenuManager::add', fn ($menu) => array_merge($menu, [['title' => $name, 'route' => $route ?? false,  'icon' => $icon, 'role' => $role]]));
+        add_filter('MenuManager::add', function ($menus) use ($name, $route, $icon, $role) {
+            $menu = new Collection(
+                [
+                    'name' => $name,
+                    'route' => $route,
+                    'icon' => $icon,
+                    'role' => $role
+                ]
+            );
+            $menus[] = $menu;
+
+            return $menus;
+        });
     }
 }

@@ -37,7 +37,8 @@ Route::group(['prefix' => 'administrator', 'as' => 'administrator.'], function (
 Route::group(['prefix' => 'menu', 'as' => 'menu.'], function () {
     Route::get('/', 'MenuController@index')->name('index');
     Route::post('/save', 'MenuController@save')->name('save');
-    Route::post('/delete', 'MenuController@delete')->name('delete');
-    Route::post('/edit/{menu}', 'MenuController@edit')->name('edit');
+    Route::delete('/delete/{menu:token}', 'MenuController@delete')->name('delete');
+    Route::get('/edit/{menu:token}', 'MenuController@edit')->name('edit');
     Route::post('/sort', 'MenuController@sort')->name('sort');
+    Route::get('/options', 'MenuController@options')->name('options');
 });
