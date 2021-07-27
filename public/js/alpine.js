@@ -54,6 +54,21 @@ document.addEventListener('alpine:init', () => {
 
         }
       })
+    },
+    migratePlugin() {
+      let xhr = $.post(adminUrl + '/plugins/migrate', {
+        name: this.name
+      });
+
+      xhr.done((response) => {
+        if (response?.data.msg) {
+          Toast.fire({
+            icon: response?.success ? 'success' :
+              'error',
+            title: response.data.msg,
+          })
+        }
+      })
     }
   }));
 

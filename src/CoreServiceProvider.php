@@ -22,14 +22,10 @@ class CoreServiceProvider extends ServiceProvider
             return;
         }
 
-        // dd(__DIR__ . '/../database/migrations');
-
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'core');
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         View::addExtension('php', 'blade');
-
-        // $kernel->prependMiddleware(OpenJournalTeam\Core\Http\Middleware\ThemeLoader::class);
 
         $this->registerMiddlewareAlias();
         $this->registerBladeDirective();
@@ -44,20 +40,25 @@ class CoreServiceProvider extends ServiceProvider
             return;
         }
 
-        // dd('test');
-
+        $this->registerProviders();
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'core');
-
-        // Register Provider
-        $this->app->register(RouteServiceProvider::class);
-        $this->app->register(LiveWireComponentServiceProvider::class);
-        $this->app->register(\Shohel\Pluggable\PluggableServiceProvider::class);
 
         // Register the main class to use with the facade
         $this->app->singleton('core', function () {
             return new Core();
         });
+    }
+
+    /**
+     * Register Service Providers
+     */
+
+    protected function registerProviders()
+    {
+        $this->app->register(RouteServiceProvider::class);
+        $this->app->register(LiveWireComponentServiceProvider::class);
+        $this->app->register(\Shohel\Pluggable\PluggableServiceProvider::class);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace OpenJournalTeam\Core\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use OpenJournalTeam\Core\Classes\PluginManager;
 use OpenJournalTeam\Core\Http\Resources\JsonResponse;
@@ -19,8 +20,6 @@ class PluginSettingsController extends AdminController
 
     public function index()
     {
-        // dd(Cache::get('laravel-modules'));
-
         $plugins = $this->pluginManager->getPlugins();
 
         $data['plugins'] = $plugins;
@@ -34,15 +33,14 @@ class PluginSettingsController extends AdminController
 
         if ($request->enable === 'true') {
             $plugin->enable();
+            Artisan::call('module:publish ' . $request->name);
         } else {
             $plugin->disable();
         }
 
         $json['msg'] = $request->enable === 'true' ? "Plugin {$request->name} enabled." : "Plugin {$request->name} disabled.";
 
-        $json = new JsonResponse($json);
-
-        return response()->json($json, Response::HTTP_OK);
+        return response()->json(new JsonResponse($json), Response::HTTP_OK);
     }
 
     public function delete(Request $request)
@@ -53,11 +51,17 @@ class PluginSettingsController extends AdminController
 
         $json['msg'] = "Plugin {$request->name} deleted.";
 
-        $json = new JsonResponse($json);
-
-        return response()->json($json, Response::HTTP_OK);
+        return response()->json(new JsonResponse($json), Response::HTTP_OK);
     }
 
+    public function migrate(Request $request)
+    {
+        // $plugin = $this->pluginManager->find($request->name);
 
-    
+        $artisan = Artisan::call('module:migrate ' . $request->name);
+
+        $json['msg'] = ($artisan == 0) ? "Plugin {$request->name} migrated." :  "Plugin {$request->name} migration failed.";
+
+        return response()->json(new JsonResponse($json), Response::HTTP_OK);
+    }
 }
