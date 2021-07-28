@@ -25,6 +25,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
 
 Route::group(['prefix' => 'role', 'as' => 'role.'], function () {
     Route::post('save', 'AccessSettingsController@role_save')->name('save');
+    Route::post('assign_permission', 'AccessSettingsController@role_assign_permission')->name('assign_permission');
     Route::delete('delete/{role}', 'AccessSettingsController@role_delete')->name('delete');
     Route::get('edit/{role}', 'AccessSettingsController@role_edit')->name('edit');
     Route::post('check_name', 'AccessSettingsController@role_check_name')->name('check_name');

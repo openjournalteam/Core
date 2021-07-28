@@ -3,7 +3,6 @@
 namespace OpenJournalTeam\Core\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Models\Permission;
 
 class DashboardController extends BaseController
 {

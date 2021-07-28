@@ -71,26 +71,21 @@
                     <div class="d-flex align-items-center mb-2">
                         <h3>Current Roles</h3>
                         <div class="ms-auto">
-                            @if (config('app.debug'))
-
-                                <a href="#" class="btn btn-outline-primary w-100" data-bs-toggle="modal"
-                                    data-bs-target="#modal-form-role">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <circle cx="9" cy="7" r="4" />
-                                        <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-                                        <path d="M16 11h6m-3 -3v6" />
-                                    </svg>
-                                    Add Roles
-                                </a>
-                            @endif
+                            <a href="#" class="btn btn-outline-primary w-100" data-bs-toggle="modal"
+                                data-bs-target="#modal-form-role">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                                    <path d="M16 11h6m-3 -3v6" />
+                                </svg>
+                                Add Roles
+                            </a>
                         </div>
                     </div>
 
-
-                    @hasrole(CoreAuth::ROLE_ADMIN)
                     <table class="table table-bordered datatables w-100"
                         data-ajax="{{ route('core.admin.access.role_list') }}">
                         <thead>
@@ -107,7 +102,7 @@
                             </tr>
                         </thead>
                     </table>
-                    @endhasrole
+
                 </div>
                 <div id="tab-permission" class="tab-pane">
                     <div class="d-flex align-items-center mb-2">
@@ -230,7 +225,40 @@
         </div>
     </div>
 </div>
-<div class="modal modal-blur fade" id="modal-form-role" tabindex="-1" aria-hidden="true">
+<div class="modal modal-blur fade" id="modal-assign-role-permission" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="{{ route('core.admin.role.assign_permission') }}" method="POST" class="ajax_form"
+                autocomplete="off">
+                <div class="modal-header">
+                    <h5 class="modal-title">Form Role</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input name="name" type="text" class="form-control" placeholder="Enter name" required disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Permissions</label>
+                        <select name="permissions[]" class="form-select form-select-solid" data-control="select2ajax"
+                            data-width="100%" data-dropdown-parent="#modal-assign-role-permission"
+                            data-placeholder="Select an option" data-allow-clear="true"
+                            data-ajax--url="{{ route('core.admin.permission.options') }}" data-ajax--delay="700"
+                            multiple>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal modal-blur fade" id="modal-form-permission" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form action="{{ route('core.admin.permission.save') }}" method="POST" class="ajax_form"
@@ -243,8 +271,7 @@
                     <input type="hidden" name="id">
                     <div class="mb-3">
                         <label class="form-label">Name</label>
-                        <input id="role_name" name="name" type="text" class="form-control" placeholder="Enter name"
-                            required>
+                        <input name="name" type="text" class="form-control" placeholder="Enter name" required>
                     </div>
                 </div>
                 <div class="modal-footer">
