@@ -7,7 +7,7 @@ include_once 'Helpers/helpers.php';
 use App\Http\Kernel;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use Livewire\Livewire;
+use OpenJournalTeam\Core\Http\Middleware\RoleMiddleware;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -41,6 +41,7 @@ class CoreServiceProvider extends ServiceProvider
         }
 
         $this->registerProviders();
+        $this->registerAlias();
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'core');
 
@@ -48,6 +49,12 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton('core', function () {
             return new Core();
         });
+    }
+
+    public function registerAlias()
+    {
+        $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+        $loader->alias('CoreAuth', 'OpenJournalTeam\Core\Auth');
     }
 
     /**
@@ -89,7 +96,7 @@ class CoreServiceProvider extends ServiceProvider
 
     private function registerMiddlewareAlias()
     {
-        app()->make('router')->aliasMiddleware('role', \Spatie\Permission\Middlewares\RoleMiddleware::class);
+        app()->make('router')->aliasMiddleware('role', \OpenJournalTeam\Core\Http\Middleware\RoleMiddleware::class);
         app()->make('router')->aliasMiddleware('permission', \Spatie\Permission\Middlewares\PermissionMiddleware::class);
     }
 

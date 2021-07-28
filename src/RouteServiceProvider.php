@@ -5,7 +5,7 @@ namespace OpenJournalTeam\Core;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use OpenJournalTeam\Core\Http\Middleware\Authenticate;
-use OpenJournalTeam\Core\Models\Role;
+use OpenJournalTeam\Core\Auth;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -61,7 +61,7 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapAdminRoutes()
     {
-        $middleware = array_merge(config('core.middleware'), [Authenticate::class, 'role:' . Role::ADMIN]);
+        $middleware = array_merge(config('core.middleware'), [Authenticate::class, 'role:' . Auth::ROLE_ADMIN]);
 
         Route::group([
             'namespace' => 'OpenJournalTeam\Core\Http\Controllers\Admin',

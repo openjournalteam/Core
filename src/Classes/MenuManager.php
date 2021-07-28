@@ -3,7 +3,6 @@
 namespace OpenJournalTeam\Core\Classes;
 
 use Illuminate\Database\Eloquent\Collection;
-use OpenJournalTeam\Core\Models\Menu;
 
 class MenuManager
 {

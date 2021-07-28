@@ -13,6 +13,7 @@ Route::group(['prefix' => 'access', 'as' => 'access.'], function () {
     Route::get('/', 'AccessSettingsController@index')->name('index');
     Route::get('/user_list', 'AccessSettingsController@user_list')->name('user_list');
     Route::get('/role_list', 'AccessSettingsController@role_list')->name('role_list');
+    Route::get('/permission_list', 'AccessSettingsController@permission_list')->name('permission_list');
 });
 
 Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
@@ -28,6 +29,14 @@ Route::group(['prefix' => 'role', 'as' => 'role.'], function () {
     Route::get('edit/{role}', 'AccessSettingsController@role_edit')->name('edit');
     Route::post('check_name', 'AccessSettingsController@role_check_name')->name('check_name');
     Route::get('options', 'AccessSettingsController@role_options')->name('options');
+});
+
+Route::group(['prefix' => 'permission', 'as' => 'permission.'], function () {
+    Route::post('save', 'AccessSettingsController@permission_save')->name('save');
+    Route::delete('delete/{permission}', 'AccessSettingsController@permission_delete')->name('delete');
+    Route::get('edit/{permission}', 'AccessSettingsController@permission_edit')->name('edit');
+    Route::post('check_name', 'AccessSettingsController@permission_check_name')->name('check_name');
+    Route::get('options', 'AccessSettingsController@permission_options')->name('options');
 });
 
 Route::group(['prefix' => 'administrator', 'as' => 'administrator.'], function () {

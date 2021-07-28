@@ -37,6 +37,19 @@ To
 ],
 ```
 
+Edit AuthServiceProvider.php and add the following lines on the boot method:
+```php
+    Gate::before(function ($user, $ability) {
+            return $user->hasRole(Auth::ROLE_ADMIN) ? true : null;
+    });
+```
+and import the following namespaces:
+```php
+use Illuminate\Support\Facades\Gate;
+use OpenJournalTeam\Core\Auth;
+```
+
+
 Edit .env and change the following lines:
 ```php
 DB_CONNECTION=mysql
