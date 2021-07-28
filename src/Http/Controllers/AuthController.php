@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace OpenJournalTeam\Core\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -62,12 +64,8 @@ class AuthController extends BaseController
 
     /**
      * Log the user out of the application.
-     *
-     * @param  \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function logout(Request $request)
+    public function logout(Request $request): \Illuminate\Http\Response
     {
         Auth::logout();
 

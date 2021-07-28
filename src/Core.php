@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace OpenJournalTeam\Core;
 
 use Illuminate\Support\HtmlString;
@@ -23,7 +25,7 @@ class Core
         return $html;
     }
 
-    public static function addScript(string | array $src, $defer = false)
+    public static function addScript(string | array $src, $defer = false): void
     {
         add_filter('Core::scripts', function ($scripts) use ($src, $defer) {
             if (is_array($src)) {
@@ -59,7 +61,7 @@ class Core
         return $html;
     }
 
-    public static function addStyle(string | array $href, $async = false)
+    public static function addStyle(string | array $href, $async = false): void
     {
         add_filter('core::styles', function ($styles) use ($href, $async) {
             if (is_array($href)) {

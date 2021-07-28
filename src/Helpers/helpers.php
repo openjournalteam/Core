@@ -1,19 +1,16 @@
 <?php
 
+
+
 use OpenJournalTeam\Core\Core;
 
 if (!function_exists('render')) {
     /**
      * Render the template Backend
      *
-     * @param  string|null  $view
-     * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
      * @param  array  $mergeData
-     * @param  string|null $template
-     *
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    function render($view = null, $data = [], $mergeData = [], $template = 'core::template.default')
+    function render(?string $view = null, \Illuminate\Contracts\Support\Arrayable | array $data = [], array $mergeData = [], ?string $template = 'core::template.default'): \Illuminate\Contracts\View\View | \Illuminate\Contracts\View\Factory
     {
         $meta['view'] = $view;
         $meta['data'] = $data;

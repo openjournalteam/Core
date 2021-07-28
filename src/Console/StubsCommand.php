@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace openjournalteam\Core\Console;
 
 use Illuminate\Console\Command;

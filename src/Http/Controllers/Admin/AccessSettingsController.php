@@ -5,56 +5,56 @@ namespace OpenJournalTeam\Core\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use OpenJournalTeam\Core\Auth;
 use OpenJournalTeam\Core\Http\Resources\JsonResponse;
 use OpenJournalTeam\Core\Models\Role;
 use OpenJournalTeam\Core\Models\User;
-use OpenJournalTeam\Core\Auth;
 use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\DataTables;
 
 class AccessSettingsController extends AdminController
 {
-  public function index()
-  {
-    add_script('vendor/core/js/pages/settings/access.js');
+    public function index()
+    {
+        add_script('vendor/core/js/pages/settings/access.js');
 
-    return render('core::pages.settings.access.index');
-  }
+        return render('core::pages.settings.access.index');
+    }
 
-  public function user_list()
-  {
-    $data = User::with('roles');
-    return DataTables::of($data)
-      ->addIndexColumn()
-      ->editColumn('created_at', function ($user) {
-        return $user['created_at']->format('d M Y');
-      })
-      ->addColumn('roles', function ($row) {
-        $html = '';
+    public function user_list()
+    {
+        $data = User::with('roles');
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->editColumn('created_at', function ($user) {
+                return $user['created_at']->format('d M Y');
+            })
+            ->addColumn('roles', function ($row) {
+                $html = '';
 
-        foreach ($row->roles as $role) {
-          $html = '';
+                foreach ($row->roles as $role) {
+                    $html = '';
 
-          foreach ($row->roles as $role) {
-            $format = '<span class="badge bg-blue-lt mx-1 mb-1">%s</span>';
-            $vars = [
-              $role['name'],
-            ];
-            $dom = vsprintf($format, $vars);
+                    foreach ($row->roles as $role) {
+                        $format = '<span class="badge bg-blue-lt mx-1 mb-1">%s</span>';
+                        $vars = [
+                            $role['name'],
+                        ];
+                        $dom = vsprintf($format, $vars);
 
-            $html .= $dom;
-          }
+                        $html .= $dom;
+                    }
 
-          return $html;
-        }
+                    return $html;
+                }
 
-        return $html;
-      })
-      ->addColumn('action', function ($row) {
-        if ($row->id === 1) {
-          return;
-        }
-        $format = '<div class="dropdown">
+                return $html;
+            })
+            ->addColumn('action', function ($row) {
+                if ($row->id === 1) {
+                    return;
+                }
+                $format = '<div class="dropdown">
                     <button type="button" aria-label="dropdown-user" class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /><circle cx="12" cy="12" r="3" /></svg>
                     </button>
@@ -72,122 +72,122 @@ class AccessSettingsController extends AdminController
                     </div>
                   </div>';
 
-        $vars = [
-          route('core.admin.user.edit', [$row->id]),
-          route('core.admin.user.delete', [$row->id]),
+                $vars = [
+                    route('core.admin.user.edit', [$row->id]),
+                    route('core.admin.user.delete', [$row->id]),
+                ];
+
+                return vsprintf($format, $vars);
+            })
+            ->rawColumns(['roles', 'action'])
+            ->make(true);
+    }
+
+    public function user_save(Request $request)
+    {
+        $validationArray = [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
         ];
 
-        return vsprintf($format, $vars);
-      })
-      ->rawColumns(['roles', 'action'])
-      ->make(true);
-  }
+        $inputArray = [
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+        ];
 
-  public function user_save(Request $request)
-  {
-    $validationArray = [
-      'name' => 'required|string|max:255',
-      'email' => 'required|string|email|max:255',
-    ];
+        if ($request->input('password')) {
+            $inputArray = array_merge($inputArray, [
+                'password' => Hash::make($request->password),
+            ]);
+        }
 
-    $inputArray = [
-      'name' => $request->input('name'),
-      'email' => $request->input('email'),
-    ];
+        if ($request->input('id')) {
+            $user = User::find($request->input('id'));
+            if ($user->email !== $request->input('email')) {
+                $validationArray['email'] = 'required|string|email|max:255|unique:users';
+            }
+        } else {
+            $validationArray = array_merge($validationArray, [
+                'password' => ['required', 'min:8', 'confirmed', Rules\Password::defaults()],
+                'email' => 'required|string|email|max:255|unique:users',
+            ]);
 
-    if ($request->input('password')) {
-      $inputArray = array_merge($inputArray, [
-        'password' => Hash::make($request->password),
-      ]);
+            $inputArray = array_merge($inputArray, [
+                'password' => Hash::make($request->password),
+            ]);
+        }
+
+        $request->validate($validationArray);
+
+        $user = User::updateOrCreate(
+            [
+                'id' => $request->input('id'),
+            ],
+            $inputArray
+        );
+
+        if ($request->input('roles')) {
+            $user->syncRoles($request->input('roles'));
+        } else {
+            $user->roles()->detach();
+        }
+
+        $data = [
+            'msg' => !$request->input('id') ? 'Success Adding User ..' : 'Success Edit User ..',
+        ];
+
+        return response()->json(new JsonResponse($data));
     }
 
-    if ($request->input('id')) {
-      $user = User::find($request->input('id'));
-      if ($user->email !== $request->input('email')) {
-        $validationArray['email'] = 'required|string|email|max:255|unique:users';
-      }
-    } else {
-      $validationArray = array_merge($validationArray, [
-        'password' => ['required', 'min:8', 'confirmed', Rules\Password::defaults()],
-        'email' => 'required|string|email|max:255|unique:users',
-      ]);
+    public function user_edit(Request $request, User $user)
+    {
+        if (!$request->ajax()) {
+            return abort(401);
+        }
 
-      $inputArray = array_merge($inputArray, [
-        'password' => Hash::make($request->password),
-      ]);
+        $roles = $user->roles()->select(['id', 'name as text'])->get()->makeHidden(['pivot']);
+
+        $user->setAttribute('roles', $roles);
+
+        return response()->json($user->makeHidden(['updated_at', 'created_at', 'password', 'email_verified_at']));
     }
 
-    $request->validate($validationArray);
+    public function user_delete(Request $request, User $user)
+    {
+        if (!$request->ajax()) {
+            return abort(401);
+        }
 
-    $user = User::updateOrCreate(
-      [
-        'id' => $request->input('id'),
-      ],
-      $inputArray
-    );
+        if ($user->id === 1) {
+            return abort(401, 'Default user cant be removed');
+        }
 
-    if ($request->input('roles')) {
-      $user->syncRoles($request->input('roles'));
-    } else {
-      $user->roles()->detach();
+        $user->delete();
+
+        return response()->json(new JsonResponse(['msg' => 'Remove User Success..']));
     }
 
-    $data = [
-      'msg' => !$request->input('id') ? 'Success Adding User ..' : 'Success Edit User ..',
-    ];
+    public function user_check_email(Request $request)
+    {
+        $user = User::where('email', $request->input('email'))->exists();
 
-    return response()->json(new JsonResponse($data));
-  }
+        if ($user) {
+            return response()->json(false);
+        }
 
-  public function user_edit(Request $request, User $user)
-  {
-    if (!$request->ajax()) {
-      return abort(401);
+        return response()->json(true);
     }
 
-    $roles = $user->roles()->select(['id', 'name as text'])->get()->makeHidden(['pivot']);
-
-    $user->setAttribute('roles', $roles);
-
-    return response()->json($user->makeHidden(['updated_at', 'created_at', 'password', 'email_verified_at']));
-  }
-
-  public function user_delete(Request $request, User $user)
-  {
-    if (!$request->ajax()) {
-      return abort(401);
-    }
-
-    if ($user->id == 1) {
-      return abort(401, 'Default user cant be removed');
-    }
-
-    $user->delete();
-
-    return response()->json(new JsonResponse(['msg' => 'Remove User Success..']));
-  }
-
-  public function user_check_email(Request $request)
-  {
-    $user = User::where('email', $request->input('email'))->exists();
-
-    if ($user) {
-      return response()->json(false);
-    }
-
-    return response()->json(true);
-  }
-
-  public function role_list()
-  {
-    $data = Role::select(['id', 'name', 'created_at']);
-    return DataTables::of($data)
-      ->addIndexColumn()
-      ->editColumn('created_at', function ($role) {
-        return $role['created_at']->format('d M Y');
-      })
-      ->addColumn('action', function ($row) {
-        $format = '<div class="dropdown">
+    public function role_list()
+    {
+        $data = Role::select(['id', 'name', 'created_at']);
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->editColumn('created_at', function ($role) {
+                return $role['created_at']->format('d M Y');
+            })
+            ->addColumn('action', function ($row) {
+                $format = '<div class="dropdown">
                     <button type="button" aria-label="dropdown-role" class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /><circle cx="12" cy="12" r="3" /></svg>
                     </button>
@@ -205,130 +205,129 @@ class AccessSettingsController extends AdminController
                     </div>
                   </div>';
 
-        $vars = [
-          route('core.admin.role.edit', [$row->id]),
-          route('core.admin.role.delete', [$row->id]),
+                $vars = [
+                    route('core.admin.role.edit', [$row->id]),
+                    route('core.admin.role.delete', [$row->id]),
 
+                ];
+
+                return vsprintf($format, $vars);
+            })
+            ->rawColumns(['roles', 'action'])
+            ->make(true);
+    }
+
+    public function role_save(Request $request)
+    {
+        $validationArray = [
+            'name' => 'required|string|max:255',
         ];
 
-        return vsprintf($format, $vars);
-      })
-      ->rawColumns(['roles', 'action'])
-      ->make(true);
-  }
+        $inputArray = [
+            'name' => $request->input('name'),
+            'guard' => $request->input('guard_name', 'web'),
+        ];
 
-  public function role_save(Request $request)
-  {
-    $validationArray = [
-      'name' => 'required|string|max:255',
-    ];
+        $request->validate($validationArray);
 
-    $inputArray = [
-      'name' => $request->input('name'),
-      'guard' => $request->input('guard_name', 'web'),
-    ];
+        Role::updateOrCreate(
+            [
+                'id' => $request->input('id'),
+            ],
+            $inputArray
+        );
 
-    $request->validate($validationArray);
+        $data = [
+            'msg' => !$request->input('id') ? 'Success Adding Role ..' : 'Success Edit Role ..',
+        ];
 
-    Role::updateOrCreate(
-      [
-        'id' => $request->input('id'),
-      ],
-      $inputArray
-    );
-
-    $data = [
-      'msg' => !$request->input('id') ? 'Success Adding Role ..' : 'Success Edit Role ..',
-    ];
-
-    return response()->json(new JsonResponse($data));
-  }
-
-  public function role_assign_permission(Request $request)
-  {
-    $permissionIds = $request->get('permissions', []);
-
-    $permissions   = Permission::whereIn('id', $permissionIds)->get();
-
-    $role = Role::find($request->input('id'));
-
-    $role->syncPermissions($permissions);
-
-    $data = [
-      'msg' => 'Success assign Permission ..',
-    ];
-
-    return response()->json(new JsonResponse($data));
-  }
-
-  public function role_check_name(Request $request)
-  {
-    $role = Role::where('name', $request->input('name'))->exists();
-
-    if ($role) {
-      return response()->json(false);
+        return response()->json(new JsonResponse($data));
     }
 
-    return response()->json(true);
-  }
+    public function role_assign_permission(Request $request)
+    {
+        $permissionIds = $request->get('permissions', []);
 
-  public function role_edit(Request $request, Role $role)
-  {
-    if (!$request->ajax()) {
-      return abort(401);
+        $permissions = Permission::whereIn('id', $permissionIds)->get();
+
+        $role = Role::find($request->input('id'));
+
+        $role->syncPermissions($permissions);
+
+        $data = [
+            'msg' => 'Success assign Permission ..',
+        ];
+
+        return response()->json(new JsonResponse($data));
     }
 
-    $permissions = $role->permissions()->select(['id', 'name as text'])->get();
+    public function role_check_name(Request $request)
+    {
+        $role = Role::where('name', $request->input('name'))->exists();
 
-    $role->setAttribute('permissions', $permissions);
+        if ($role) {
+            return response()->json(false);
+        }
 
-    return response()->json($role->makeHidden(['updated_at', 'created_at']));
-  }
-
-  public function role_delete(Request $request, Role $role)
-  {
-    if (!$request->ajax()) {
-      return abort(401);
+        return response()->json(true);
     }
 
-    if ($role->name === Auth::ROLE_ADMIN) {
-      return abort(401, 'Admin role cant be removed');
+    public function role_edit(Request $request, Role $role)
+    {
+        if (!$request->ajax()) {
+            return abort(401);
+        }
+
+        $permissions = $role->permissions()->select(['id', 'name as text'])->get();
+
+        $role->setAttribute('permissions', $permissions);
+
+        return response()->json($role->makeHidden(['updated_at', 'created_at']));
     }
 
-    $role->delete();
+    public function role_delete(Request $request, Role $role)
+    {
+        if (!$request->ajax()) {
+            return abort(401);
+        }
 
-    return response()->json(new JsonResponse(['msg' => 'Remove Role Success..']));
-  }
+        if ($role->name === Auth::ROLE_ADMIN) {
+            return abort(401, 'Admin role cant be removed');
+        }
 
-  public function role_options(Request $request)
-  {
-    $search = $request->input('search');
+        $role->delete();
 
-    $roles = Role::orderBy('name')->select(['id', 'name'])->where('name', 'like', '%' . $search . '%')->limit(5)->get();
+        return response()->json(new JsonResponse(['msg' => 'Remove Role Success..']));
+    }
 
-    $roles = $roles->map(function ($role) {
-      return [
-        'id' => $role['id'],
-        'text' => $role['name'],
-      ];
-    });
+    public function role_options(Request $request)
+    {
+        $search = $request->input('search');
 
-    return response()->json([
-      'results' => $roles,
-    ]);
-  }
+        $roles = Role::orderBy('name')->select(['id', 'name'])->where('name', 'like', '%' . $search . '%')->limit(5)->get();
 
+        $roles = $roles->map(function ($role) {
+            return [
+                'id' => $role['id'],
+                'text' => $role['name'],
+            ];
+        });
 
-  public function permission_list()
-  {
-    $data = Permission::select(['id', 'name', 'created_at']);
-    return DataTables::of($data)
-      ->addIndexColumn()
-      ->editColumn('created_at', function ($role) {
-        return $role['created_at']->format('d M Y');
-      })
-      ->addColumn('action', function ($row) {
-        $format = '<div class="dropdown">
+        return response()->json([
+            'results' => $roles,
+        ]);
+    }
+
+    public function permission_list()
+    {
+        $data = Permission::select(['id', 'name', 'created_at']);
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->editColumn('created_at', function ($role) {
+                return $role['created_at']->format('d M Y');
+            })
+            ->addColumn('action', function ($row) {
+                $format = '<div class="dropdown">
                     <button type="button" aria-label="dropdown-role" class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /><circle cx="12" cy="12" r="3" /></svg>
                     </button>
@@ -342,62 +341,62 @@ class AccessSettingsController extends AdminController
                     </div>
                   </div>';
 
-        $vars = [
-          route('core.admin.permission.delete', [$row->id]),
-        ];
+                $vars = [
+                    route('core.admin.permission.delete', [$row->id]),
+                ];
 
-        return vsprintf($format, $vars);
-      })
-      ->rawColumns(['action'])
-      ->make(true);
-  }
-
-  public function permission_save(Request $request)
-  {
-    $validationArray = [
-      'name' => 'required|string|max:255',
-    ];
-
-    $inputArray = [
-      'name' => $request->input('name'),
-      'guard' => $request->input('guard_name', 'web'),
-    ];
-
-    $request->validate($validationArray);
-
-    Permission::updateOrCreate(
-      [
-        'id' => $request->input('id'),
-      ],
-      $inputArray
-    );
-
-    $data = [
-      'msg' => !$request->input('id') ? 'Success Adding Role ..' : 'Success Edit Role ..',
-    ];
-
-    return response()->json(new JsonResponse($data));
-  }
-
-  public function permission_delete(Request $request, Permission $permission)
-  {
-    if (!$request->ajax()) {
-      return abort(401);
+                return vsprintf($format, $vars);
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
-    $permission->delete();
+    public function permission_save(Request $request)
+    {
+        $validationArray = [
+            'name' => 'required|string|max:255',
+        ];
 
-    return response()->json(new JsonResponse(['msg' => 'Remove Permission Success..']));
-  }
+        $inputArray = [
+            'name' => $request->input('name'),
+            'guard' => $request->input('guard_name', 'web'),
+        ];
 
-  public function permission_options(Request $request)
-  {
-    $search = $request->input('search');
+        $request->validate($validationArray);
 
-    $roles = Permission::orderBy('name')->select(['id', 'name as text'])->where('name', 'like', '%' . $search . '%')->limit(5)->get();
+        Permission::updateOrCreate(
+            [
+                'id' => $request->input('id'),
+            ],
+            $inputArray
+        );
 
-    return response()->json([
-      'results' => $roles,
-    ]);
-  }
+        $data = [
+            'msg' => !$request->input('id') ? 'Success Adding Role ..' : 'Success Edit Role ..',
+        ];
+
+        return response()->json(new JsonResponse($data));
+    }
+
+    public function permission_delete(Request $request, Permission $permission)
+    {
+        if (!$request->ajax()) {
+            return abort(401);
+        }
+
+        $permission->delete();
+
+        return response()->json(new JsonResponse(['msg' => 'Remove Permission Success..']));
+    }
+
+    public function permission_options(Request $request)
+    {
+        $search = $request->input('search');
+
+        $roles = Permission::orderBy('name')->select(['id', 'name as text'])->where('name', 'like', '%' . $search . '%')->limit(5)->get();
+
+        return response()->json([
+            'results' => $roles,
+        ]);
+    }
 }

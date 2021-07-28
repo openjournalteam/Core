@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace OpenJournalTeam\Core\Http\Livewire;
 
 use Illuminate\Support\Facades\Cache;
@@ -9,12 +11,11 @@ use OpenJournalTeam\Core\Models\Menu;
 class MenuSideBarComponent extends Component
 {
   public $menus;
-  public $hookMenu = [];
+  public $hookMenu;
 
   protected $listeners = ['refreshMenu' => '$refresh'];
 
-
-  public function mount()
+  public function mount(): void
   {
     $this->hookMenu = apply_filters('MenuManager::add', $this->hookMenu);
   }
@@ -24,7 +25,6 @@ class MenuSideBarComponent extends Component
     $this->menus = Cache::rememberForever('menus', function () {
       return Menu::with('childs')->where('parent_id', 0)->orderBy('order')->get();
     });
-
 
     return view('core::livewire.menu.sidebar');
   }

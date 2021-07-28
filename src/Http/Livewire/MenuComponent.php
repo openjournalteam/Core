@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace OpenJournalTeam\Core\Http\Livewire;
 
 use Illuminate\Support\Facades\Cache;
@@ -9,17 +11,15 @@ use OpenJournalTeam\Core\Models\Menu;
 class MenuComponent extends Component
 {
     public $menus;
-    public $hookMenu = [];
+    public $hookMenu;
 
     protected $listeners = ['refreshMenu' => '$refresh'];
-
 
     public function render()
     {
         $this->menus = Cache::rememberForever('menus', function () {
             return Menu::with('childs')->where('parent_id', 0)->orderBy('order')->get();
         });
-
 
         return view('core::livewire.menu.component');
     }

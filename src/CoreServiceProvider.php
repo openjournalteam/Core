@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace OpenJournalTeam\Core;
 
 include_once 'Helpers/helpers.php';
@@ -7,14 +9,13 @@ include_once 'Helpers/helpers.php';
 use App\Http\Kernel;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use OpenJournalTeam\Core\Http\Middleware\RoleMiddleware;
 
 class CoreServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
      */
-    public function boot(Kernel $kernel)
+    public function boot(Kernel $kernel): void
     {
         $this->registerCommands();
 
@@ -34,7 +35,7 @@ class CoreServiceProvider extends ServiceProvider
     /**
      * Register the application services.
      */
-    public function register()
+    public function register(): void
     {
         if (!config('core.enabled')) {
             return;
@@ -51,7 +52,7 @@ class CoreServiceProvider extends ServiceProvider
         });
     }
 
-    public function registerAlias()
+    public function registerAlias(): void
     {
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
         $loader->alias('CoreAuth', 'OpenJournalTeam\Core\Auth');
@@ -61,7 +62,7 @@ class CoreServiceProvider extends ServiceProvider
      * Register Service Providers
      */
 
-    protected function registerProviders()
+    protected function registerProviders(): void
     {
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(LiveWireComponentServiceProvider::class);
@@ -70,10 +71,8 @@ class CoreServiceProvider extends ServiceProvider
 
     /**
      * Register the package's commands.
-     *
-     * @return void
      */
-    protected function registerCommands()
+    protected function registerCommands(): void
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -94,13 +93,13 @@ class CoreServiceProvider extends ServiceProvider
         }
     }
 
-    private function registerMiddlewareAlias()
+    private function registerMiddlewareAlias(): void
     {
         app()->make('router')->aliasMiddleware('role', \OpenJournalTeam\Core\Http\Middleware\RoleMiddleware::class);
         app()->make('router')->aliasMiddleware('permission', \Spatie\Permission\Middlewares\PermissionMiddleware::class);
     }
 
-    private function registerBladeDirective()
+    private function registerBladeDirective(): void
     {
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace OpenJournalTeam\Core\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
@@ -16,7 +18,6 @@ class MenuController extends AdminController
     add_script('vendor/core/libs/sortablejs/sortablejs.bundle.js');
     add_script('vendor/core/js/pages/settings/menu.js');
 
-
     return render('core::pages.settings.menu.index');
   }
 
@@ -25,7 +26,6 @@ class MenuController extends AdminController
     if (!$request->ajax()) {
       return abort(401);
     }
-
 
     $menu->delete();
 
@@ -48,7 +48,7 @@ class MenuController extends AdminController
         'errors' => [
           'route' => 'Route not found',
         ],
-        'message' => 'The given data was invalid.'
+        'message' => 'The given data was invalid.',
 
       ], 422);
     }
@@ -70,8 +70,6 @@ class MenuController extends AdminController
         'roles' => $request->input('roles', []),
       ]
     );
-
-
 
     $data = [
       'msg' => 'Success save data..',
@@ -99,7 +97,6 @@ class MenuController extends AdminController
     ]);
   }
 
-
   public function sort(Request $request)
   {
     $ids = $request->input('ids');
@@ -112,14 +109,13 @@ class MenuController extends AdminController
       $menu->save();
     }
 
-
     return response()->json([
-      'error'   => 0,
+      'error' => 0,
       'message' => 'Success sorting data..',
     ]);
   }
 
-  private function clearCache()
+  private function clearCache(): void
   {
     Cache::forget('menus');
   }

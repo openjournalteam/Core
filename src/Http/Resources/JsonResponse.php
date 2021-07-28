@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace OpenJournalTeam\Core\Http\Resources;
 
 use Illuminate\Contracts\Support\Arrayable;
@@ -12,30 +14,20 @@ class JsonResponse implements \JsonSerializable
 
     /**
      * Data to be returned
-     *
-     * @var mixed
      */
-    private $data = [];
+    private mixed $data = [];
 
     /**
      * Error message in case process is not success. This will be a string.
-     *
-     * @var string
      */
-    private $error = '';
+    private string $error = '';
 
-    /**
-     * @var bool
-     */
-    private $success = false;
+    private bool $success = false;
 
     /**
      * JsonResponse constructor.
-     *
-     * @param mixed $data
-     * @param string $error
      */
-    public function __construct($data = [], string $error = '')
+    public function __construct(mixed $data = [], string $error = '')
     {
         if ($this->shouldBeJson($data)) {
             $this->data = $data;
@@ -50,7 +42,7 @@ class JsonResponse implements \JsonSerializable
      *
      * @param array $data
      */
-    public function success($data = [])
+    public function success(array $data = []): void
     {
         $this->success = true;
         $this->data = $data;
@@ -59,10 +51,8 @@ class JsonResponse implements \JsonSerializable
 
     /**
      * Fail with error message
-     *
-     * @param string $error
      */
-    public function fail($error = '')
+    public function fail(string $error = ''): void
     {
         $this->success = false;
         $this->error = $error;
@@ -83,12 +73,8 @@ class JsonResponse implements \JsonSerializable
 
     /**
      * Determine if the given content should be turned into JSON.
-     *
-     * @param  mixed  $content
-     *
-     * @return bool
      */
-    private function shouldBeJson($content): bool
+    private function shouldBeJson(mixed $content): bool
     {
         return $content instanceof Arrayable ||
             $content instanceof Jsonable ||
