@@ -11,5 +11,7 @@
     </div>
 </div>
 <div class="page-body">
-    {{ apply_filters('core::pages::dashboard::body', '') }}
+    <div class="row">
+        {{ apply_filters('core::pages::dashboard::body', '') }}
+    </div>
 </div>

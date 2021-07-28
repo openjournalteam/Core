@@ -26,7 +26,10 @@ class MenuController extends AdminController
       return abort(401);
     }
 
+
     $menu->delete();
+
+    $this->clearCache();
 
     return response()->json(new JsonResponse(['msg' => 'Remove Menu Success..']));
   }

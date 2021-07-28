@@ -4,10 +4,10 @@
             @hasanyrole($menu->roles())
             @php
                 $hasChilds = $menu->childs->count() > 0 ? true : false;
+                $route = $menu->route ? route($menu->route) : '#';
             @endphp
             <li class="nav-item {{ $hasChilds ? 'dropdown' : '' }}">
-                <a class="nav-link {{ $hasChilds ? 'dropdown-toggle' : '' }}"
-                    href="{{ $hasChilds ? '#' : route($menu->route) }}"
+                <a class="nav-link {{ $hasChilds ? 'dropdown-toggle' : '' }}" href="{{ $hasChilds ? '#' : $route }}"
                     {{ $hasChilds ? 'data-bs-toggle=dropdown' : '' }} role="button" aria-expanded="false">
                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                         @if (isset($menu->icon))

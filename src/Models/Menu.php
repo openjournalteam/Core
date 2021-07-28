@@ -34,6 +34,7 @@ class Menu extends Model
     $roles = !in_array(Auth::ROLE_ADMIN, $roles) ? array_merge($roles, [Auth::ROLE_ADMIN]) : $roles;
 
     $roles = implode('|', $roles);
+
     return $roles;
   }
 }

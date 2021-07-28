@@ -216,8 +216,7 @@ var OJTForm = function () {
       e.preventDefault();
 
       let url = $(this).attr("href") ?? $(this).data("url");
-      let callback = $(this).data("callback");
-
+      let callback = $(this).attr("callback");
       if (typeof url === 'undefined') {
         console.log('Attribute href or data-url not found');
       }
