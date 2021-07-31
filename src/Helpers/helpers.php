@@ -10,7 +10,7 @@ if (!function_exists('render')) {
      *
      * @param  array  $mergeData
      */
-    function render(?string $view = null, \Illuminate\Contracts\Support\Arrayable | array $data = [], array $mergeData = [], ?string $template = 'core::template.default'): \Illuminate\Contracts\View\View | \Illuminate\Contracts\View\Factory
+    function render(?string $view = null, array $data = [], array $mergeData = [], ?string $template = 'core::template.default')
     {
         $meta['view'] = $view;
         $meta['data'] = $data;

@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace OpenJournalTeam\Core\Classes;
 
 class PluginManager

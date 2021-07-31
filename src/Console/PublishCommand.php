@@ -11,12 +11,12 @@ class PublishCommand extends Command
     /**
      * The name and signature of the console command.
      */
-    protected string $signature = 'core:publish {--force : Overwrite any existing files}';
+    protected $signature = 'core:publish {--force : Overwrite any existing files}';
 
     /**
      * The console command description.
      */
-    protected string $description = 'Publish all of the Core resources';
+    protected $description = 'Publish all of the Core resources';
 
     /**
      * Execute the console command.

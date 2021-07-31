@@ -13,40 +13,10 @@ final class Auth
   public const ROLE_SUPPORT = 'Support';
   public const ROLE_USER = 'User';
 
-  public static function permissions(): array
-  {
-    try {
-      $class = new \ReflectionClass(self::class);
-      $constants = $class->getConstants();
-      $permissions = Arr::where($constants, function ($value, $key) {
-        return Str::startsWith($key, 'PERMISSION_');
-      });
-
-      return array_values($permissions);
-    } catch (\ReflectionException $exception) {
-      return [];
-    }
-  }
-
-  public static function menuPermissions(): array
-  {
-    try {
-      $class = new \ReflectionClass(self::class);
-      $constants = $class->getConstants();
-      $permissions = Arr::where($constants, function ($value, $key) {
-        return Str::startsWith($key, 'PERMISSION_VIEW_MENU_');
-      });
-
-      return array_values($permissions);
-    } catch (\ReflectionException $exception) {
-      return [];
-    }
-  }
-
   /**
    * @return array
    */
-  public static function roles(): array
+  public static function getRoles(): array
   {
     try {
       $class = new \ReflectionClass(self::class);

@@ -85,6 +85,13 @@ class CoreServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../database/database.sqlite' => database_path('database.sqlite'),
             ], 'Core-databases');
+            $this->publishes([
+                __DIR__ . '/../resources/views' => resource_path('views/vendor/core'),
+            ], 'Core-views');
+            $this->publishes([
+                __DIR__ . '/../database/seeders/RoleAndPermissionSeeder.php' => database_path('seeders/RoleAndPermissionSeeder.php'),
+                __DIR__ . '/../database/seeders/MenuSeeder.php' => database_path('seeders/MenuSeeder.php'),
+            ], 'Core-seeders');
 
             $this->commands([
                 Console\InstallCommand::class,

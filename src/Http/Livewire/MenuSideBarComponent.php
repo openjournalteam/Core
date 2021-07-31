@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace OpenJournalTeam\Core\Http\Livewire;
 
 use Illuminate\Support\Facades\Cache;
@@ -11,7 +9,7 @@ use OpenJournalTeam\Core\Models\Menu;
 class MenuSideBarComponent extends Component
 {
   public $menus;
-  public $hookMenu;
+  public $hookMenu = [];
 
   protected $listeners = ['refreshMenu' => '$refresh'];
 

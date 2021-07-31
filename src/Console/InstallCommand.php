@@ -11,17 +11,17 @@ class InstallCommand extends Command
     /**
      * The name and signature of the console command.
      */
-    protected string $signature = 'core:install';
+    protected $signature = 'core:install';
 
     /**
      * The console command description.
      */
-    protected string $description = 'Install all of the Core resources';
+    protected $description = 'Install all of the Core resources';
 
     /**
      * Execute the console command.
      */
-    public function handle(): void
+    public function handle()
     {
         $this->comment('Publishing Core Service Provider...');
         $this->callSilent('vendor:publish', ['--tag' => 'Core-provider']);
@@ -34,6 +34,13 @@ class InstallCommand extends Command
 
         $this->comment('Publishing Core Databases...');
         $this->callSilent('vendor:publish', ['--tag' => 'Core-databases']);
+
+        $this->comment('Publishing Core Seeders...');
+        $this->callSilent('vendor:publish', ['--tag' => 'Core-seeders']);
+
+        $this->comment('Seeding Database...');
+        $this->callSilent('db:seed', ['--class' => 'RolesAndPermissionSeeder']);
+        $this->callSilent('db:seed', ['--class' => 'MenuSeeder']);
 
         $this->info('Core scaffolding installed successfully.');
     }

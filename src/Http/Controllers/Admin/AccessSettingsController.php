@@ -16,6 +16,7 @@ class AccessSettingsController extends AdminController
 {
     public function index()
     {
+
         add_script('vendor/core/js/pages/settings/access.js');
 
         return render('core::pages.settings.access.index');
