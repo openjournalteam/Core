@@ -32,6 +32,8 @@ return [
     |
     */
 
+  'title' => env('CORE_TITLE', 'Panel'),
+
   'path' => env('CORE_PATH', 'panel'),
 
   'scripts' => [
@@ -56,7 +58,11 @@ return [
       'defer' => false
     ],
     [
-      'src' => 'vendor/core/js/select2.init.js',
+      'src' => 'vendor/core/libs/datatables/responsive/js/dataTables.responsive.min.js',
+      'defer' => false
+    ],
+    [
+      'src' => 'vendor/core/libs/dropzone/dropzone.js',
       'defer' => false
     ],
     [
@@ -80,9 +86,14 @@ return [
       'defer' => false
     ],
     [
-      'src' => 'vendor/core/libs/datatables/responsive/js/dataTables.responsive.min.js',
+      'src' => 'vendor/core/js/dropzones.js',
       'defer' => false
     ],
+    [
+      'src' => 'vendor/core/js/select2.js',
+      'defer' => false
+    ]
+
   ],
 
   'styles' => [
