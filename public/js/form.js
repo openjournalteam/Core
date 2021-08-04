@@ -92,12 +92,13 @@ var OJTForm = function () {
         let xhr = submit.data('jqxhr');
 
         xhr.done(function (response) {
-          if (typeof OJTDatatables !== 'undefined') {
-            OJTDatatables.reload();
-          }
+          if (typeof OJTDatatables !== 'undefined') OJTDatatables.reload();
 
-          if (Livewire) {
-            Livewire.emit('refresh');
+          if (Livewire) Livewire.emit('refresh');
+
+          let dropzoneElement = $(form).find('.dropzones');
+          if (dropzoneElement.length > 0) {
+            Dropzone.forElement(dropzoneElement[0]).emit("resetFiles");
           }
 
           Toast.fire({
@@ -134,8 +135,57 @@ var OJTForm = function () {
 
 
     $.each(json, function (key, value) {
+      if (key == 'attachment') {
+        let dropzoneElement = $(form).find('.dropzones');
+        if (dropzoneElement.length == 0) return;
+
+        let dz = Dropzone.forElement(dropzoneElement[0]);
+        let acceptMimeTypeImage = [
+          'image/jpeg',
+          'image/png',
+          'image/gif',
+          'image/bmp',
+          'image/tiff',
+          'image/webp',
+          'image/vnd.adobe.photoshop',
+          'image/x-icon',
+        ]
+        value.forEach(function (media) {
+          let mockFile = {
+            uuid: media.uuid,
+            name: media.name,
+            size: media.size,
+            mimeType: media.mime_type,
+            accepted: true
+          }
+
+
+          dz.displayExistingFile(mockFile, media.url);
+
+          let dom = $(mockFile.previewElement)
+
+
+          if (!acceptMimeTypeImage.includes(media.mime_type)) {
+            // dom.find('thumbnail').src = '';
+            // dom.find('thumbnail').hide();
+            dom.find('[data-dz-thumbnail]').remove();
+
+          }
+          dom.addClass('dz-success');
+          dom.addClass('dz-complete');
+          dom.find(".progress").hide();
+          dz.files.push(mockFile);
+        });
+
+        if (dz.options.maxFiles != null && dz.files.length >= dz.options.maxFiles) {
+          dropzoneElement.find('.fileinput-button').hide();
+        }
+      }
+
+
       var input = form.find(`input[name^="${key}"]`);
       var select = form.find(`select[name^="${key}"]`);
+
 
       if (select.data('control') == 'select2ajax') {
 
@@ -164,6 +214,8 @@ var OJTForm = function () {
       } else {
         input.val(value);
       }
+
+
 
     });
   }
@@ -208,6 +260,15 @@ var OJTForm = function () {
       form.find('.invalid-feedback').remove();
       form.find("input[name='id'][type='hidden']").removeAttr('value')
       form.find("select[data-control='select2ajax']").empty();
+
+
+      let dropzoneElement = form.find('.dropzones');
+      dropzoneElement.find('.fileinput-button').show();
+
+
+      if (dropzoneElement.length > 0) {
+        Dropzone.forElement(dropzoneElement[0]).emit("resetFiles");
+      }
     })
   }
 
@@ -217,6 +278,7 @@ var OJTForm = function () {
 
       let url = $(this).attr("href") ?? $(this).data("url");
       let callback = $(this).attr("callback");
+      console.log(callback);
       if (typeof url === 'undefined') {
         console.log('Attribute href or data-url not found');
       }
