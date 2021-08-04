@@ -125,7 +125,7 @@ var OJTForm = function () {
   }
 
   var initFormValidations = function () {
-    $('.ajax_form').each(function () {
+    $('.ajax_form, [data-control="form"]').each(function () {
       initFormValidation(this);
     })
   }
