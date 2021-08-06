@@ -38,17 +38,35 @@
 }
 
 
-.dropzone-template {
+/* .dropzone-template {
     background-color: #595E68;
     color: white;
-}
+} */
 
-.dropzone-template.dz-success {
+/* .dropzone-template.dz-success {
     background-color: #2fb344 !important;
 }
 
 .dropzone-template.dz-error {
     background-color: #d9534f !important;
+} */
+
+.dropzone-template.dz-success .dz-success-mark {
+    display: block;
+}
+
+.dropzone-template.dz-error .dz-error-mark {
+    display: block;
+}
+
+.dropzone-template .dz-success-mark {
+    color: green;
+    display: none;
+}
+
+.dropzone-template .dz-error-mark {
+    color: red;
+    display: none;
 }
 
 .dropzone-template .name {

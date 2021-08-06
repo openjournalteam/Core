@@ -2,6 +2,7 @@
 
 namespace OpenJournalTeam\Core\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Illuminate\Http\UploadedFile;
@@ -32,8 +33,11 @@ class AttachmentController extends BaseController
    * @throws UploadMissingFileException
    *
    */
-  public function upload(FileReceiver $receiver)
+  public function upload(Request $request, FileReceiver $receiver)
   {
+    $request->validate(['file' => 'required|file|max:' . self::ALLOWED_MAX_SIZE . '|mimes:' . self::ALLOWED_FILE]);
+
+
     // check if the upload is success, throw exception or return response you need
     if ($receiver->isUploaded() === false) {
       throw new UploadMissingFileException();
