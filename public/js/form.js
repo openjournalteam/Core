@@ -248,7 +248,7 @@ var OJTForm = function () {
     $('.modal').on('hidden.bs.modal', function (e) {
       let modal = $(this);
 
-      let form = modal.find('.ajax_form');
+      let form = modal.find('.ajax_form, [data-control="form"]');
 
       if (form.length == 0) {
         return;
