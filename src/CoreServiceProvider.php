@@ -9,6 +9,7 @@ include_once 'Helpers/helpers.php';
 use App\Http\Kernel;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use OpenJournalTeam\Core\Providers\EventServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -66,6 +67,7 @@ class CoreServiceProvider extends ServiceProvider
     {
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(LiveWireComponentServiceProvider::class);
+        $this->app->register(EventServiceProvider::class);
         $this->app->register(\Shohel\Pluggable\PluggableServiceProvider::class);
     }
 

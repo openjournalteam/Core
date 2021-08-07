@@ -10,6 +10,9 @@
             </a>
         </h1>
         <div class="navbar-nav flex-row d-lg-none">
+            @livewire('core:notifications-dropdown', ['class' => 'nav-item d-none d-sm-flex me-3', 'notifications' =>
+            $unreadNotifications])
+            @livewire('core:user-dropdown', ['user'=> $user])
         </div>
         @livewire('core:menu:sidebar')
     </div>

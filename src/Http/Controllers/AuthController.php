@@ -65,7 +65,7 @@ class AuthController extends BaseController
     /**
      * Log the user out of the application.
      */
-    public function logout(Request $request): \Illuminate\Http\Response
+    public function logout(Request $request)
     {
         Auth::logout();
 

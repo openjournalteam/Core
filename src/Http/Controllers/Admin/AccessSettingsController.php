@@ -2,10 +2,12 @@
 
 namespace OpenJournalTeam\Core\Http\Controllers\Admin;
 
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use OpenJournalTeam\Core\Auth;
+use OpenJournalTeam\Core\Events\NewCustomer;
 use OpenJournalTeam\Core\Http\Resources\JsonResponse;
 use OpenJournalTeam\Core\Models\Role;
 use OpenJournalTeam\Core\Models\User;
@@ -136,6 +138,7 @@ class AccessSettingsController extends AdminController
         $data = [
             'msg' => !$request->input('id') ? 'Success Adding User ..' : 'Success Edit User ..',
         ];
+
 
         return response()->json(new JsonResponse($data));
     }

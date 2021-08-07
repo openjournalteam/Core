@@ -9,7 +9,7 @@
             <li class="nav-item {{ $hasChilds ? 'dropdown' : '' }}">
                 <a class="nav-link {{ $hasChilds ? 'dropdown-toggle' : '' }}" href="{{ $hasChilds ? '#' : $route }}"
                     {{ $hasChilds ? 'data-bs-toggle=dropdown' : '' }} role="button" aria-expanded="false">
-                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                    <span class="nav-link-icon d-inline-block">
                         @if (isset($menu->icon))
                             {!! $menu->icon !!}
                         @endif
@@ -25,7 +25,7 @@
                                 @foreach ($menu->childs as $sub)
                                     <a class="dropdown-item" href="{{ route($sub->route) }}">
                                         @if (isset($sub->icon))
-                                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                            <span class="nav-link-icon d-inline-block">
                                                 {!! $sub->icon !!}
                                             </span>
                                         @endif
@@ -46,7 +46,7 @@
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ route($hm['route']) }}">
-                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                    <span class="nav-link-icon d-none d-inline-block">
                         {!! $hm['icon'] !!}
                     </span>
                     {{ $hm['name'] }}
@@ -58,8 +58,8 @@
         <ul class="navbar-nav">
             {{ apply_filters('core::template::partials::aside::ul', false) }}
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('core.logout') }}">
-                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <a class="nav-link" >
+                    <span class="nav-link-icon d-inline-block">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
                             stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
                             stroke-linejoin="round">
