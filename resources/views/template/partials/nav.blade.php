@@ -1,4 +1,4 @@
-<nav class="navbar d-none d-lg-flex navbar-light bg-light">
+<nav class="navbar d-none d-lg-flex navbar-light">
     <div class="container-fluid">
         <div></div>
         <div></div>

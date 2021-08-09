@@ -1,7 +1,7 @@
 <div class="nav-item dropdown">
     <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
         <span class="avatar avatar-sm">{{ substr($user->name, 0, 1) }}</span>
-        <div class="d-none d-xl-block ps-2">
+        <div class="d-none d-lg-block ps-2">
             <div>{{ $user->name }}</div>
             <div class="mt-1 small text-muted">{{ $user->email }}</div>
         </div>
