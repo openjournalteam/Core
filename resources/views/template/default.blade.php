@@ -2,8 +2,6 @@
 <html lang="en">
 @include('core::template.partials.header')
 
-
-
 <body class="antialiased">
 
     @auth

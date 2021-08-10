@@ -12,7 +12,7 @@
             <span class="badge bg-red"></span>
         @endif
     </a>
-    <div class="dropdown-menu dropdown-menu-end dropdown-menu-card dropdown-menu-arrow" wire:ignore style="width:400px">
+    <div class="dropdown-menu dropdown-menu-end dropdown-menu-card dropdown-menu-arrow" style="width:400px">
         <div class="card">
             <div class="card-header text-center" style="padding: 8px 12px;">
                 <h3 class="card-title">Notifications</h3>

@@ -23,5 +23,26 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    // Enable pusher logging - don't include this in production
+
+    @auth
+        @if (config('app.debug'))
+            Pusher.logToConsole = true;
+        @endif
+        var pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
+        cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}'
+        });
+    @endauth
+
+    // Example of a channel subscription
+    // var channel = pusher.subscribe('new-customer');
+    // channel.bind('OpenJournalTeam\\Master\\Events\\NewCustomer', function(data) {
+    //     Toast.fire({
+    //         icon: 'info',
+    //         title: 'New Customer',
+    //         text: `New Customer ${data.customer.name}`
+    //     })
+    // });
 </script>
 @yield('scripts')
