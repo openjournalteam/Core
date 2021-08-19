@@ -26,7 +26,7 @@ class AccessSettingsController extends AdminController
 
     public function user_list(Request $request)
     {
-        $data = User::with('roles');
+        $data = User::query()->with('roles');
         return DataTables::of($data)
             ->addIndexColumn()
             ->editColumn('created_at', function ($user) {
