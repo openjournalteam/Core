@@ -1,43 +1,45 @@
 <div class="collapse navbar-collapse" id="navbar-menu">
     <ul class="navbar-nav pt-lg-3">
         @foreach ($menus as $menu)
-            @hasanyrole($menu->roles())
-            @php
-                $hasChilds = $menu->childs->count() > 0 ? true : false;
-                $route = $menu->route ? route($menu->route) : '#';
-            @endphp
-            <li class="nav-item {{ $hasChilds ? 'dropdown' : '' }}">
-                <a class="nav-link {{ $hasChilds ? 'dropdown-toggle' : '' }}" href="{{ $hasChilds ? '#' : $route }}"
-                    {{ $hasChilds ? 'data-bs-toggle=dropdown' : '' }} role="button" aria-expanded="false">
-                    <span class="nav-link-icon d-inline-block">
-                        @if (isset($menu->icon))
-                            {!! $menu->icon !!}
-                        @endif
-                    </span>
-                    <span class="nav-link-title">
-                        {{ $menu->name }}
-                    </span>
-                </a>
-                @if ($hasChilds)
-                    <div class="dropdown-menu">
-                        <div class="dropdown-menu-columns">
-                            <div class="dropdown-menu-column">
-                                @foreach ($menu->childs as $sub)
-                                    <a class="dropdown-item" href="{{ route($sub->route) }}">
-                                        @if (isset($sub->icon))
-                                            <span class="nav-link-icon d-inline-block">
-                                                {!! $sub->icon !!}
-                                            </span>
-                                        @endif
-                                        {{ $sub->name }}
-                                    </a>
-                                @endforeach
+            @can($menu->permission)
+                @php
+                    $hasChilds = $menu->childs->count() > 0 ? true : false;
+                    $route = $menu->route ? route($menu->route) : '#';
+                @endphp
+                <li class="nav-item {{ $hasChilds ? 'dropdown' : '' }}">
+                    <a class="nav-link {{ $hasChilds ? 'dropdown-toggle' : '' }}" href="{{ $hasChilds ? '#' : $route }}"
+                        {{ $hasChilds ? 'data-bs-toggle=dropdown' : '' }} role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-inline-block">
+                            @if (isset($menu->icon))
+                                {!! $menu->icon !!}
+                            @endif
+                        </span>
+                        <span class="nav-link-title">
+                            {{ $menu->name }}
+                        </span>
+                    </a>
+                    @if ($hasChilds)
+                        <div class="dropdown-menu">
+                            <div class="dropdown-menu-columns">
+                                <div class="dropdown-menu-column">
+                                    @foreach ($menu->childs as $sub)
+                                        @can($sub->permission)
+                                            <a class="dropdown-item" href="{{ route($sub->route) }}">
+                                                @if (isset($sub->icon))
+                                                    <span class="nav-link-icon d-inline-block">
+                                                        {!! $sub->icon !!}
+                                                    </span>
+                                                @endif
+                                                {{ $sub->name }}
+                                            </a>
+                                        @endcan
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endif
-            </li>
-            @endhasanyrole
+                    @endif
+                </li>
+            @endcan
 
         @endforeach
 

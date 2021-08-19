@@ -40,7 +40,7 @@ To
 Edit AuthServiceProvider.php and add the following lines on the boot method:
 ```php
     Gate::before(function ($user, $ability) {
-            return $user->hasRole(Auth::ROLE_ADMIN) ? true : null;
+            return $user->hasRole(Auth::ROLE_SUPER_ADMIN) ? true : null;
     });
 ```
 and import the following namespaces:

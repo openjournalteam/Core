@@ -22,7 +22,7 @@ class CreateMenus extends Migration
             $table->string('order');
             $table->string('route')->nullable();
             $table->string('show')->default(0);
-            $table->string('roles');
+            $table->string('permission');
             $table->timestamps();
         });
     }

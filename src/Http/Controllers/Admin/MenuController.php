@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use OpenJournalTeam\Core\Http\Resources\JsonResponse;
 use OpenJournalTeam\Core\Models\Menu;
-use OpenJournalTeam\Core\Models\Role;
+use OpenJournalTeam\Core\Models\Permission;
 
 class MenuController extends AdminController
 {
@@ -53,6 +53,8 @@ class MenuController extends AdminController
       ], 422);
     }
 
+
+
     $show = $request->input('show') ? 1 : 0;
     $order = $request->input('order') ?: Menu::where('parent_id', $request->input('parent_id', 0))->max('order') + 1;
 
@@ -67,7 +69,7 @@ class MenuController extends AdminController
         'order' => $order,
         'route' => $request->input('route'),
         'show' => $show,
-        'roles' => $request->input('roles', []),
+        'permission' => $request->input('permission'),
       ]
     );
 
@@ -81,7 +83,12 @@ class MenuController extends AdminController
   public function edit(Menu $menu)
   {
     $menu->parent_id = Menu::select(['id', 'name as text'])->where('id', $menu->parent_id)->get();
-    $menu->roles = Role::select(['id', 'name as text'])->whereIn('id', $menu->roles)->get()->makeHidden(['pivot']);
+    if ($menu->permission) {
+      $menu->permission = [[
+        'id' => $menu->permission,
+        'text' => $menu->permission,
+      ]];
+    }
 
     return response()->json($menu);
   }
@@ -118,5 +125,24 @@ class MenuController extends AdminController
   private function clearCache(): void
   {
     Cache::forget('menus');
+  }
+
+  public function permission_options(Request $request)
+  {
+    $search = $request->input('search');
+
+    $model = Permission::orderBy('name')->select(['id', 'name'])->where('name', 'like', '%' . $search . '%')->limit(5)->get();
+
+    $model = $model->map(function ($item) {
+      return [
+        'id' => $item->name,
+        'text' => $item->name,
+      ];
+    });
+
+
+    return response()->json([
+      'results' => $model,
+    ]);
   }
 }

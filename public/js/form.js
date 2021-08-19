@@ -164,12 +164,8 @@ var OJTForm = function () {
 
           let dom = $(mockFile.previewElement)
 
-
           if (!acceptMimeTypeImage.includes(media.mime_type)) {
-            // dom.find('thumbnail').src = '';
-            // dom.find('thumbnail').hide();
             dom.find('[data-dz-thumbnail]').remove();
-
           }
           dom.addClass('dz-success');
           dom.addClass('dz-complete');
@@ -182,14 +178,13 @@ var OJTForm = function () {
         }
       }
 
-
       var input = form.find(`input[name^="${key}"]`);
       var select = form.find(`select[name^="${key}"]`);
-
 
       if (select.data('control') == 'select2ajax') {
 
         $.each(value, function (key2, data) {
+          console.log(data)
           let newOption = new Option(data.text, data.id, false, true);
           // Append it to the select
           select.append(newOption).trigger('change');
@@ -367,9 +362,6 @@ var OJTForm = function () {
       let random_string = OJTApp.generateToken(20);
       $(id).find("input.generatedToken").val(random_string);
       $(id).find("input[name='token']").val(random_string);
-      // $(id).find("input.fileupload").attr("table_token", random_string);
-      // $(id).find("input.multi_uploader").attr("table_token", random_string);
-      // $(id).find(".single_uploader").attr("data-token", random_string);
     })
   }
 

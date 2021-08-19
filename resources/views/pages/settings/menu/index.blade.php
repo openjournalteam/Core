@@ -42,11 +42,11 @@
                         <input name="route" type="text" class="form-control" placeholder="Enter Route">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Roles</label>
-                        <select name="roles[]" class="form-select form-select-solid" data-control="select2ajax"
+                        <label class="form-label">Permission</label>
+                        <select name="permission" class="form-select form-select-solid" data-control="select2ajax"
                             data-width="100%" data-dropdown-parent="#modal-form-menu"
-                            data-placeholder="Select an option" data-allow-clear="true"
-                            data-ajax--url="{{ route('core.admin.role.options') }}" data-ajax--delay="700" multiple>
+                            data-placeholder="Select permission" data-allow-clear="true"
+                            data-ajax--url="{{ route('core.admin.menu.permission_options') }}" data-ajax--delay="700">
                         </select>
                     </div>
                     <div class="mb-3 row align-items-center">
@@ -104,11 +104,11 @@
                         <input name="route" type="text" class="form-control" placeholder="Enter Route">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Roles</label>
-                        <select name="roles[]" class="form-select form-select-solid" data-control="select2ajax"
+                        <label class="form-label">Permission</label>
+                        <select name="permission" class="form-select form-select-solid" data-control="select2ajax"
                             data-width="100%" data-dropdown-parent="#modal-form-submenu"
-                            data-placeholder="Select an option" data-allow-clear="true"
-                            data-ajax--url="{{ route('core.admin.role.options') }}" data-ajax--delay="700" multiple>
+                            data-placeholder="Select permission" data-allow-clear="true"
+                            data-ajax--url="{{ route('core.admin.menu.permission_options') }}" data-ajax--delay="700">
                         </select>
                     </div>
                     <div class="mb-3 row align-items-center">

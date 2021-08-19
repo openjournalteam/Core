@@ -24,7 +24,7 @@ class AccessSettingsController extends AdminController
         return render('core::pages.settings.access.index');
     }
 
-    public function user_list()
+    public function user_list(Request $request)
     {
         $data = User::with('roles');
         return DataTables::of($data)
@@ -397,10 +397,10 @@ class AccessSettingsController extends AdminController
     {
         $search = $request->input('search');
 
-        $roles = Permission::orderBy('name')->select(['id', 'name as text'])->where('name', 'like', '%' . $search . '%')->limit(5)->get();
+        $model = Permission::orderBy('name')->select(['id', 'name as text'])->where('name', 'like', '%' . $search . '%')->limit(5)->get();
 
         return response()->json([
-            'results' => $roles,
+            'results' => $model,
         ]);
     }
 }

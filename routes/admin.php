@@ -54,4 +54,5 @@ Route::group(['prefix' => 'menu', 'as' => 'menu.'], function (): void {
     Route::get('/edit/{menu:token}', 'MenuController@edit')->name('edit');
     Route::post('/sort', 'MenuController@sort')->name('sort');
     Route::get('/options', 'MenuController@options')->name('options');
+    Route::get('/permission_options', 'MenuController@permission_options')->name('permission_options');
 });

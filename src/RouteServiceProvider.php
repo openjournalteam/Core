@@ -58,7 +58,7 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapAdminRoutes(): void
     {
-        $middleware = array_merge(config('core.middleware'), [Authenticate::class, 'role:' . Auth::ROLE_ADMIN]);
+        $middleware = array_merge(config('core.middleware'), [Authenticate::class, 'role:' . Auth::ROLE_SUPER_ADMIN]);
 
         Route::group([
             'namespace' => 'OpenJournalTeam\Core\Http\Controllers\Admin',

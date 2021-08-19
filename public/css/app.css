@@ -85,3 +85,7 @@
     width: auto;
     max-height: 200px;
 }
+
+.pagination {
+    flex-wrap: wrap;
+}
