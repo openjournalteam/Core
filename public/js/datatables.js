@@ -13,7 +13,7 @@ var OJTDatatables = function () {
 
     let ajax = data?.ajax ?? dom.data('ajax');
 
-    if (!ajax) return;
+    if (!ajax) return dom.dataTable();
 
 
     let columns = data?.columns ?? [];
@@ -48,6 +48,11 @@ var OJTDatatables = function () {
       columns: columns,
       responsive: true,
       autowidth: false,
+      // language: {
+      //   processing: `<div class="progress progress-sm">
+      //   <div class="progress-bar progress-bar-indeterminate"></div>
+      // </div>`,
+      // }
     });
   }
 
