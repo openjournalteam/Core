@@ -134,7 +134,14 @@ var OJTForm = function () {
     if (!(form instanceof jQuery)) form = $(form);
 
 
+
     $.each(json, function (key, value) {
+      if (!value) return;
+      // var input = form.find(`[name^="${key}"]`);
+      var input = form.find(`[name="${key}"]`);
+      input = input.length > 0 ? input : form.find(`[name="${key}[]"]`);
+
+
       if (key == 'attachment') {
         let dropzoneElement = $(form).find('.dropzones');
         if (dropzoneElement.length == 0) return;
@@ -173,45 +180,53 @@ var OJTForm = function () {
           dz.files.push(mockFile);
         });
 
+
         if (dz.options.maxFiles != null && dz.files.length >= dz.options.maxFiles) {
           dropzoneElement.find('.fileinput-button').hide();
         }
+
+        return;
       }
 
-      var input = form.find(`input[name^="${key}"]`);
-      var select = form.find(`select[name^="${key}"]`);
 
-      if (select.data('control') == 'select2ajax') {
-
+      if (input.data('control') == 'select2ajax') {
         $.each(value, function (key2, data) {
-          console.log(data)
           let newOption = new Option(data.text, data.id, false, true);
           // Append it to the select
-          select.append(newOption).trigger('change');
+          input.append(newOption).trigger('change');
         })
+        return;
+      }
 
-      } else {
-        select.val(value).trigger('click');
+      if (input.prop("tagName") == 'SELECT') {
+        input.val(value).trigger('change');
+        return;
       }
 
 
       if (OJTApp.hasJsonStructure(value)) {
         let json2 = OJTApp.safeJsonParse(value);
         assignFormInputByJsonKey(form, json2);
+        return;
       }
 
       if (input.attr('type') == 'checkbox') {
-
-        // input.prop("checked", !!value);
-        // console.log(!!value);
-
-        // return;
-      } else {
-        input.val(value);
+        // Still figuring out how checkbox generally works
+        return;
       }
 
+      // For intl-tel-input
+      if (input.prev().hasClass('iti') && input.attr('id').includes('country') && value) {
+        if (value) input.val(value);
+        if (!intlTelInputGlobals) return;
 
-
+        let dom = document.querySelector('#' + input.attr('id').replace('_country', ''));
+        let iti = intlTelInputGlobals.getInstance(dom);
+        iti.setCountry(value);
+        return;
+      }
+      input.val(value);
+      return;
     });
   }
 
@@ -262,7 +277,8 @@ var OJTForm = function () {
 
 
       if (dropzoneElement.length > 0) {
-        Dropzone.forElement(dropzoneElement[0]).emit("resetFiles");
+        let dz = Dropzone.forElement(dropzoneElement[0]);
+        dz.emit("resetFiles");
       }
     })
   }
@@ -273,7 +289,6 @@ var OJTForm = function () {
 
       let url = $(this).attr("href") ?? $(this).data("url");
       let callback = $(this).attr("callback");
-      console.log(callback);
       if (typeof url === 'undefined') {
         console.log('Attribute href or data-url not found');
       }
