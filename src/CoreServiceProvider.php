@@ -10,6 +10,8 @@ use App\Http\Kernel;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use OpenJournalTeam\Core\Providers\EventServiceProvider;
+use Spatie\Crypto\Rsa\KeyPair;
+
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -31,6 +33,7 @@ class CoreServiceProvider extends ServiceProvider
 
         $this->registerMiddlewareAlias();
         $this->registerBladeDirective();
+        $this->registerKeyManager();
     }
 
     /**
@@ -99,6 +102,24 @@ class CoreServiceProvider extends ServiceProvider
                 Console\InstallCommand::class,
                 Console\PublishCommand::class,
             ]);
+        }
+    }
+
+    // Spatie key
+    private function registerKeyManager(): void
+    {
+        $keyLocation = $_SERVER['DOCUMENT_ROOT'] . '/../../../secret';
+
+        if (!is_dir($keyLocation)) {
+            mkdir($keyLocation, 0755);
+        }
+
+        // create public and private key
+        $privateKey = $keyLocation . '/private.pem';
+        $publicKey = $keyLocation . '/public.pub';
+
+        if (!file_exists($privateKey) || !file_exists($publicKey)) {
+            (new KeyPair())->generate($privateKey, $publicKey);
         }
     }
 
