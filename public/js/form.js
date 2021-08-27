@@ -92,6 +92,12 @@ var OJTForm = (function () {
         let submit = $(form).ajaxSubmit(ajaxOptions);
         let xhr = submit.data("jqxhr");
 
+        var payLoad = {};
+
+        $.each($(form).serializeArray(), function (i, field) {
+          payLoad[field.name] = field.value;
+        });
+
         xhr.done(function (response) {
           if (typeof OJTDatatables !== "undefined") OJTDatatables.reload();
 
@@ -117,7 +123,7 @@ var OJTForm = (function () {
           if (typeof callback !== typeof undefined && callback !== false) {
             if (callback.includes(".")) {
               let callBackArray = callback.split(".");
-              window[callBackArray[0]][callBackArray[1]](form);
+              window[callBackArray[0]][callBackArray[1]](form, payLoad);
             } else {
               window[callback]();
             }
