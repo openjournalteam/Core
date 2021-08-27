@@ -190,6 +190,13 @@ var OJTForm = function () {
 
 
       if (input.data('control') == 'select2ajax') {
+        if (typeof value == 'object') {
+          let newOption = new Option(value.text, value.id, false, true);
+          // Append it to the select
+          input.append(newOption).trigger('change');
+          return;
+        }
+
         $.each(value, function (key2, data) {
           let newOption = new Option(data.text, data.id, false, true);
           // Append it to the select
@@ -284,7 +291,7 @@ var OJTForm = function () {
   }
 
   var initDeleteConfirm = function () {
-    $(document).on("click", ".delete_confirm", function (e) {
+    $(document).on("click", ".delete_confirm, [data-control='delete']", function (e) {
       e.preventDefault();
 
       let url = $(this).attr("href") ?? $(this).data("url");
