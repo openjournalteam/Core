@@ -28,21 +28,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapGuestRoutes();
         $this->mapUserRoutes();
         $this->mapAdminRoutes();
-        $this->mapApiRoutes();
-    }
-
-    protected function mapApiRoutes()
-    {
-        $middleware = array_merge(config('core.middleware', []), [Authenticate::class]);
-
-        Route::group([
-            'namespace'     => 'OpenJournalTeam\Core\Http\Controllers\Api',
-            'prefix'        => config('core.path') . '/api/v1',
-            'as'            => 'api.',
-            'middleware'    => $middleware,
-        ], function () {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
-        });
     }
 
     protected function mapGuestRoutes(): void

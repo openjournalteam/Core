@@ -6,6 +6,9 @@ use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use OpenJournalTeam\Core\Http\Resources\JsonResponse;
 use Illuminate\Support\Facades\Http;
+use OpenJournalTeam\Core\Classes\KeyManager;
+use OpenJournalTeam\Master\Models\Customer;
+use OpenJournalTeam\Master\Models\CustomerHosting;
 
 /**
  * return json
@@ -18,23 +21,29 @@ use Illuminate\Support\Facades\Http;
  */
 class PanelController extends Controller
 {
-    public function registerCustomerUser(Request $request)
+    public function registerCustomerUser(Request $request, Customer $customer, CustomerHosting $customerHosting)
     {
 
+        if ($request->ajax()) {
+            $password   = KeyManager::decryptWithPublicKey($customer->password);
+            $url        = sprintf("http://%s:9494/register", $customerHosting->server->ip);
 
-        $url = "http://127.0.0.1:9494/register";
+            $payLoad = [
+                'name'          => $customer->name,
+                'email'         => $customer->email,
+                'password'      => $password,
+                'dir'           => $customerHosting->directory,
+                'domain'        => $customerHosting->domain_name,
+                'storage_limit' => 1
+            ];
 
-        $payLoad = [
-            'name'          => '',
-            'email'         => '',
-            'password'      => '',
-            'dir'           => '',
-            'domain'        => '',
-            'storage_limit' => ''
-        ];
+            $doRequest = Http::post($url, $payLoad);
+            $response  = $doRequest->object();
 
-        $doRequest = Http::post($url, $payLoad);
-        $response  = $doRequest->object();
-        dd($response);
+            $json['error'] = $response->error;
+            $json['msg']   = $response->msg;
+
+            return response()->json(new JsonResponse($json));
+        }
     }
 }
