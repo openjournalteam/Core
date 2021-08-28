@@ -12,6 +12,14 @@
     font-size: .875rem !important;
 }
 
+.select2-selection__rendered {
+    font-size: .875rem !important;
+}
+
+.select2-selection__placeholder {
+    color: #A7ABB1 !important;
+}
+
 .btn-circle {
     width: 30px;
     height: 30px;
