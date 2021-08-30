@@ -28,7 +28,7 @@
 
     @auth
         @if (config('app.debug'))
-            Pusher.logToConsole = true;
+            // Pusher.logToConsole = false;
         @endif
         var pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
         cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}'
