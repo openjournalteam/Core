@@ -4,6 +4,13 @@
 
 var OJTForm = (function () {
   // Private functions
+  var setupHeader = function () {
+    $.ajaxSetup({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+      },
+    });
+  };
   var ajaxError = function (data, statusText, xhr, form) {
     let json = data.responseJSON;
 
@@ -196,6 +203,13 @@ var OJTForm = (function () {
       }
 
       if (input.data("control") == "select2ajax") {
+        if (typeof value == "object") {
+          let newOption = new Option(value.text, value.id, false, true);
+          // Append it to the select
+          input.append(newOption).trigger("change");
+          return;
+        }
+
         $.each(value, function (key2, data) {
           let newOption = new Option(data.text, data.id, false, true);
           // Append it to the select
@@ -294,17 +308,21 @@ var OJTForm = (function () {
   };
 
   var initDeleteConfirm = function () {
-    $(document).on("click", ".delete_confirm, [data-control='delete']", function (e) {
-      e.preventDefault();
+    $(document).on(
+      "click",
+      ".delete_confirm, [data-control='delete']",
+      function (e) {
+        e.preventDefault();
 
-      let url = $(this).attr("href") ?? $(this).data("url");
-      let callback = $(this).attr("callback");
-      if (typeof url === "undefined") {
-        console.log("Attribute href or data-url not found");
+        let url = $(this).attr("href") ?? $(this).data("url");
+        let callback = $(this).attr("callback");
+        if (typeof url === "undefined") {
+          console.log("Attribute href or data-url not found");
+        }
+
+        deleteConfirm(url, callback);
       }
-
-      deleteConfirm(url, callback);
-    });
+    );
   };
 
   var deleteConfirm = function (url, callback = false) {
@@ -381,7 +399,7 @@ var OJTForm = (function () {
   };
 
   var initGenerateToken = function () {
-    $(document).on('click', '.generate_token', function (e) {
+    $(document).on("click", ".generate_token", function (e) {
       e.preventDefault();
       let id = $(this).attr("data-bs-target");
       let random_string = OJTApp.generateToken(20);
@@ -393,6 +411,7 @@ var OJTForm = (function () {
   return {
     // public functions
     init: function () {
+      setupHeader();
       initFormValidations();
       initModalEditForm();
       initDeleteConfirm();
