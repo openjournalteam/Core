@@ -32,7 +32,8 @@
     },
     "autoload": {
         "psr-4": {
-            "OpenJournalTeam\\Core\\": "src"
+            "OpenJournalTeam\\Core\\": "src",
+            "OpenJournalTeam\\Core\\src": "Classes"
         }
     },
     "autoload-dev": {

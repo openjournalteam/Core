@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use OpenJournalTeam\Core\Providers\EventServiceProvider;
 
+
 class CoreServiceProvider extends ServiceProvider
 {
     /**
