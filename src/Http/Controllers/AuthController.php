@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use OpenJournalTeam\Core\Auth as CoreAuth;
 use OpenJournalTeam\Core\Http\Resources\JsonResponse;
-use OpenJournalTeam\Core\Models\Role;
 use OpenJournalTeam\Core\Models\User;
 
 class AuthController extends BaseController

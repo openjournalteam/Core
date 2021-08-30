@@ -84,10 +84,10 @@ class MenuController extends AdminController
   {
     $menu->parent_id = Menu::select(['id', 'name as text'])->where('id', $menu->parent_id)->get();
     if ($menu->permission) {
-      $menu->permission = [[
+      $menu->permission = [
         'id' => $menu->permission,
         'text' => $menu->permission,
-      ]];
+      ];
     }
 
     return response()->json($menu);
@@ -110,11 +110,13 @@ class MenuController extends AdminController
 
     $this->clearCache();
 
-    foreach ($ids as $key => $id) {
-      $menu = Menu::find($id);
-      $menu->order = $key + 1;
-      $menu->save();
+    $menus = Menu::whereIn('id', $ids)->get();
+
+    foreach ($menus as $key => $menu) {
+      $menus[$key]->order = array_search($menu->id, $ids) + 1;
     }
+
+    Menu::upsert($menus->toArray(), ['id'], ['order']);
 
     return response()->json([
       'error' => 0,

@@ -45,7 +45,6 @@
 
 
         @foreach ($hookMenu as $hm)
-
             <li class="nav-item">
                 <a class="nav-link" href="{{ route($hm['route']) }}">
                     <span class="nav-link-icon d-inline-block">
