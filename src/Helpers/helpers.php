@@ -39,3 +39,23 @@ if (!function_exists('add_script')) {
         return Core::addScript($src, $defer);
     }
 }
+
+if (!function_exists('response_success')) {
+    function response_success($data = [])
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
+}
+
+if (!function_exists('response_error')) {
+    function response_error($error, $status_code = 500)
+    {
+        return response()->json([
+            'success' => false,
+            'error' => $error
+        ], $status_code);
+    }
+}
