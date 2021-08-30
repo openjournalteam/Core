@@ -13,6 +13,7 @@ final class Auth
   public const ROLE_ADMIN = 'Admin';
   public const ROLE_SUPPORT = 'Support';
   public const ROLE_USER = 'User';
+  public const ROLE_CUSTOMER = 'Customer';
 
   public const PERMISSION_VIEW_MENU_ADMINISTRATION = 'view_menu_administration';
   public const PERMISSION_VIEW_MENU_MENUS = 'view_menu_menus';

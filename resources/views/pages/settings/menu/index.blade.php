@@ -46,7 +46,7 @@
                         <select name="permission" class="form-select form-select-solid" data-control="select2ajax"
                             data-width="100%" data-dropdown-parent="#modal-form-menu"
                             data-placeholder="Select permission" data-allow-clear="true"
-                            data-ajax--url="{{ route('core.admin.menu.permission_options') }}" data-ajax--delay="700">
+                            data-ajax--url="{{ route('core.admin.menu.permission_options') }}" data-ajax--delay="500">
                         </select>
                     </div>
                     <div class="mb-3 row align-items-center">
@@ -108,7 +108,7 @@
                         <select name="permission" class="form-select form-select-solid" data-control="select2ajax"
                             data-width="100%" data-dropdown-parent="#modal-form-submenu"
                             data-placeholder="Select permission" data-allow-clear="true"
-                            data-ajax--url="{{ route('core.admin.menu.permission_options') }}" data-ajax--delay="700">
+                            data-ajax--url="{{ route('core.admin.menu.permission_options') }}" data-ajax--delay="500">
                         </select>
                     </div>
                     <div class="mb-3 row align-items-center">
