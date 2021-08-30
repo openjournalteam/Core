@@ -250,7 +250,9 @@ var OJTForm = function () {
     }
 
     if (typeof json === 'undefined') {
+      // via ajax
       $.get(url, (data) => assignFormInputByJsonKey(modal, data));
+      return;
     }
 
     assignFormInputByJsonKey(modal, json);
@@ -379,12 +381,14 @@ var OJTForm = function () {
   }
 
   var initGenerateToken = function () {
-    $(".generate_token").on("click", function () {
+    $(document).on('click', '.generate_token', function (e) {
+      e.preventDefault();
       let id = $(this).attr("data-bs-target");
       let random_string = OJTApp.generateToken(20);
       $(id).find("input.generatedToken").val(random_string);
       $(id).find("input[name='token']").val(random_string);
-    })
+
+    });
   }
 
 
