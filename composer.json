@@ -13,6 +13,11 @@
             "name": "Rahman Ramsi",
             "email": "rahmanramsi19@gmail.com",
             "role": "Developer"
+        },
+        {
+            "name": "Dede Nugroho",
+            "email": "this.nugroho@gmail.com",
+            "role": "Developer"
         }
     ],
     "require": {
@@ -32,8 +37,7 @@
     },
     "autoload": {
         "psr-4": {
-            "OpenJournalTeam\\Core\\": "src",
-            "OpenJournalTeam\\Core\\src": "Classes"
+            "OpenJournalTeam\\Core\\": "src"
         }
     },
     "autoload-dev": {
