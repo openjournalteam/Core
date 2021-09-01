@@ -4,12 +4,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'plugins', 'as' => 'plugins.'], function (): void {
-    Route::get('/', 'PluginSettingsController@index')->name('index');
-    Route::post('/toggle', 'PluginSettingsController@toggle')->name('toggle');
-    Route::post('/migrate', 'PluginSettingsController@migrate')->name('migrate');
-    Route::post('/delete', 'PluginSettingsController@delete')->name('delete');
-});
 
 Route::group(['prefix' => 'access', 'as' => 'access.'], function (): void {
     Route::get('/', 'AccessSettingsController@index')->name('index');

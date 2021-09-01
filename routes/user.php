@@ -12,3 +12,10 @@ Route::group(['prefix' => 'attachment', 'as' => 'attachment.'], function (): voi
   Route::post('delete/{media:uuid}', 'AttachmentController@delete')->name('delete');
   Route::post('delete_temporary_file/{encryptedFilePath}', 'AttachmentController@delete_temporary')->name('delete_temporary_file');
 });
+
+Route::group(['prefix' => '/list-plugins', 'as' => 'plugins.'], function (): void {
+  Route::get('/', 'PluginSettingsController@index')->name('index');
+  Route::post('/toggle', 'PluginSettingsController@toggle')->name('toggle');
+  Route::post('/migrate', 'PluginSettingsController@migrate')->name('migrate');
+  Route::post('/delete', 'PluginSettingsController@delete')->name('delete');
+});
