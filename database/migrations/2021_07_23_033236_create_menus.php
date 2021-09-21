@@ -18,7 +18,7 @@ class CreateMenus extends Migration
             $table->string('token', 50);
             $table->integer('parent_id')->nullable()->default(0);
             $table->string('name');
-            $table->string('icon')->nullable();
+            $table->text('icon')->nullable();
             $table->string('order');
             $table->string('route')->nullable();
             $table->string('show')->default(0);
