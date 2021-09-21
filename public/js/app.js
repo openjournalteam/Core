@@ -1,10 +1,10 @@
 "use strict";
 // Class definition
 
-var OJTApp = function () {
+var OJTApp = (function () {
   // Private functions
   var initAjaxLoad = function (dom) {
-    let url = dom.attr('url');
+    let url = dom.attr("url");
     $.ajax({
       type: "get",
       url: url,
@@ -12,27 +12,29 @@ var OJTApp = function () {
         dom.html(`<div class="d-flex align-items-center">
         <strong>Loading...</strong>
         <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
-      </div>`)
+      </div>`);
       },
       success: function (response) {
         dom.html(response);
       },
       error: function (ajax, textStatus, errorThrown) {
-        dom.html('<div class="alert alert-warning"> Terjadi kesalahan silahkan hubungi Developer!!! </div>')
+        dom.html(
+          '<div class="alert alert-warning"> Terjadi kesalahan silahkan hubungi Developer!!! </div>'
+        );
       },
     });
-  }
+  };
 
   var initAjaxLoads = function () {
-    $('.ajax_load').each(function () {
+    $(".ajax_load").each(function () {
       initAjaxLoad($(this));
     });
-  }
+  };
 
   return {
     // public functions
     init: function () {
-      initAjaxLoads()
+      initAjaxLoads();
     },
     refreshAjaxLoad: function () {
       initAjaxLoads();
@@ -52,12 +54,11 @@ var OJTApp = function () {
       return this.randomstring(number);
     },
     hasJsonStructure: function (str) {
-      if (typeof str !== 'string') return false;
+      if (typeof str !== "string") return false;
       try {
         const result = JSON.parse(str);
         const type = Object.prototype.toString.call(result);
-        return type === '[object Object]'
-          || type === '[object Array]';
+        return type === "[object Object]" || type === "[object Array]";
       } catch (err) {
         return false;
       }
@@ -69,27 +70,27 @@ var OJTApp = function () {
         return [err];
       }
     },
-    successNotification: function (msg = 'Process is success') {
+    successNotification: function (msg = "Process is success") {
       Toast.fire({
-        icon: 'success',
+        icon: "success",
         title: msg,
-      })
+      });
     },
-    errorNotification: function (msg = 'Error encounter') {
+    errorNotification: function (msg = "Error encounter") {
       Toast.fire({
-        icon: 'error',
+        icon: "error",
         title: msg,
-      })
+      });
     },
     infoNotification: function (msg) {
       Toast.fire({
-        icon: 'info',
+        icon: "info",
         title: msg,
-      })
-    }
+      });
+    },
   };
-}();
+})();
 
 $(function () {
-  OJTApp.init()
+  OJTApp.init();
 });

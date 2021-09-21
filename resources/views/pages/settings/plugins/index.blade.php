@@ -65,9 +65,12 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div x-show="open" class="plugin_option mt-2">
-                                    <div class="col">
+                                <div x-show="open" class="plugin_option mt-2 row">
+                                    <div class="col-auto">
                                         <a href="#" @@click="deletePlugin" class="text-danger">Delete</a>
+                                    </div>
+                                    <div class="col-auto">
+                                        <a href="#" @@click="migratePlugin" class="">Migrate</a>
                                     </div>
                                     {{ apply_filters('core::pages::settings::plugins::option::' . $attributes['name'], false) }}
                                 </div>

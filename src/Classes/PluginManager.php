@@ -2,11 +2,8 @@
 
 namespace OpenJournalTeam\Core\Classes;
 
-
-
 class PluginManager
 {
-
   private $plugin;
 
   public function __construct()
@@ -22,14 +19,18 @@ class PluginManager
   public function getPluginCoreOnly()
   {
     return array_filter($this->plugin->all(), function ($plugin) {
-      if (array_key_exists('core', $plugin->json()->getAttributes()) && $plugin->json()->getAttributes()['core'] == true) return true;
+      if (array_key_exists('core', $plugin->json()->getAttributes()) && $plugin->json()->getAttributes()['core'] === true) {
+        return true;
+      }
     });
   }
 
   public function getPlugins()
   {
     return array_filter($this->plugin->all(), function ($plugin) {
-      if (array_key_exists('core', $plugin->json()->getAttributes()) && $plugin->json()->getAttributes()['core'] == true) return false;
+      if (array_key_exists('core', $plugin->json()->getAttributes()) && $plugin->json()->getAttributes()['core'] === true) {
+        return false;
+      }
       return true;
     });
   }

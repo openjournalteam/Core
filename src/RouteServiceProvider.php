@@ -1,11 +1,12 @@
 <?php
 
+
+
 namespace OpenJournalTeam\Core;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use OpenJournalTeam\Core\Http\Middleware\Authenticate;
-use OpenJournalTeam\Core\Models\Role;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -13,39 +14,35 @@ class RouteServiceProvider extends ServiceProvider
      * Called before routes are registered.
      *
      * Register any model bindings or pattern based filters.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
     }
 
     /**
      * Define the routes for the application.
-     *
-     * @return void
      */
-    public function map()
+    public function map(): void
     {
         $this->mapGuestRoutes();
         $this->mapUserRoutes();
         $this->mapAdminRoutes();
     }
 
-    protected function mapGuestRoutes()
+    protected function mapGuestRoutes(): void
     {
         Route::group([
             'namespace' => 'OpenJournalTeam\Core\Http\Controllers',
             'prefix' => config('core.path'),
             'as' => 'core.',
             'middleware' => config('core.middleware', ['web']),
-        ], function () {
+        ], function (): void {
             $this->loadRoutesFrom(__DIR__ . '/../routes/guest.php');
         });
     }
 
-    protected function mapUserRoutes()
+    protected function mapUserRoutes(): void
     {
         $middleware = array_merge(config('core.middleware'), [Authenticate::class]);
 
@@ -54,21 +51,21 @@ class RouteServiceProvider extends ServiceProvider
             'prefix' => config('core.path'),
             'as' => 'core.',
             'middleware' => $middleware,
-        ], function () {
+        ], function (): void {
             $this->loadRoutesFrom(__DIR__ . '/../routes/user.php');
         });
     }
 
-    protected function mapAdminRoutes()
+    protected function mapAdminRoutes(): void
     {
-        $middleware = array_merge(config('core.middleware'), [Authenticate::class, 'role:' . Role::ADMIN]);
+        $middleware = array_merge(config('core.middleware'), [Authenticate::class, 'role:' . Auth::ROLE_SUPER_ADMIN]);
 
         Route::group([
             'namespace' => 'OpenJournalTeam\Core\Http\Controllers\Admin',
             'prefix' => config('core.path') . '/admin',
             'as' => 'core.admin.',
             'middleware' => $middleware,
-        ], function () {
+        ], function (): void {
             $this->loadRoutesFrom(__DIR__ . '/../routes/admin.php');
         });
     }

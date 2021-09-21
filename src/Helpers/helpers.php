@@ -1,19 +1,16 @@
 <?php
 
+
+
 use OpenJournalTeam\Core\Core;
 
 if (!function_exists('render')) {
     /**
      * Render the template Backend
      *
-     * @param  string|null  $view
-     * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
      * @param  array  $mergeData
-     * @param  string|null $template
-     *
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    function render($view = null, $data = [], $mergeData = [], $template = 'core::template.default')
+    function render(?string $view = null, array $data = [], array $mergeData = [], ?string $template = 'core::template.default')
     {
         $meta['view'] = $view;
         $meta['data'] = $data;
@@ -40,5 +37,25 @@ if (!function_exists('add_script')) {
     function add_script($src, $defer = false)
     {
         return Core::addScript($src, $defer);
+    }
+}
+
+if (!function_exists('response_success')) {
+    function response_success($data = [])
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
+}
+
+if (!function_exists('response_error')) {
+    function response_error($error, $status_code = 500)
+    {
+        return response()->json([
+            'success' => false,
+            'error' => $error
+        ], $status_code);
     }
 }

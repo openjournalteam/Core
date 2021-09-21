@@ -16,7 +16,7 @@
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {!! Core::renderStyle() !!}
-
+    @livewireStyles
 
     @yield('styles')
 

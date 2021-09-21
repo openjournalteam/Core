@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace OpenJournalTeam\Core\Http\Middleware;
 
 use Closure;

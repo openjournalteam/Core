@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace OpenJournalTeam\Core;
 
 include_once 'Helpers/helpers.php';
@@ -7,13 +9,15 @@ include_once 'Helpers/helpers.php';
 use App\Http\Kernel;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use OpenJournalTeam\Core\Providers\EventServiceProvider;
+
 
 class CoreServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
      */
-    public function boot(Kernel $kernel)
+    public function boot(Kernel $kernel): void
     {
         $this->registerCommands();
 
@@ -21,27 +25,28 @@ class CoreServiceProvider extends ServiceProvider
             return;
         }
 
-        View::addExtension('php', 'blade');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'core');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
-        // $kernel->prependMiddleware(OpenJournalTeam\Core\Http\Middleware\ThemeLoader::class);
+        View::addExtension('php', 'blade');
 
         $this->registerMiddlewareAlias();
         $this->registerBladeDirective();
-
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'core');
     }
 
     /**
      * Register the application services.
      */
-    public function register()
+    public function register(): void
     {
+        if (!config('core.enabled')) {
+            return;
+        }
+
+        $this->registerProviders();
+        $this->registerAlias();
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'core');
-
-        // Register Provider
-        $this->app->register(RouteServiceProvider::class);
-        $this->app->register(\Shohel\Pluggable\PluggableServiceProvider::class);
 
         // Register the main class to use with the facade
         $this->app->singleton('core', function () {
@@ -49,12 +54,28 @@ class CoreServiceProvider extends ServiceProvider
         });
     }
 
+    public function registerAlias(): void
+    {
+        $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+        $loader->alias('CoreAuth', 'OpenJournalTeam\Core\Auth');
+    }
+
+    /**
+     * Register Service Providers
+     */
+
+    protected function registerProviders(): void
+    {
+        $this->app->register(RouteServiceProvider::class);
+        $this->app->register(LiveWireComponentServiceProvider::class);
+        $this->app->register(EventServiceProvider::class);
+        $this->app->register(\Shohel\Pluggable\PluggableServiceProvider::class);
+    }
+
     /**
      * Register the package's commands.
-     *
-     * @return void
      */
-    protected function registerCommands()
+    protected function registerCommands(): void
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -67,6 +88,13 @@ class CoreServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../database/database.sqlite' => database_path('database.sqlite'),
             ], 'Core-databases');
+            $this->publishes([
+                __DIR__ . '/../resources/views' => resource_path('views/vendor/core'),
+            ], 'Core-views');
+            $this->publishes([
+                __DIR__ . '/../database/seeders/RoleAndPermissionSeeder.php' => database_path('seeders/RoleAndPermissionSeeder.php'),
+                __DIR__ . '/../database/seeders/MenuSeeder.php' => database_path('seeders/MenuSeeder.php'),
+            ], 'Core-seeders');
 
             $this->commands([
                 Console\InstallCommand::class,
@@ -75,13 +103,13 @@ class CoreServiceProvider extends ServiceProvider
         }
     }
 
-    private function registerMiddlewareAlias()
+    private function registerMiddlewareAlias(): void
     {
-        app()->make('router')->aliasMiddleware('role', \Spatie\Permission\Middlewares\RoleMiddleware::class);
+        app()->make('router')->aliasMiddleware('role', \OpenJournalTeam\Core\Http\Middleware\RoleMiddleware::class);
         app()->make('router')->aliasMiddleware('permission', \Spatie\Permission\Middlewares\PermissionMiddleware::class);
     }
 
-    private function registerBladeDirective()
+    private function registerBladeDirective(): void
     {
     }
 }

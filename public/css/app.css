@@ -11,3 +11,89 @@
 .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
     font-size: .875rem !important;
 }
+
+.select2-selection__rendered {
+    font-size: .875rem !important;
+}
+
+.select2-selection__placeholder {
+    color: #A7ABB1 !important;
+}
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.dropzones {
+    background-color: #EDF0F4;
+    border: 1px solid #d3d3d3;
+    /* border-radius: 1rem; */
+    color: #444;
+    cursor: default;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 3px;
+    position: relative;
+
+}
+
+.dropzones.dz-max-files-reached .dz-clickable {
+    display: none;
+}
+
+
+/* .dropzone-template {
+    background-color: #595E68;
+    color: white;
+} */
+
+/* .dropzone-template.dz-success {
+    background-color: #2fb344 !important;
+}
+
+.dropzone-template.dz-error {
+    background-color: #d9534f !important;
+} */
+
+.dropzone-template.dz-success .dz-success-mark {
+    display: block;
+}
+
+.dropzone-template.dz-error .dz-error-mark {
+    display: block;
+}
+
+.dropzone-template .dz-success-mark {
+    color: green;
+    display: none;
+}
+
+.dropzone-template .dz-error-mark {
+    color: red;
+    display: none;
+}
+
+.dropzone-template .name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.dropzone-template .dz-thumbnail {
+    display: block;
+    max-width: max-content;
+    margin: 0 auto;
+}
+
+.dropzone-template .dz-thumbnail img {
+    width: auto;
+    max-height: 200px;
+}
+
+.pagination {
+    flex-wrap: wrap;
+}

@@ -1,17 +1,25 @@
 <?php
 
+
+
 namespace OpenJournalTeam\Core\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use OpenJournalTeam\Core\Auth as CoreAuth;
 use OpenJournalTeam\Core\Http\Resources\JsonResponse;
-use OpenJournalTeam\Core\Models\Role;
 use OpenJournalTeam\Core\Models\User;
 
 class AuthController extends BaseController
 {
+
+    public function __construct()
+    {
+        $this->middleware('throttle:5,1')->only('login');
+    }
+
     public function index()
     {
         return render('core::pages.auth.login');
@@ -33,7 +41,7 @@ class AuthController extends BaseController
                 'password' => Hash::make($request->password),
             ]);
 
-            $user->assignRole(Role::USER);
+            $user->assignRole(CoreAuth::ROLE_USER);
 
             Auth::login($user);
 
@@ -62,10 +70,6 @@ class AuthController extends BaseController
 
     /**
      * Log the user out of the application.
-     *
-     * @param  \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
      */
     public function logout(Request $request)
     {
