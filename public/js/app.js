@@ -88,7 +88,6 @@ var OJTApp = (function () {
         title: msg,
       });
     },
-    apiUrl: `${baseUrl}/api/v1/`,
   };
 })();
 

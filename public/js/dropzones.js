@@ -1,9 +1,9 @@
 "use strict";
 // Class definition
 
-var OJTDropzones = function () {
+var OJTDropzones = (function () {
   var init = function (dom) {
-    var fileInputId = 'fileinput_' + OJTApp.randomstring();
+    var fileInputId = "fileinput_" + OJTApp.randomstring();
     var template = `<div class="dropzones">
       <div class="dropzone-template m-1 p-1">
           <div class="file row align-items-center">
@@ -40,32 +40,34 @@ var OJTDropzones = function () {
       </div>
     </div>`;
     let jqDom = $(dom);
-    // Get option from dom 
+    // Get option from dom
     var options = {
-      url: jqDom.data('url') ?? '/attachment',
-      maxFilesize: jqDom.data('max-file-size') ?? 10,
-      acceptedFiles: jqDom.attr('accept') ?? '.csv,.txt,.xlx,.xls,.pdf,.gif,.jpeg,.jpg,.png,.pdf,.gif,.xls,.xlsx,.txt,.geojson,.doc,.docx',
+      url: jqDom.data("url") ?? "/attachment",
+      maxFilesize: jqDom.data("max-file-size") ?? 10,
+      acceptedFiles:
+        jqDom.attr("accept") ??
+        ".csv,.txt,.xlx,.xls,.pdf,.gif,.jpeg,.jpg,.png,.pdf,.gif,.xls,.xlsx,.txt,.geojson,.doc,.docx",
       headers: {
-        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
       },
-      maxFiles: jqDom.attr('multiple') ? null : 1,
+      maxFiles: jqDom.attr("multiple") ? null : 1,
       thumbnailWidth: 400,
       thumbnailHeight: 400,
-      thumbnailMethod: 'contain',
+      thumbnailMethod: "contain",
       autoQueue: true,
       chunking: true,
       chunkSize: 1024 * 1024 * 10, // 10 MB
       clickable: "#" + fileInputId, // Define the element that should be used as click trigger to select files.
-    }
+    };
 
     let parent = jqDom.parent();
 
     // Add the dropzone template
     jqDom.replaceWith(template);
-    jqDom = parent.find('.dropzones');
+    jqDom = parent.find(".dropzones");
 
     // Get the template HTML and remove it from the document template HTML and remove it from the doument
-    var previewNode = jqDom.find('.dropzone-template')[0];
+    var previewNode = jqDom.find(".dropzone-template")[0];
     var previewTemplate = previewNode.parentNode.innerHTML;
     previewNode.parentNode.removeChild(previewNode);
     var previewsContainer = jqDom[0];
@@ -86,26 +88,31 @@ var OJTDropzones = function () {
     myDropzone.on("success", function (file, response) {
       $(file.previewElement).find(".progress").fadeOut();
 
-      let fileName = (this.options.maxFiles == 1) ? 'file' : 'file[]';
+      let fileName = this.options.maxFiles == 1 ? "file" : "file[]";
 
-      $(file.previewElement).append(`<input type="hidden" name="${fileName}" value="${file.xhr.responseText}" />`);
+      $(file.previewElement).append(
+        `<input type="hidden" name="${fileName}" value="${file.xhr.responseText}" />`
+      );
     });
-
 
     myDropzone.on("error", function (file, errorMessage, xhr) {
       $(file.previewElement).find(".progress").fadeOut();
       $(file.previewElement).find(".error").fadeIn();
-      if (typeof errorMessage === 'object') {
-        $(file.previewElement).find(".error").text(errorMessage.errors?.file[0]);
+      if (typeof errorMessage === "object") {
+        $(file.previewElement)
+          .find(".error")
+          .text(errorMessage.errors?.file[0]);
       } else {
         $(file.previewElement).find(".error").text(errorMessage);
-      };
+      }
     });
 
-    myDropzone.on("maxfilesexceeded", function (file) { this.removeFile(file); });
+    myDropzone.on("maxfilesexceeded", function (file) {
+      this.removeFile(file);
+    });
 
-    myDropzone.on('removedfile', function (file) {
-      jqDom.find('.fileinput-button').fadeIn();
+    myDropzone.on("removedfile", function (file) {
+      jqDom.find(".fileinput-button").fadeIn();
       if (file?.xhr) {
         deleteTemporaryFile(file.xhr);
       } else if (file?.uuid) {
@@ -113,43 +120,40 @@ var OJTDropzones = function () {
       }
     });
 
-    myDropzone.on('maxfilesreached', function (file) {
-      jqDom.find('.fileinput-button').fadeOut();
+    myDropzone.on("maxfilesreached", function (file) {
+      jqDom.find(".fileinput-button").fadeOut();
     });
 
-    myDropzone.on('resetFiles', function () {
+    myDropzone.on("resetFiles", function () {
       if (this.files.length != 0) {
-
-        this.files.forEach(file => {
+        this.files.forEach((file) => {
           file.previewElement.remove();
         });
-
       }
     });
 
     return myDropzone;
-  }
+  };
 
   var inits = function () {
     $('[data-control="dropzone"][type="file"]').each(function () {
       init(this);
     });
-  }
+  };
 
   var deleteTemporaryFile = function (xhr) {
     if (xhr.status == 422) {
       return;
     }
-    $.post(`attachment/delete_temporary_file/${xhr.responseText}`)
-
-  }
+    $.post(`attachment/delete_temporary_file/${xhr.responseText}`);
+  };
 
   var deleteFile = function (param) {
-    let xhr = $.post(`attachment/delete/${param}`)
+    let xhr = $.post(`attachment/delete/${param}`);
     xhr.done(function (data) {
       console.log(data);
-    })
-  }
+    });
+  };
 
   return {
     init: function () {
@@ -157,12 +161,10 @@ var OJTDropzones = function () {
     },
     initDropzone: function (dom) {
       init(dom);
-    }
-
+    },
   };
-}();
-
+})();
 
 Dropzone.autoDiscover = false;
 
-OJTDropzones.init()
+OJTDropzones.init();
