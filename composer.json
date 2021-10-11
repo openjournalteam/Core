@@ -13,17 +13,25 @@
             "name": "Rahman Ramsi",
             "email": "rahmanramsi19@gmail.com",
             "role": "Developer"
+        },
+        {
+            "name": "Dede Nugroho",
+            "email": "this.nugroho@gmail.com",
+            "role": "Developer"
         }
     ],
     "require": {
         "php": "^7.4|^8.0",
         "illuminate/support": "^8.0",
         "shohel/pluggable": "^1.0",
-        "nwidart/laravel-modules": "^8.2",
         "spatie/laravel-permission": "^4.2",
         "yajra/laravel-datatables-oracle": "~9.0",
         "hexadog/laravel-themes-manager": "^1.8",
-        "livewire/livewire": "^2.5"
+        "livewire/livewire": "^2.5",
+        "supianidz/laravel-impersonate": "^2.0",
+        "spatie/laravel-medialibrary": "^9.0.0",
+        "pion/laravel-chunk-upload": "^1.4",
+        "nwidart/laravel-modules": "^8.2"
     },
     "require-dev": {
         "nunomaduro/phpinsights": "^2.0",
@@ -50,11 +58,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "OpenJournalTeam\\Core\\CoreServiceProvider"
+                "OpenJournalTeam\\Core\\Providers\\CoreServiceProvider"
             ],
             "aliases": {
-                "Core": "OpenJournalTeam\\Core\\CoreFacade",
-                "Role": "OpenJournalTeam\\Core\\Models\\Role"
+                "Core": "OpenJournalTeam\\Core\\CoreFacade"
             }
         }
     }

@@ -4,6 +4,13 @@
 
 use OpenJournalTeam\Core\Core;
 
+if (!function_exists('user')) {
+    function user()
+    {
+        return auth()->user();
+    }
+}
+
 if (!function_exists('render')) {
     /**
      * Render the template Backend

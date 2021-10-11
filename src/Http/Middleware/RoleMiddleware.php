@@ -6,7 +6,7 @@ namespace OpenJournalTeam\Core\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
-use OpenJournalTeam\Core\Auth as CoreAuth;
+use OpenJournalTeam\Core\Models\Role;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 
 class RoleMiddleware
@@ -14,7 +14,7 @@ class RoleMiddleware
     public function handle($request, Closure $next, $role, $guard = null)
     {
         $authGuard = Auth::guard($guard);
-        if ($authGuard->user()->hasRole(CoreAuth::ROLE_ADMIN)) {
+        if ($authGuard->user()->hasRole(Role::SUPER_ADMIN)) {
             return $next($request);
         }
 

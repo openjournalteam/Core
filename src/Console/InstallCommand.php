@@ -23,6 +23,10 @@ class InstallCommand extends Command
      */
     public function handle()
     {
+        $this->comment('Publishing required vendor');
+        $this->callSilent('vendor:publish', ['--provider' => "Spatie\Permission\PermissionServiceProvider"]);
+        $this->callSilent('notifications:table');
+
         $this->comment('Publishing Core Service Provider...');
         $this->callSilent('vendor:publish', ['--tag' => 'Core-provider']);
 
@@ -35,8 +39,8 @@ class InstallCommand extends Command
         $this->comment('Publishing Core Databases...');
         $this->callSilent('vendor:publish', ['--tag' => 'Core-databases']);
 
-        // $this->comment('Publishing Core Seeders...');
-        // $this->callSilent('vendor:publish', ['--tag' => 'Core-seeders']);
+        $this->comment('Publishing Core Seeders...');
+        $this->callSilent('vendor:publish', ['--tag' => 'Core-seeders']);
 
         // $this->comment('Seeding Database...');
         // $this->callSilent('db:seed', ['--class' => 'RolesAndPermissionSeeder']);

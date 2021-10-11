@@ -8,8 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use OpenJournalTeam\Core\Auth as CoreAuth;
-use OpenJournalTeam\Core\Http\Resources\JsonResponse;
+use OpenJournalTeam\Core\Models\Role;
 use OpenJournalTeam\Core\Models\User;
 
 class AuthController extends BaseController
@@ -35,19 +34,21 @@ class AuthController extends BaseController
                 'password' => ['required', Rules\Password::defaults()],
             ]);
 
-            $user = User::create([
+            $userModel = config('auth.providers.users.model', User::class);
+
+            $user = $userModel::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
 
-            $user->assignRole(CoreAuth::ROLE_USER);
+            $user->assignRole(Role::SUPER_ADMIN);
 
             Auth::login($user);
 
             $data = ['msg' => 'Register Success..', 'redirect' => route('core.home')];
 
-            return response()->json(new JsonResponse($data));
+            return response_success($data);
         }
 
         return view('core::pages.auth.register');
@@ -62,10 +63,10 @@ class AuthController extends BaseController
 
             $data = ['msg' => 'Login Success..', 'redirect' => route('core.home')];
 
-            return response()->json(new JsonResponse($data));
+            return response_success($data);
         }
 
-        return response()->json(new JsonResponse(error: 'Email or Password incorrect'));
+        return response_error('Email or Password incorrect');
     }
 
     /**
@@ -82,7 +83,7 @@ class AuthController extends BaseController
         if ($request->ajax()) {
             $data = ['msg' => 'Logout Success..', 'redirect' => route('core.home')];
 
-            return response()->json(new JsonResponse($data));
+            return response_success($data);
         }
 
         return redirect(route('core.index'));

@@ -2,7 +2,7 @@
 
 
 
-namespace openjournalteam\Core\Console;
+namespace OpenJournalTeam\Core\Console;
 
 use Illuminate\Console\Command;
 
