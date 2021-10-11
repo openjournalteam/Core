@@ -35,12 +35,12 @@ class InstallCommand extends Command
         $this->comment('Publishing Core Databases...');
         $this->callSilent('vendor:publish', ['--tag' => 'Core-databases']);
 
-        $this->comment('Publishing Core Seeders...');
-        $this->callSilent('vendor:publish', ['--tag' => 'Core-seeders']);
+        // $this->comment('Publishing Core Seeders...');
+        // $this->callSilent('vendor:publish', ['--tag' => 'Core-seeders']);
 
-        $this->comment('Seeding Database...');
-        $this->callSilent('db:seed', ['--class' => 'RolesAndPermissionSeeder']);
-        $this->callSilent('db:seed', ['--class' => 'MenuSeeder']);
+        // $this->comment('Seeding Database...');
+        // $this->callSilent('db:seed', ['--class' => 'RolesAndPermissionSeeder']);
+        // $this->callSilent('db:seed', ['--class' => 'MenuSeeder']);
 
         $this->info('Core scaffolding installed successfully.');
     }

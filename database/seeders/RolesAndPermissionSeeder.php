@@ -21,11 +21,11 @@ class RolesAndPermissionSeeder extends Seeder
       Role::findOrCreate($role);
     }
 
-    $permissions_array = Auth::getPermissions();
-    $permissions = collect($permissions_array)->map(function ($permission) {
-      return ['name' => $permission, 'guard_name' => 'web'];
-    });
+    // $permissions_array = Auth::getPermissions();
+    // $permissions = collect($permissions_array)->map(function ($permission) {
+    //   return ['name' => $permission, 'guard_name' => 'web'];
+    // });
 
-    Permission::insert($permissions->toArray());
+    // Permission::insert($permissions->toArray());
   }
 }

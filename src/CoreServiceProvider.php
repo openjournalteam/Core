@@ -92,7 +92,7 @@ class CoreServiceProvider extends ServiceProvider
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/core'),
             ], 'Core-views');
             $this->publishes([
-                __DIR__ . '/../database/seeders/RoleAndPermissionSeeder.php' => database_path('seeders/RoleAndPermissionSeeder.php'),
+                __DIR__ . '/../database/seeders/RolesAndPermissionSeeder.php' => database_path('seeders/RolesAndPermissionSeeder.php'),
                 __DIR__ . '/../database/seeders/MenuSeeder.php' => database_path('seeders/MenuSeeder.php'),
             ], 'Core-seeders');
 
