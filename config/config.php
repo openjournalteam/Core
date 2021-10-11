@@ -6,6 +6,8 @@ return [
 
 
   'enabled' => env('CORE_ENABLED', true),
+  'cache_enable' => true,
+  'cache_time'  => 60 * 60 * 24, // 1 hari
 
   /*
     |--------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace OpenJournalTeam\Core;
+namespace OpenJournalTeam\Core\Providers;
 
 use Livewire\Livewire;
 use OpenJournalTeam\Core\Http\Livewire\MenuComponent;

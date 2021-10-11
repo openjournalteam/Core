@@ -2,14 +2,14 @@
 
 
 
-namespace OpenJournalTeam\Core;
+namespace OpenJournalTeam\Core\Providers;
 
-include_once 'Helpers/helpers.php';
+include_once __DIR__ . '/../Helpers/helpers.php';
 
+use OpenJournalTeam\Core\Core;
 use App\Http\Kernel;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use OpenJournalTeam\Core\Providers\EventServiceProvider;
 
 
 class CoreServiceProvider extends ServiceProvider
@@ -97,8 +97,8 @@ class CoreServiceProvider extends ServiceProvider
             ], 'Core-seeders');
 
             $this->commands([
-                Console\InstallCommand::class,
-                Console\PublishCommand::class,
+                \OpenJournalTeam\Core\Console\InstallCommand::class,
+                \OpenJournalTeam\Core\Console\PublishCommand::class,
             ]);
         }
     }
@@ -107,6 +107,7 @@ class CoreServiceProvider extends ServiceProvider
     {
         app()->make('router')->aliasMiddleware('role', \OpenJournalTeam\Core\Http\Middleware\RoleMiddleware::class);
         app()->make('router')->aliasMiddleware('permission', \Spatie\Permission\Middlewares\PermissionMiddleware::class);
+        app()->make('router')->aliasMiddleware('permission_by_route', \OpenJournalTeam\Core\Http\Middleware\CheckPermissionsByRoute::class);
     }
 
     private function registerBladeDirective(): void
