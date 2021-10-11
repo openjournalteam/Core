@@ -1,13 +1,13 @@
 <?php
 
-use OpenJournalTeam\Core\Models\Role;
-
 return [
 
 
   'enabled' => env('CORE_ENABLED', true),
-  'cache_enable' => true,
-  'cache_time'  => 60 * 60 * 24, // 1 hari
+  'cache' => [
+    'enable' => true,
+    'time' => 60 * 60 * 24,
+  ],
 
   /*
     |--------------------------------------------------------------------------

@@ -20,7 +20,7 @@ class ModuleServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->cacheTime = config('core.cache_enable', false) ? config('core.cache_time', 0) : 0;
+        $this->cacheTime = config('core.cache.enable', false) ? config('core.cache.time', 0) : 0;
 
         $this->registerLivewire();
         $this->registerRoutes();
@@ -53,7 +53,6 @@ class ModuleServiceProvider extends ServiceProvider
                 'middleware' => config('core.middleware', ['web']),
             ], function (): void {
                 $paths = Cache::remember('routes_guest_module_path', $this->cacheTime, fn () => glob(app_path('Modules/*/Routes/guest.php')));
-
                 foreach ($paths as $router) {
                     $this->loadRoutesFrom($router);
                 }
@@ -83,7 +82,7 @@ class ModuleServiceProvider extends ServiceProvider
         });
 
         foreach ($paths as $path) {
-            $alias = Str::lower(Str::between($path, 'Modules/', '/Livewire')) . ':' . Str::kebab(basename($path, '.php'));
+            $alias  = Str::lower(Str::between($path, 'Modules/', '/Livewire')) . ':' . Str::kebab(basename($path, '.php'));
             $viewClass = Str::replace('/', '\\', 'App/' . Str::between($path, 'app/', '.php'));
             Livewire::component($alias, $viewClass);
         };

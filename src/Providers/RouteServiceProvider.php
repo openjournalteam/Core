@@ -39,7 +39,7 @@ class RouteServiceProvider extends ServiceProvider
             'as' => 'core.',
             'middleware' => config('core.middleware', ['web']),
         ], function (): void {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/guest.php');
+            $this->loadRoutesFrom(__DIR__ . '/../../routes/guest.php');
         });
     }
 
@@ -53,7 +53,7 @@ class RouteServiceProvider extends ServiceProvider
             'as' => 'core.',
             'middleware' => $middleware,
         ], function (): void {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/user.php');
+            $this->loadRoutesFrom(__DIR__ . '/../../routes/user.php');
         });
     }
 
@@ -67,7 +67,7 @@ class RouteServiceProvider extends ServiceProvider
             'as' => 'core.admin.',
             'middleware' => $middleware,
         ], function (): void {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/admin.php');
+            $this->loadRoutesFrom(__DIR__ . '/../../routes/admin.php');
         });
     }
 }

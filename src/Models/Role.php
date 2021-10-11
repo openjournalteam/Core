@@ -13,9 +13,36 @@ class Role extends Models
     public const SUPPORT = 'Support';
     public const USER = 'User';
 
-    public const PERMISSION_VIEW_MENU_ADMINISTRATION = 'view_menu_administration';
-    public const PERMISSION_VIEW_MENU_MENUS = 'view_menu_menus';
-    public const PERMISSION_VIEW_MENU_USER_ROLES = 'view_menu_user_roles';
-    public const PERMISSION_VIEW_MENU_PLUGINS = 'view_menu_plugins';
-    public const PERMISSION_VIEW_MENU_SETTINGS = 'view_menu_settings';
+    public static function getRoles(): array
+    {
+        try {
+            return array_values(static::lastConstants());
+        } catch (\ReflectionException $exception) {
+            return [];
+        }
+    }
+
+    static function lastConstants()
+    {
+        $parentConstants = static::getParentConstants();
+
+        $allConstants = static::getConstants();
+
+        return array_diff($allConstants, $parentConstants);
+    }
+
+    static function getConstants()
+    {
+        $rc = new \ReflectionClass(get_called_class());
+
+        return $rc->getConstants();
+    }
+
+    static function getParentConstants()
+    {
+        $rc = new \ReflectionClass(get_parent_class(static::class));
+        $consts = $rc->getConstants();
+
+        return $consts;
+    }
 }
