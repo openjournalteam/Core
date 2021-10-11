@@ -2,7 +2,7 @@
 
 
 
-namespace OpenJournalTeam\Core\Http\Controllers\Admin;
+namespace OpenJournalTeam\Core\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use OpenJournalTeam\Core\Classes\PluginManager;
 use OpenJournalTeam\Core\Http\Resources\JsonResponse;
 
-class PluginSettingsController extends AdminController
+class PluginSettingsController extends BaseController
 {
     private $pluginManager;
 

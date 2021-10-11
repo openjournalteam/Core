@@ -31,6 +31,9 @@
             <div class="tab-content">
                 <!-- Content of card #1 -->
                 <div id="tab-borderless-1" class="card tab-pane active show">
+                    @if(!$plugins)
+                        <div class="alert alert-warning m-3">There is no plugins</div>
+                    @endif
                     <div class="list-group card-list-group">
                         @foreach ($plugins as $plugin)
                             @php
