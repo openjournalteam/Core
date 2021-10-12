@@ -84,14 +84,10 @@ class CoreServiceProvider extends ServiceProvider
                 __DIR__ . '/../../public' => public_path('vendor/core'),
             ], 'Core-assets');
             $this->publishes([
-                __DIR__ . '/../../database/database.sqlite' => database_path('database.sqlite'),
-            ], 'Core-databases');
-            $this->publishes([
                 __DIR__ . '/../../resources/views' => resource_path('views/vendor/core'),
             ], 'Core-views');
             $this->publishes([
-                __DIR__ . '/../../database/seeders/MenuSeeder.php' => database_path('seeders/MenuSeeder.php'),
-                __DIR__ . '/../../database/seeders/RolesAndPermissionSeeder.php' => database_path('seeders/RolesAndPermissionSeeder.php'),
+                __DIR__ . '/../../database/seeders' => database_path('seeders'),
             ], 'Core-seeders');
 
             $this->commands([
