@@ -25,7 +25,6 @@ class InstallCommand extends Command
     {
         $this->comment('Publishing required vendor');
         $this->callSilent('vendor:publish', ['--provider' => "Spatie\Permission\PermissionServiceProvider"]);
-        $this->callSilent('notifications:table');
 
         $this->comment('Publishing Core Service Provider...');
         $this->callSilent('vendor:publish', ['--tag' => 'Core-provider']);
