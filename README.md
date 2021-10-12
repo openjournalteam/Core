@@ -26,13 +26,6 @@ Migrate
 php artisan migrate
 ```
 
-Seed Menu and Roles
-
-```php
-php artisan db:seed --class=MenuSeeder
-php artisan db:seed --class=RolesAndPermissionSeeder
-```
-
 Edit config/auth.php and change the following lines:
 
 ```php
@@ -68,6 +61,14 @@ and import the following namespaces:
 ```php
 use Illuminate\Support\Facades\Gate;
 use OpenJournalTeam\Core\Models\Role;
+```
+
+Seed Menu,Roles, and Super Admin user
+
+```php
+php artisan db:seed --class=MenuSeeder
+php artisan db:seed --class=RolesAndPermissionSeeder
+php artisan db:seed --class=SuperAdminSeeder
 ```
 
 Serve Laravel
