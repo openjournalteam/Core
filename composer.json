@@ -31,7 +31,9 @@
         "supianidz/laravel-impersonate": "^2.0",
         "spatie/laravel-medialibrary": "^9.0.0",
         "pion/laravel-chunk-upload": "^1.4",
-        "nwidart/laravel-modules": "^8.2"
+        "nwidart/laravel-modules": "^8.2",
+        "propaganistas/laravel-phone": "^4.3",
+        "spatie/laravel-sluggable": "^3.1"
     },
     "require-dev": {
         "nunomaduro/phpinsights": "^2.0",
