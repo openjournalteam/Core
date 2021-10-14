@@ -33,7 +33,8 @@
         "pion/laravel-chunk-upload": "^1.4",
         "nwidart/laravel-modules": "^8.2",
         "propaganistas/laravel-phone": "^4.3",
-        "spatie/laravel-sluggable": "^3.1"
+        "spatie/laravel-sluggable": "^3.1",
+        "spatie/crypto": "^2.0"
     },
     "require-dev": {
         "nunomaduro/phpinsights": "^2.0",
