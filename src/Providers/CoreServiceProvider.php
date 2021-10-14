@@ -12,6 +12,7 @@ use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use OpenJournalTeam\Core\Console\InstallCommand;
 use OpenJournalTeam\Core\Console\PublishCommand;
+use OpenJournalTeam\Core\Console\PublishModuleAssets;
 use OpenJournalTeam\Core\Http\Middleware\CheckPermissionsByRoute;
 use OpenJournalTeam\Core\Http\Middleware\RoleMiddleware;
 use Shohel\Pluggable\PluggableServiceProvider;
@@ -93,6 +94,7 @@ class CoreServiceProvider extends ServiceProvider
             $this->commands([
                 InstallCommand::class,
                 PublishCommand::class,
+                PublishModuleAssets::class,
             ]);
         }
     }
