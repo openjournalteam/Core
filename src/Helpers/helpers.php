@@ -37,6 +37,14 @@ if (!function_exists('add_style')) {
     }
 }
 
+if (!function_exists('add_module_script')) {
+    function add_module_script($src, $defer = false)
+    {
+        $src = 'modules/' . $src;
+        Core::addScript($src, $defer);
+    }
+}
+
 if (!function_exists('add_script')) {
     /**
      * Add style resource to template
