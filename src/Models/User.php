@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Octopy\LaraPersonate\Models\Impersonate;
 use Spatie\Permission\Traits\HasRoles;
 
+
 class User extends Authenticatable
 {
   use HasFactory, Notifiable, HasRoles, Impersonate;
@@ -41,4 +42,9 @@ class User extends Authenticatable
   protected $casts = [
     'email_verified_at' => 'datetime',
   ];
+
+  public function canImpersonate(): bool
+  {
+    return $this->hasRole(Role::SUPER_ADMIN);
+  }
 }
