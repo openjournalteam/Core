@@ -25,6 +25,31 @@ class ModuleServiceProvider extends ServiceProvider
         $this->registerLivewire();
         $this->registerRoutes();
         $this->registerViews();
+        $this->registerMigration();
+        $this->registerServiceProviders();
+    }
+
+
+    public function registerServiceProviders()
+    {
+        $paths = Cache::remember('service_providers_module_path', $this->cacheTime, fn () => glob(app_path('Modules/*/Providers/*.php')));
+
+        foreach ($paths as $path) {
+            $class = Str::replace('/', '\\', 'App/' . Str::between($path, 'app/', '.php'));
+            $this->app->register($class);
+        };
+    }
+
+
+    public function registerMigration()
+    {
+        if ($this->app->runningInConsole()) {
+            $paths = Cache::remember('migration_module_path', $this->cacheTime, fn () => glob(app_path('Modules/*')));
+
+            foreach ($paths as $path) {
+                $this->loadMigrationsFrom($path . '/Database/Migrations');
+            };
+        }
     }
 
     /**
@@ -42,6 +67,17 @@ class ModuleServiceProvider extends ServiceProvider
                     return glob(app_path('Modules/*/Routes*/user.php'));
                 });
 
+                foreach ($paths as $router) {
+                    $this->loadRoutesFrom($router);
+                }
+            });
+
+            // Route for API
+            Route::group([
+                'prefix' => 'api/v1',
+                'middleware' => ['api'],
+            ], function (): void {
+                $paths = Cache::remember('routes_api_module_path', $this->cacheTime, fn () => glob(app_path('Modules/*/Routes*/api.php')));
                 foreach ($paths as $router) {
                     $this->loadRoutesFrom($router);
                 }
