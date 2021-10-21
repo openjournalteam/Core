@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use OpenJournalTeam\Core\Models\Role;
+use OpenJournalTeam\Core\Models\User;
 
 class SuperAdminSeeder extends Seeder
 {
@@ -19,7 +20,8 @@ class SuperAdminSeeder extends Seeder
         $user = $userModel::create([
             'name' => 'Super Admin',
             'email' => 'admin@opensynergic.com',
-            'password' => Hash::make('coklatmanis')
+            'password' => Hash::make('coklatmanis'),
+            'status' => User::ACTIVE
         ]);
 
         $user->assignRole(Role::SUPER_ADMIN);
