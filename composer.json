@@ -28,7 +28,6 @@
         "yajra/laravel-datatables-oracle": "~9.0",
         "hexadog/laravel-themes-manager": "^1.8",
         "livewire/livewire": "^2.5",
-        "supianidz/laravel-impersonate": "^2.0",
         "spatie/laravel-medialibrary": "^9.0.0",
         "pion/laravel-chunk-upload": "^1.4",
         "nwidart/laravel-modules": "^8.2",

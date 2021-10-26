@@ -10,6 +10,7 @@ use OpenJournalTeam\Core\Core;
 use App\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use OpenJournalTeam\Core\Console\GenerateRequiredData;
 use OpenJournalTeam\Core\Console\InstallCommand;
 use OpenJournalTeam\Core\Console\PublishCommand;
 use OpenJournalTeam\Core\Console\PublishModuleAssets;
@@ -80,21 +81,19 @@ class CoreServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../../config/config.php' => config_path('core.php'),
-            ], 'Core-config');
+            ], 'core-config');
             $this->publishes([
                 __DIR__ . '/../../public' => public_path('vendor/core'),
-            ], 'Core-assets');
+            ], 'core-assets');
             $this->publishes([
                 __DIR__ . '/../../resources/views' => resource_path('views/vendor/core'),
-            ], 'Core-views');
-            $this->publishes([
-                __DIR__ . '/../../database/seeders' => database_path('seeders'),
-            ], 'Core-seeders');
+            ], 'core-views');
 
             $this->commands([
                 InstallCommand::class,
                 PublishCommand::class,
                 PublishModuleAssets::class,
+                GenerateRequiredData::class
             ]);
         }
     }
