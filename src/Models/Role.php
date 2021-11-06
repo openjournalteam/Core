@@ -12,6 +12,7 @@ class Role extends Models
     public const ADMIN = 'Admin';
     public const SUPPORT = 'Support';
     public const USER = 'User';
+    public const CUSTOMER = 'Customer';
 
     public static function getRoles(): array
     {

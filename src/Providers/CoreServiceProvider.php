@@ -16,6 +16,7 @@ use OpenJournalTeam\Core\Console\PublishCommand;
 use OpenJournalTeam\Core\Console\PublishModuleAssets;
 use OpenJournalTeam\Core\Http\Middleware\CheckPermissionsByRoute;
 use OpenJournalTeam\Core\Http\Middleware\RoleMiddleware;
+use OpenJournalTeam\Core\Http\Middleware\LogHandler;
 use Shohel\Pluggable\PluggableServiceProvider;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
 use OpenJournalTeam\Core\Http\Livewire\MenuComponent;
@@ -103,6 +104,7 @@ class CoreServiceProvider extends ServiceProvider
         app()->make('router')->aliasMiddleware('role', RoleMiddleware::class);
         app()->make('router')->aliasMiddleware('permission', PermissionMiddleware::class);
         app()->make('router')->aliasMiddleware('permission_by_route', CheckPermissionsByRoute::class);
+        app()->make('router')->aliasMiddleware('log_handler', LogHandler::class);
     }
 
     private function registerLivewireComponent(): void

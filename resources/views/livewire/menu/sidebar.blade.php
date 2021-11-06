@@ -1,6 +1,9 @@
 <div class="collapse navbar-collapse" id="navbar-menu">
     <ul class="navbar-nav pt-lg-3">
         @foreach ($menus as $menu)
+            @if(!$menu->show)
+                @continue
+            @endif
             @php
                 $hasChilds = $menu->childs->count() > 0 ? true : false;
                 $route = $menu->route && Route::has($menu->route) ? route($menu->route) : '#';
@@ -22,6 +25,9 @@
                         <div class="dropdown-menu-columns">
                             <div class="dropdown-menu-column">
                                 @foreach ($menu->childs as $sub)
+                                @if(!$sub->show)
+                                    @continue
+                                @endif
                                     <a class="dropdown-item"
                                         href="{{ $sub->route && Route::has($sub->route) ? route($sub->route) : '#' }}">
                                         @if (isset($sub->icon))
