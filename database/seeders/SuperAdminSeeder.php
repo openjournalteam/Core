@@ -21,7 +21,7 @@ class SuperAdminSeeder extends Seeder
             'name' => 'Super Admin',
             'email' => 'admin@opensynergic.com',
             'password' => Hash::make('coklatmanis'),
-            'status'   => User::ACTIVE
+            'status' => User::ACTIVE
         ]);
 
         $user->assignRole(Role::SUPER_ADMIN);

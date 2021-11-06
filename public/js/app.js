@@ -3,6 +3,69 @@
 
 var OJTApp = (function () {
   // Private functions
+  var skeletonLoading = `
+  <ul class="list-group list-group-flush">
+  <li class="list-group-item">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <div class="skeleton-avatar"></div>
+      </div>
+      <div class="col-7">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+      <div class="col-2 ms-auto text-end">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+    </div>
+  </li>
+  <li class="list-group-item">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <div class="skeleton-avatar"></div>
+      </div>
+      <div class="col-7">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+      <div class="col-2 ms-auto text-end">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+    </div>
+  </li>
+  <li class="list-group-item">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <div class="skeleton-avatar"></div>
+      </div>
+      <div class="col-7">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+      <div class="col-2 ms-auto text-end">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+    </div>
+  </li>
+  <li class="list-group-item">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <div class="skeleton-avatar"></div>
+      </div>
+      <div class="col-7">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+      <div class="col-2 ms-auto text-end">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+    </div>
+  </li>
+</ul>`;
   var initAjaxLoad = function (dom) {
     let url = dom.attr("url");
     $.ajax({
@@ -32,6 +95,7 @@ var OJTApp = (function () {
   };
 
   return {
+    skeletonLoading: skeletonLoading,
     // public functions
     init: function () {
       initAjaxLoads();
