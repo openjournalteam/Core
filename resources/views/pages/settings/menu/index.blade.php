@@ -16,7 +16,7 @@
     @livewire('core:menu')
 </div>
 
-<div class="modal modal-blur fade" id="modal-form-menu" tabindex="-1" aria-hidden="true">
+<div class="modal  fade" id="modal-form-menu" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form action="{{ route('core.admin.menu.save') }}" method="POST" class="ajax_form" callback="refreshMenu"
@@ -70,7 +70,7 @@
     </div>
 </div>
 
-<div class="modal modal-blur fade" id="modal-form-submenu" tabindex="-1" aria-hidden="true">
+<div class="modal  fade" id="modal-form-submenu" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form action="{{ route('core.admin.menu.save') }}" method="POST" class="ajax_form" callback="refreshMenu"
