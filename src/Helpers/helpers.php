@@ -66,7 +66,7 @@ if (!function_exists('response_success')) {
 }
 
 if (!function_exists('response_error')) {
-    function response_error($error, $status_code = 500)
+    function response_error($error, $status_code = 422)
     {
         return response()->json([
             'success' => false,
