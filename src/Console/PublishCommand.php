@@ -24,12 +24,12 @@ class PublishCommand extends Command
     public function handle(): void
     {
         $this->call('vendor:publish', [
-            '--tag' => 'Core-config',
+            '--tag' => 'core-config',
             '--force' => $this->option('force'),
         ]);
 
         $this->call('vendor:publish', [
-            '--tag' => 'Core-assets',
+            '--tag' => 'core-assets',
             '--force' => true,
         ]);
     }

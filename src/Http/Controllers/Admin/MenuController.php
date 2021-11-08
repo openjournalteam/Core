@@ -53,8 +53,6 @@ class MenuController extends AdminController
       ], 422);
     }
 
-
-
     $show = $request->input('show') ? 1 : 0;
     $order = $request->input('order') ?: Menu::where('parent_id', $request->input('parent_id', 0))->max('order') + 1;
 
@@ -69,7 +67,6 @@ class MenuController extends AdminController
         'order' => $order,
         'route' => $request->input('route'),
         'show' => $show,
-        'permission' => $request->input('permission'),
       ]
     );
 

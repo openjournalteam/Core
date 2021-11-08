@@ -26,10 +26,6 @@ class InstallCommand extends Command
         $this->comment('Publishing required vendor');
         $this->callSilent('vendor:publish', ['--provider' => "Spatie\Permission\PermissionServiceProvider"]);
         $this->callSilent('vendor:publish', ['--provider' => "Octopy\LaraPersonate\ImpersonateServiceProvider"]);
-        $this->callSilent('vendor:publish', [
-            '--provider' => "Spatie\MediaLibrary\MediaLibraryServiceProvider",
-            '--tag' => "migrations"
-        ]);
 
         $this->comment('Publishing Dinas Service Provider...');
         $this->callSilent('vendor:publish', ['--provider' => 'OpenJournalTeam\Core\Providers\CoreServiceProvider']);

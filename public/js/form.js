@@ -110,7 +110,7 @@ var OJTForm = (function () {
         xhr.done(function (response) {
           if (typeof OJTDatatables !== "undefined") OJTDatatables.reload();
 
-          if (Livewire) Livewire.emit("refresh");
+          if (typeof Livewire != "undefined") Livewire.emit("refresh");
 
           let dropzoneElement = $(form).find(".dropzones");
           if (dropzoneElement.length > 0) {

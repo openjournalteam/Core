@@ -8,8 +8,8 @@
             <div class="card-body">
                 <h2 class="mb-5 text-center">Login to your account</h2>
                 <div class="mb-3">
-                    <label class="form-label">Email address</label>
-                    <input type="email" name="email" class="form-control" placeholder="Enter email" autocomplete="off"
+                    <label class="form-label">Username or Email address</label>
+                    <input type="text" name="email" class="form-control" placeholder="Enter email" autocomplete="off"
                         required>
                 </div>
                 <div class="mb-2">

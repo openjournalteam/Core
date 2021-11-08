@@ -295,7 +295,7 @@ class AccessSettingsController extends AdminController
             return abort(401);
         }
 
-        if ($role->name === Auth::ROLE_ADMIN) {
+        if ($role->name === Role::SUPER_ADMIN) {
             return abort(401, 'Admin role cant be removed');
         }
 
@@ -308,14 +308,7 @@ class AccessSettingsController extends AdminController
     {
         $search = $request->input('search');
 
-        $roles = Role::orderBy('name')->select(['id', 'name'])->where('name', 'like', '%' . $search . '%')->limit(5)->get();
-
-        $roles = $roles->map(function ($role) {
-            return [
-                'id' => $role['id'],
-                'text' => $role['name'],
-            ];
-        });
+        $roles = Role::orderBy('name')->select(['id', 'name as text'])->where('name', 'like', '%' . $search . '%')->limit(5)->get();
 
         return response()->json([
             'results' => $roles,

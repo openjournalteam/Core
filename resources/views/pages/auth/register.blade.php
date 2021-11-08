@@ -28,7 +28,6 @@
         body {
             display: none;
         }
-
     </style>
 </head>
 
@@ -41,7 +40,10 @@
             <form class="card card-md ajax_form" action="{{ route('core.register.post') }}" method="POST">
                 <div class="card-body">
                     <h2 class="mb-5 text-center">Create new account</h2>
-                    <input type="hidden" name="id">
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input name="username" type="text" class="form-control" placeholder="Enter username" required>
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">Name</label>
                         <input name="name" type="text" class="form-control" placeholder="Enter name" required>
@@ -60,7 +62,7 @@
                 </div>
             </form>
             <div class="text-center text-muted">
-                Already have account? <a href="./sign-in.html" tabindex="-1">Sign in</a>
+                Already have account? <a href="{{route('core.home')}}" tabindex="-1">Sign in</a>
             </div>
         </div>
     </div>
