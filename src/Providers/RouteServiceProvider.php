@@ -63,7 +63,6 @@ class RouteServiceProvider extends ServiceProvider
         $middleware = array_merge(config('core.middleware'), [Authenticate::class, 'role:' . Role::SUPER_ADMIN]);
 
         Route::group([
-            'namespace' => 'OpenJournalTeam\Core\Http\Controllers\Admin',
             'prefix' => config('core.path') . '/admin',
             'as' => 'core.admin.',
             'middleware' => $middleware,

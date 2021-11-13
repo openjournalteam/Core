@@ -31,7 +31,7 @@ class MenuController extends AdminController
 
     $this->clearCache();
 
-    return response()->json(new JsonResponse(['msg' => 'Remove Menu Success..']));
+    return response_success(['msg' => 'Remove Menu Success..']);
   }
 
   public function save(Request $request)
@@ -107,7 +107,7 @@ class MenuController extends AdminController
 
     $this->clearCache();
 
-    $menus = Menu::whereIn('id', $ids)->get();
+    $menus = Menu::select(['id', 'order', 'name', 'token'])->whereIn('id', $ids)->get();
 
     foreach ($menus as $key => $menu) {
       $menus[$key]->order = array_search($menu->id, $ids) + 1;

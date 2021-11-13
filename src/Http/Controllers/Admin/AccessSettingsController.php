@@ -89,14 +89,12 @@ class AccessSettingsController extends AdminController
     public function user_save(Request $request)
     {
         $validationArray = [
+            'username' => ['required', 'string', 'max:255', 'unique:users', 'regex:/^\S*$/u'],
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
         ];
 
-        $inputArray = [
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-        ];
+        $inputArray = $request->only(['username', 'name', 'email']);
 
         if ($request->input('password')) {
             $inputArray = array_merge($inputArray, [

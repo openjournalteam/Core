@@ -11,6 +11,6 @@ class Menu extends Model
 
     public function childs()
     {
-        return $this->hasMany('OpenJournalTeam\Core\Models\Menu', 'parent_id', 'id')->orderBy('order');
+        return $this->hasMany(static::class, 'parent_id', 'id')->orderBy('order');
     }
 }

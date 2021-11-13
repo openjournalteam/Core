@@ -44,10 +44,6 @@ return [
       'defer' => false
     ],
     [
-      'src' => 'vendor/core/libs/pusher/pusher.min.js',
-      'defer' => false
-    ],
-    [
       'src' => 'vendor/core/libs/alpinejs/alpinejs3.min.js',
       'defer' => true
     ],

@@ -14,7 +14,6 @@ class DashboardController extends BaseController
             return render('core::pages.auth.login');
         }
 
-
         return render('core::pages.dashboard.index');
     }
 }

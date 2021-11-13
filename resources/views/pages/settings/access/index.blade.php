@@ -162,6 +162,10 @@
                     <input type="hidden" name="id">
 
                     <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input name="username" type="text" class="form-control" placeholder="Enter username" required>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">Name</label>
                         <input name="name" type="text" class="form-control" placeholder="Enter name" required>
                     </div>
