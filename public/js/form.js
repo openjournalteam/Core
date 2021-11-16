@@ -110,7 +110,7 @@ var OJTForm = (function () {
         xhr.done(function (response) {
           if (typeof OJTDatatables !== "undefined") OJTDatatables.reload();
 
-          if (typeof Livewire != "undefined") Livewire.emit("refresh");
+          if (typeof Livewire !== "undefined") Livewire.emit("refresh");
 
           let dropzoneElement = $(form).find(".dropzones");
           if (dropzoneElement.length > 0) {
@@ -259,6 +259,13 @@ var OJTForm = (function () {
         iti.setCountry(value);
         return;
       }
+
+      // for summernote
+      if (input.data("control") == "summernote") {
+        input.summernote("reset");
+        input.summernote("pasteHTML", value);
+      }
+
       input.val(value);
       return;
     });
@@ -306,6 +313,10 @@ var OJTForm = (function () {
       form.find("input[name='id'][type='hidden']").removeAttr("value");
       form.find("select[data-control='select2ajax']").empty();
 
+      // for summernote
+      form.find("[data-control='summernote']").summernote("reset");
+
+      // dropzone
       let dropzoneElement = form.find(".dropzones");
       dropzoneElement.find(".fileinput-button").show();
 
