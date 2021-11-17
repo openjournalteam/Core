@@ -160,7 +160,7 @@ var OJTForm = (function () {
 
     $.each(json, function (key, value) {
       if (!value) return;
-      // var input = form.find(`[name^="${key}"]`);
+
       var input = form.find(`[name="${key}"]`);
       input = input.length > 0 ? input : form.find(`[name="${key}[]"]`);
 
@@ -314,7 +314,8 @@ var OJTForm = (function () {
       form.find("select[data-control='select2ajax']").empty();
 
       // for summernote
-      form.find("[data-control='summernote']").summernote("reset");
+      if (form.find("[data-control='summernote']").length > 0)
+        form.find("[data-control='summernote']").summernote("reset");
 
       // dropzone
       let dropzoneElement = form.find(".dropzones");
@@ -428,12 +429,90 @@ var OJTForm = (function () {
     });
   };
 
+  var initAjaxConfirm = function () {
+    $(document).on("click", "[data-control='confirm']", function (e) {
+      e.preventDefault();
+
+      let url = $(this).attr("href") ?? $(this).data("url");
+      if (typeof url === "undefined" || url === "#") {
+        return console.log("Attribute href or data-url not found");
+      }
+
+      let options = {};
+      if ($(this).attr("title") ?? $(this).data("title")) {
+        options.title = $(this).attr("title") ?? $(this).data("title");
+      }
+
+      if ($(this).attr("icon") ?? $(this).data("icon")) {
+        options.icon = $(this).attr("icon") ?? $(this).data("icon");
+      }
+
+      if ($(this).attr("callback") || $(this).data("callback")) {
+        options.callback = $(this).attr("callback") ?? $(this).data("callback");
+      }
+
+      if ($(this).attr("method") || $(this).data("method")) {
+        options.method = $(this).attr("method") ?? $(this).data("method");
+      }
+
+      ajaxConfirm(url, options);
+    });
+  };
+  var ajaxConfirm = function (url, options) {
+    if (url === "undefined") {
+      return console.log("url not found");
+    }
+
+    let defaultOptions = {
+      title: "Are you sure want to do this ?",
+      icon: "warning",
+      method: "GET",
+    };
+
+    // merge options
+    options = { ...defaultOptions, ...options };
+
+    Swal.fire({
+      title: options.title,
+      icon: options.icon,
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Delete",
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: options.method,
+          url: url,
+          success: function (response) {
+            Toast.fire({
+              icon: response?.success ? "success" : "error",
+              title: response?.success ? response.data.msg : response.error,
+            });
+
+            if (typeof OJTDatatables !== "undefined") Livewire.emit("refresh");
+            if (typeof OJTDatatables !== "undefined") OJTDatatables.reload();
+
+            if (typeof callback !== typeof undefined && callback !== false)
+              window[callback]();
+          },
+          error: function (response) {
+            Toast.fire({
+              icon: "error",
+              title: response.responseJSON.message,
+            });
+          },
+        });
+      }
+    });
+  };
   return {
     // public functions
     init: function () {
       setupHeader();
       initFormValidations();
       initModalEditForm();
+      initAjaxConfirm();
       initDeleteConfirm();
       initSelect2Ajax();
       initGenerateToken();

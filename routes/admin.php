@@ -61,4 +61,7 @@ Route::group(['prefix' => 'menu', 'as' => 'menu.'], function (): void {
 Route::group(['prefix' => 'email', 'as' => 'email.'], function (): void {
     Route::get('/', [EmailTemplateSettingsController::class, 'index'])->name('index');
     Route::post('/save_setup', [EmailTemplateSettingsController::class, 'save_setup'])->name('save_setup');
+    Route::post('/save_template', [EmailTemplateSettingsController::class, 'save_template'])->name('save_template');
+    Route::get('/edit_template/{mailTemplate}', [EmailTemplateSettingsController::class, 'edit_template'])->name('edit_template');
+    Route::get('/reset_template/{mailTemplate}', [EmailTemplateSettingsController::class, 'reset_template'])->name('reset_template');
 });
