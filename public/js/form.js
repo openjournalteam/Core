@@ -162,53 +162,13 @@ var OJTForm = (function () {
       if (!value) return;
 
       var input = form.find(`[name="${key}"]`);
+      var dropzoneElement = document.querySelector(
+        `div.dropzones[data-media="${key}"]`
+      );
       input = input.length > 0 ? input : form.find(`[name="${key}[]"]`);
 
-      if (key == "attachment") {
-        let dropzoneElement = $(form).find(".dropzones");
-        if (dropzoneElement.length == 0) return;
-
-        let dz = Dropzone.forElement(dropzoneElement[0]);
-        let acceptMimeTypeImage = [
-          "image/jpeg",
-          "image/png",
-          "image/gif",
-          "image/bmp",
-          "image/tiff",
-          "image/webp",
-          "image/vnd.adobe.photoshop",
-          "image/x-icon",
-        ];
-        value.forEach(function (media) {
-          let mockFile = {
-            uuid: media.uuid,
-            name: media.name,
-            size: media.size,
-            mimeType: media.mime_type,
-            accepted: true,
-          };
-
-          dz.displayExistingFile(mockFile, media.url);
-
-          let dom = $(mockFile.previewElement);
-
-          if (!acceptMimeTypeImage.includes(media.mime_type)) {
-            dom.find("[data-dz-thumbnail]").remove();
-          }
-          dom.addClass("dz-success");
-          dom.addClass("dz-complete");
-          dom.find(".progress").hide();
-          dz.files.push(mockFile);
-        });
-
-        if (
-          dz.options.maxFiles != null &&
-          dz.files.length >= dz.options.maxFiles
-        ) {
-          dropzoneElement.find(".fileinput-button").hide();
-        }
-
-        return;
+      if (dropzoneElement?.dropzone && typeof OJTDropzones !== "undefined") {
+        OJTDropzones.mockFile(dropzoneElement, value);
       }
 
       if (input.data("control") == "select2ajax") {
@@ -327,7 +287,7 @@ var OJTForm = (function () {
       }
     });
   };
-
+  
   var initDeleteConfirm = function () {
     $(document).on(
       "click",
