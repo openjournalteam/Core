@@ -21,7 +21,9 @@ var OJTForm = (function () {
     Toast.fire({
       icon: "error",
       title:
-        json?.message ?? "Something went wrong,please contact the developer",
+        json?.message ??
+        json?.error ??
+        "Something went wrong,please contact the developer",
     });
 
     unblockForm(form);
@@ -108,7 +110,7 @@ var OJTForm = (function () {
         xhr.done(function (response) {
           if (typeof OJTDatatables !== "undefined") OJTDatatables.reload();
 
-          if (Livewire) Livewire.emit("refresh");
+          if (typeof Livewire !== "undefined") Livewire.emit("refresh");
 
           let dropzoneElement = $(form).find(".dropzones");
           if (dropzoneElement.length > 0) {
@@ -125,12 +127,19 @@ var OJTForm = (function () {
           }
 
           unblockForm($(form));
-          $(".modal").modal("hide");
+
+          if ($(form)?.attr("prevent-close") !== "true") {
+            $(".modal").modal("hide");
+          }
 
           if (typeof callback !== typeof undefined && callback !== false) {
             if (callback.includes(".")) {
               let callBackArray = callback.split(".");
-              window[callBackArray[0]][callBackArray[1]](form, payLoad);
+              window[callBackArray[0]][callBackArray[1]](
+                form,
+                payLoad,
+                response
+              );
             } else {
               window[callback]();
             }
@@ -151,7 +160,7 @@ var OJTForm = (function () {
 
     $.each(json, function (key, value) {
       if (!value) return;
-      // var input = form.find(`[name^="${key}"]`);
+
       var input = form.find(`[name="${key}"]`);
       input = input.length > 0 ? input : form.find(`[name="${key}[]"]`);
 
@@ -250,6 +259,13 @@ var OJTForm = (function () {
         iti.setCountry(value);
         return;
       }
+
+      // for summernote
+      if (input.data("control") == "summernote") {
+        input.summernote("reset");
+        input.summernote("pasteHTML", value);
+      }
+
       input.val(value);
       return;
     });
@@ -297,6 +313,11 @@ var OJTForm = (function () {
       form.find("input[name='id'][type='hidden']").removeAttr("value");
       form.find("select[data-control='select2ajax']").empty();
 
+      // for summernote
+      if (form.find("[data-control='summernote']").length > 0)
+        form.find("[data-control='summernote']").summernote("reset");
+
+      // dropzone
       let dropzoneElement = form.find(".dropzones");
       dropzoneElement.find(".fileinput-button").show();
 
@@ -408,12 +429,90 @@ var OJTForm = (function () {
     });
   };
 
+  var initAjaxConfirm = function () {
+    $(document).on("click", "[data-control='confirm']", function (e) {
+      e.preventDefault();
+
+      let url = $(this).attr("href") ?? $(this).data("url");
+      if (typeof url === "undefined" || url === "#") {
+        return console.log("Attribute href or data-url not found");
+      }
+
+      let options = {};
+      if ($(this).attr("title") ?? $(this).data("title")) {
+        options.title = $(this).attr("title") ?? $(this).data("title");
+      }
+
+      if ($(this).attr("icon") ?? $(this).data("icon")) {
+        options.icon = $(this).attr("icon") ?? $(this).data("icon");
+      }
+
+      if ($(this).attr("callback") || $(this).data("callback")) {
+        options.callback = $(this).attr("callback") ?? $(this).data("callback");
+      }
+
+      if ($(this).attr("method") || $(this).data("method")) {
+        options.method = $(this).attr("method") ?? $(this).data("method");
+      }
+
+      ajaxConfirm(url, options);
+    });
+  };
+  var ajaxConfirm = function (url, options) {
+    if (url === "undefined") {
+      return console.log("url not found");
+    }
+
+    let defaultOptions = {
+      title: "Are you sure want to do this ?",
+      icon: "warning",
+      method: "GET",
+    };
+
+    // merge options
+    options = { ...defaultOptions, ...options };
+
+    Swal.fire({
+      title: options.title,
+      icon: options.icon,
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Delete",
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: options.method,
+          url: url,
+          success: function (response) {
+            Toast.fire({
+              icon: response?.success ? "success" : "error",
+              title: response?.success ? response.data.msg : response.error,
+            });
+
+            if (typeof OJTDatatables !== "undefined") Livewire.emit("refresh");
+            if (typeof OJTDatatables !== "undefined") OJTDatatables.reload();
+
+            if (typeof callback !== typeof undefined && callback !== false)
+              window[callback]();
+          },
+          error: function (response) {
+            Toast.fire({
+              icon: "error",
+              title: response.responseJSON.message,
+            });
+          },
+        });
+      }
+    });
+  };
   return {
     // public functions
     init: function () {
       setupHeader();
       initFormValidations();
       initModalEditForm();
+      initAjaxConfirm();
       initDeleteConfirm();
       initSelect2Ajax();
       initGenerateToken();

@@ -28,12 +28,17 @@
         "yajra/laravel-datatables-oracle": "~9.0",
         "hexadog/laravel-themes-manager": "^1.8",
         "livewire/livewire": "^2.5",
-        "supianidz/laravel-impersonate": "^2.0",
         "spatie/laravel-medialibrary": "^9.0.0",
         "pion/laravel-chunk-upload": "^1.4",
-        "nwidart/laravel-modules": "^8.2"
+        "nwidart/laravel-modules": "^8.2",
+        "propaganistas/laravel-phone": "^4.3",
+        "spatie/laravel-sluggable": "^3.1",
+        "spatie/crypto": "^2.0",
+        "octopyid/laravel-impersonate": "2",
+        "spatie/laravel-database-mail-templates": "^3.4"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.6",
         "nunomaduro/phpinsights": "^2.0",
         "orchestra/testbench": "^6.0",
         "phpunit/phpunit": "^9.0"

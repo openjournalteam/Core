@@ -7,6 +7,7 @@ namespace OpenJournalTeam\Core\Providers;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use OpenJournalTeam\Core\Http\Middleware\Authenticate;
+use OpenJournalTeam\Core\Http\Middleware\LogHandler;
 use OpenJournalTeam\Core\Models\Role;
 
 class RouteServiceProvider extends ServiceProvider
@@ -62,7 +63,6 @@ class RouteServiceProvider extends ServiceProvider
         $middleware = array_merge(config('core.middleware'), [Authenticate::class, 'role:' . Role::SUPER_ADMIN]);
 
         Route::group([
-            'namespace' => 'OpenJournalTeam\Core\Http\Controllers\Admin',
             'prefix' => config('core.path') . '/admin',
             'as' => 'core.admin.',
             'middleware' => $middleware,

@@ -31,7 +31,7 @@ class MenuController extends AdminController
 
     $this->clearCache();
 
-    return response()->json(new JsonResponse(['msg' => 'Remove Menu Success..']));
+    return response_success(['msg' => 'Remove Menu Success..']);
   }
 
   public function save(Request $request)
@@ -53,8 +53,6 @@ class MenuController extends AdminController
       ], 422);
     }
 
-
-
     $show = $request->input('show') ? 1 : 0;
     $order = $request->input('order') ?: Menu::where('parent_id', $request->input('parent_id', 0))->max('order') + 1;
 
@@ -69,7 +67,6 @@ class MenuController extends AdminController
         'order' => $order,
         'route' => $request->input('route'),
         'show' => $show,
-        'permission' => $request->input('permission'),
       ]
     );
 
@@ -110,7 +107,7 @@ class MenuController extends AdminController
 
     $this->clearCache();
 
-    $menus = Menu::whereIn('id', $ids)->get();
+    $menus = Menu::select(['id', 'order', 'name', 'token'])->whereIn('id', $ids)->get();
 
     foreach ($menus as $key => $menu) {
       $menus[$key]->order = array_search($menu->id, $ids) + 1;

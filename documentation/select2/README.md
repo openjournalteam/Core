@@ -18,11 +18,11 @@ See [data-* attributes](https://select2.org/configuration/data-attributes).
 ## Example Select2 with Ajax request
 ```html
 <select class="form-select form-select-solid" 
-    data-control="select2ajax"
+    data-control="select2"
     data-width="100%" 
     data-dropdown-parent="#modal-form-customer"
     data-placeholder="Select an option" data-allow-clear="true"
-    data-ajax--url="admin/role/options" 
+    data-ajax--url="{{URL}}" 
     data-ajax--delay="700" multiple>
 </select>
 ```

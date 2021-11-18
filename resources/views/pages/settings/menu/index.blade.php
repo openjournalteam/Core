@@ -16,7 +16,7 @@
     @livewire('core:menu')
 </div>
 
-<div class="modal modal-blur fade" id="modal-form-menu" tabindex="-1" aria-hidden="true">
+<div class="modal  fade" id="modal-form-menu" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form action="{{ route('core.admin.menu.save') }}" method="POST" class="ajax_form" callback="refreshMenu"
@@ -39,14 +39,13 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Route</label>
-                        <input name="route" type="text" class="form-control" placeholder="Enter Route">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Permission</label>
-                        <select name="permission" class="form-select form-select-solid" data-control="select2ajax"
-                            data-width="100%" data-dropdown-parent="#modal-form-menu"
-                            data-placeholder="Select permission" data-allow-clear="true"
-                            data-ajax--url="{{ route('core.admin.menu.permission_options') }}" data-ajax--delay="500">
+                        <select name="route" data-control="select2" data-dropdown-parent="#modal-form-menu"
+                            data-placeholder="Select route" data-allow-clear="true" class="form-select"
+                            data-width="100%" required>
+                            <option></option>
+                            @foreach (Route::getRoutes()->getRoutesByName() as $key => $value)
+                            <option value="{{ $key }}">{{ $key }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="mb-3 row align-items-center">
@@ -70,7 +69,7 @@
     </div>
 </div>
 
-<div class="modal modal-blur fade" id="modal-form-submenu" tabindex="-1" aria-hidden="true">
+<div class="modal  fade" id="modal-form-submenu" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form action="{{ route('core.admin.menu.save') }}" method="POST" class="ajax_form" callback="refreshMenu"
@@ -101,14 +100,13 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Route</label>
-                        <input name="route" type="text" class="form-control" placeholder="Enter Route">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Permission</label>
-                        <select name="permission" class="form-select form-select-solid" data-control="select2ajax"
-                            data-width="100%" data-dropdown-parent="#modal-form-submenu"
-                            data-placeholder="Select permission" data-allow-clear="true"
-                            data-ajax--url="{{ route('core.admin.menu.permission_options') }}" data-ajax--delay="500">
+                        <select name="route" data-control="select2" data-dropdown-parent="#modal-form-submenu"
+                            data-placeholder="Select route" data-allow-clear="true" class="form-select"
+                            data-width="100%" required>
+                            <option></option>
+                            @foreach (Route::getRoutes()->getRoutesByName() as $key => $value)
+                            <option value="{{ $key }}">{{ $key }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="mb-3 row align-items-center">
