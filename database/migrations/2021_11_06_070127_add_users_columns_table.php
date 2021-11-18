@@ -14,7 +14,6 @@ class AddUsersColumnsTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('status')->default(1)->after('remember_token');
             $table->string('username')->unique()->after('email');
         });
     }
