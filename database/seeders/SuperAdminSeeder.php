@@ -18,6 +18,7 @@ class SuperAdminSeeder extends Seeder
     {
         $userModel = config('auth.providers.users.model');
         $user = $userModel::create([
+            'username' => 'sadmin',
             'name' => 'Super Admin',
             'email' => 'admin@opensynergic.com',
             'password' => Hash::make('coklatmanis'),
