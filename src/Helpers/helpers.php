@@ -42,6 +42,14 @@ if (!function_exists('render_component')) {
     }
 }
 
+if (!function_exists('add_module_style')) {
+    function add_module_style($href, $async = false)
+    {
+        $href = 'modules/' . $href;
+        return Core::addStyle($href, $async);
+    }
+}
+
 if (!function_exists('add_style')) {
     /**
      * Add style resource to template
