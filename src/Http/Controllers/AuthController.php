@@ -58,11 +58,10 @@ class AuthController extends BaseController
     public function login(Request $request)
     {
         $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-
         $credentials = [$fieldType => $request->email, 'password' => $request->password];
 
         // User tidak aktif, tidak bisa login
-        $user = User::where($fieldType, $request->email)->where('status', User::ACTIVE)->firstOr(fn () => false);
+        $user = User::where($fieldType, $request->email)->firstOr(fn () => false);
 
         if (!$user) {
             return response_error("Email or Password incorrect");
