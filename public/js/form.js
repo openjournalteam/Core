@@ -110,7 +110,7 @@ var OJTForm = (function () {
         xhr.done(function (response) {
           if (typeof OJTDatatables !== "undefined") OJTDatatables.reload();
 
-          if (Livewire) Livewire.emit("refresh");
+          if (typeof Livewire !== "undefined") Livewire.emit("refresh");
 
           let dropzoneElement = $(form).find(".dropzones");
           if (dropzoneElement.length > 0) {
@@ -160,55 +160,15 @@ var OJTForm = (function () {
 
     $.each(json, function (key, value) {
       if (!value) return;
-      // var input = form.find(`[name^="${key}"]`);
+
       var input = form.find(`[name="${key}"]`);
+      var dropzoneElement = document.querySelector(
+        `div.dropzones[data-media="${key}"]`
+      );
       input = input.length > 0 ? input : form.find(`[name="${key}[]"]`);
 
-      if (key == "attachment") {
-        let dropzoneElement = $(form).find(".dropzones");
-        if (dropzoneElement.length == 0) return;
-
-        let dz = Dropzone.forElement(dropzoneElement[0]);
-        let acceptMimeTypeImage = [
-          "image/jpeg",
-          "image/png",
-          "image/gif",
-          "image/bmp",
-          "image/tiff",
-          "image/webp",
-          "image/vnd.adobe.photoshop",
-          "image/x-icon",
-        ];
-        value.forEach(function (media) {
-          let mockFile = {
-            uuid: media.uuid,
-            name: media.name,
-            size: media.size,
-            mimeType: media.mime_type,
-            accepted: true,
-          };
-
-          dz.displayExistingFile(mockFile, media.url);
-
-          let dom = $(mockFile.previewElement);
-
-          if (!acceptMimeTypeImage.includes(media.mime_type)) {
-            dom.find("[data-dz-thumbnail]").remove();
-          }
-          dom.addClass("dz-success");
-          dom.addClass("dz-complete");
-          dom.find(".progress").hide();
-          dz.files.push(mockFile);
-        });
-
-        if (
-          dz.options.maxFiles != null &&
-          dz.files.length >= dz.options.maxFiles
-        ) {
-          dropzoneElement.find(".fileinput-button").hide();
-        }
-
-        return;
+      if (dropzoneElement?.dropzone && typeof OJTDropzones !== "undefined") {
+        OJTDropzones.mockFile(dropzoneElement, value);
       }
 
       if (input.data("control") == "select2ajax") {
@@ -259,6 +219,13 @@ var OJTForm = (function () {
         iti.setCountry(value);
         return;
       }
+
+      // for summernote
+      if (input.data("control") == "summernote") {
+        input.summernote("reset");
+        input.summernote("pasteHTML", value);
+      }
+
       input.val(value);
       return;
     });
@@ -306,6 +273,11 @@ var OJTForm = (function () {
       form.find("input[name='id'][type='hidden']").removeAttr("value");
       form.find("select[data-control='select2ajax']").empty();
 
+      // for summernote
+      if (form.find("[data-control='summernote']").length > 0)
+        form.find("[data-control='summernote']").summernote("reset");
+
+      // dropzone
       let dropzoneElement = form.find(".dropzones");
       dropzoneElement.find(".fileinput-button").show();
 
@@ -315,7 +287,7 @@ var OJTForm = (function () {
       }
     });
   };
-
+  
   var initDeleteConfirm = function () {
     $(document).on(
       "click",
@@ -417,12 +389,90 @@ var OJTForm = (function () {
     });
   };
 
+  var initAjaxConfirm = function () {
+    $(document).on("click", "[data-control='confirm']", function (e) {
+      e.preventDefault();
+
+      let url = $(this).attr("href") ?? $(this).data("url");
+      if (typeof url === "undefined" || url === "#") {
+        return console.log("Attribute href or data-url not found");
+      }
+
+      let options = {};
+      if ($(this).attr("title") ?? $(this).data("title")) {
+        options.title = $(this).attr("title") ?? $(this).data("title");
+      }
+
+      if ($(this).attr("icon") ?? $(this).data("icon")) {
+        options.icon = $(this).attr("icon") ?? $(this).data("icon");
+      }
+
+      if ($(this).attr("callback") || $(this).data("callback")) {
+        options.callback = $(this).attr("callback") ?? $(this).data("callback");
+      }
+
+      if ($(this).attr("method") || $(this).data("method")) {
+        options.method = $(this).attr("method") ?? $(this).data("method");
+      }
+
+      ajaxConfirm(url, options);
+    });
+  };
+  var ajaxConfirm = function (url, options) {
+    if (url === "undefined") {
+      return console.log("url not found");
+    }
+
+    let defaultOptions = {
+      title: "Are you sure want to do this ?",
+      icon: "warning",
+      method: "GET",
+    };
+
+    // merge options
+    options = { ...defaultOptions, ...options };
+
+    Swal.fire({
+      title: options.title,
+      icon: options.icon,
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Delete",
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: options.method,
+          url: url,
+          success: function (response) {
+            Toast.fire({
+              icon: response?.success ? "success" : "error",
+              title: response?.success ? response.data.msg : response.error,
+            });
+
+            if (typeof OJTDatatables !== "undefined") Livewire.emit("refresh");
+            if (typeof OJTDatatables !== "undefined") OJTDatatables.reload();
+
+            if (typeof callback !== typeof undefined && callback !== false)
+              window[callback]();
+          },
+          error: function (response) {
+            Toast.fire({
+              icon: "error",
+              title: response.responseJSON.message,
+            });
+          },
+        });
+      }
+    });
+  };
   return {
     // public functions
     init: function () {
       setupHeader();
       initFormValidations();
       initModalEditForm();
+      initAjaxConfirm();
       initDeleteConfirm();
       initSelect2Ajax();
       initGenerateToken();

@@ -13,7 +13,7 @@ class AttachmentManager
    *
    * @return string
    */
-  public function getEncryptFromPath($path)
+  public static function getEncryptFromPath($path)
   {
     return Crypt::encryptString($path);
   }
@@ -25,12 +25,25 @@ class AttachmentManager
    *
    * @return string
    */
-  public function getPathFromEncrypt($encrypt)
+  public static function getPathFromEncrypt($encrypt)
   {
     if (!trim($encrypt)) {
       throw new \Exception('Encrypted path is empty');
     }
 
     return Crypt::decryptString($encrypt);
+  }
+
+  public static function dropzoneData($medias)
+  {
+    return $medias->map(function ($media) {
+      return [
+        'uuid' => $media->uuid,
+        'name' => $media->file_name,
+        'url' => $media->getUrl(),
+        'size' => $media->size,
+        'mime_type' => $media->mime_type,
+      ];
+    });
   }
 }

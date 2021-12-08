@@ -44,7 +44,7 @@ class ModuleServiceProvider extends ServiceProvider
         $paths = Cache::remember('service_providers_module_path', $this->cacheTime, fn () => glob(app_path('Modules/*/Providers/*.php')));
 
         foreach ($paths as $path) {
-            $class = Str::replace('/', '\\', 'App/' . Str::between($path, 'app/', '.php'));
+            $class = Str::replace('/', '\\', 'App/' . Str::between($path, 'app' . DIRECTORY_SEPARATOR, '.php'));
             $this->app->register($class);
         };
     }

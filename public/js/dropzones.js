@@ -2,9 +2,34 @@
 // Class definition
 
 var OJTDropzones = (function () {
-  var init = function (dom) {
+  var options = {
+    url: baseUrl + "/attachment",
+    maxFilesize: 10,
+    acceptedFiles:
+      ".csv,.txt,.xlx,.xls,.pdf,.gif,.jpeg,.jpg,.png,.pdf,.gif,.xls,.xlsx,.txt,.geojson,.doc,.docx",
+    headers: {
+      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+    },
+    maxFiles: 1,
+    thumbnailWidth: 400,
+    thumbnailHeight: 400,
+    thumbnailMethod: "contain",
+    autoQueue: true,
+    chunking: true,
+    chunkSize: 1024 * 1024 * 10, // 10 MB
+  };
+
+  var mergeOptions = function (...objs) {
+    return $.extend(options, ...objs);
+  };
+
+  var initUsingJsTemplate = function (dom) {
     var fileInputId = "fileinput_" + OJTApp.randomstring();
-    var template = `<div class="dropzones">
+    var name = $(dom).attr("name") ?? "file";
+    var placeholder =
+      $(dom).attr("placeholder") ??
+      "Drag & Drop your files or&nbsp;<u>Browse</u>";
+    var template = `<div class="dropzones" data-media="${name}">
       <div class="dropzone-template m-1 p-1">
           <div class="file row align-items-center">
               <div class="col-8">
@@ -35,30 +60,23 @@ var OJTDropzones = (function () {
       </div>
       <div class="d-grid">
           <span class="w-100 fileinput-button my-2 text-center" id="${fileInputId}">
-              Drag & Drop your files or&nbsp;<u>Browse</u>
+              ${placeholder}
           </span>
       </div>
     </div>`;
     let jqDom = $(dom);
     // Get option from dom
     var options = {
-      url: jqDom.data("url") ?? "/attachment",
+      url: jqDom.data("url") ?? baseUrl + "/attachment",
       maxFilesize: jqDom.data("max-file-size") ?? 10,
       acceptedFiles:
         jqDom.attr("accept") ??
         ".csv,.txt,.xlx,.xls,.pdf,.gif,.jpeg,.jpg,.png,.pdf,.gif,.xls,.xlsx,.txt,.geojson,.doc,.docx",
-      headers: {
-        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-      },
       maxFiles: jqDom.attr("multiple") ? null : 1,
-      thumbnailWidth: 400,
-      thumbnailHeight: 400,
-      thumbnailMethod: "contain",
-      autoQueue: true,
-      chunking: true,
-      chunkSize: 1024 * 1024 * 10, // 10 MB
       clickable: "#" + fileInputId, // Define the element that should be used as click trigger to select files.
     };
+
+    options = mergeOptions(options);
 
     let parent = jqDom.parent();
 
@@ -66,6 +84,11 @@ var OJTDropzones = (function () {
     jqDom.replaceWith(template);
     jqDom = parent.find(".dropzones");
 
+    return init(name, jqDom, options);
+  };
+
+  var init = function (inputName, jqDom, options) {
+    if (!(jqDom instanceof jQuery)) jqDom = $(jqDom);
     // Get the template HTML and remove it from the document template HTML and remove it from the doument
     var previewNode = jqDom.find(".dropzone-template")[0];
     var previewTemplate = previewNode.parentNode.innerHTML;
@@ -88,8 +111,18 @@ var OJTDropzones = (function () {
     myDropzone.on("success", function (file, response) {
       $(file.previewElement).find(".progress").fadeOut();
 
-      let fileName = this.options.maxFiles == 1 ? "file" : "file[]";
+      // Add download link
+      if ($(file.previewElement).find("[data-dz-download]").length > 0) {
+        $(file.previewElement)
+          .find("[data-dz-download]")
+          .attr(
+            "href",
+            baseUrl + "/attachment/download_temporary_file/" + response
+          );
+      }
 
+      // Add hidden input
+      let fileName = this.options.maxFiles == 1 ? inputName : inputName + "[]";
       $(file.previewElement).append(
         `<input type="hidden" name="${fileName}" value="${file.xhr.responseText}" />`
       );
@@ -130,15 +163,59 @@ var OJTDropzones = (function () {
           file.previewElement.remove();
         });
       }
+      this.files.length = 0;
     });
 
     return myDropzone;
   };
 
-  var inits = function () {
+  var initJsTemplates = function () {
     $('[data-control="dropzone"][type="file"]').each(function () {
-      init(this);
+      initUsingJsTemplate(this);
     });
+  };
+
+  var mockFile = function (elm, values) {
+    let dz = Dropzone.forElement(elm);
+    let acceptMimeTypeImage = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/bmp",
+      "image/tiff",
+      "image/webp",
+      "image/vnd.adobe.photoshop",
+      "image/x-icon",
+    ];
+    values.forEach(function (media) {
+      let mockFile = {
+        uuid: media.uuid,
+        name: media.name,
+        size: media.size,
+        mimeType: media.mime_type,
+        accepted: true,
+      };
+
+      dz.displayExistingFile(mockFile, media.url);
+      let previewElementJq = $(mockFile.previewElement);
+
+      if (!acceptMimeTypeImage.includes(media.mime_type)) {
+        previewElementJq.find("[data-dz-thumbnail]").remove();
+      }
+      previewElementJq
+        .find("[data-dz-download]")
+        .attr("href", baseUrl + "/attachment/download/" + media.uuid);
+      previewElementJq.addClass("dz-success");
+      previewElementJq.addClass("dz-complete");
+      previewElementJq.find(".progress").hide();
+      dz.files.push(mockFile);
+    });
+
+    if (dz.options.maxFiles != null && dz.files.length >= dz.options.maxFiles) {
+      $(elm).find(".fileinput-button").hide();
+    }
+
+    return dz;
   };
 
   var deleteTemporaryFile = function (xhr) {
@@ -156,15 +233,18 @@ var OJTDropzones = (function () {
   };
 
   return {
-    init: function () {
-      inits();
+    firstInit: function () {
+      initJsTemplates();
     },
-    initDropzone: function (dom) {
-      init(dom);
+    initUsingJsTemplate: function (dom) {
+      initUsingJsTemplate(dom);
+    },
+    mockFile: function (dom, values) {
+      mockFile(dom, values);
     },
   };
 })();
 
 Dropzone.autoDiscover = false;
 
-OJTDropzones.init();
+OJTDropzones.firstInit();

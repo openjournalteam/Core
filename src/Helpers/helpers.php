@@ -1,7 +1,6 @@
 <?php
 
-
-
+use Illuminate\View\Component;
 use OpenJournalTeam\Core\Core;
 
 if (!function_exists('user')) {
@@ -48,6 +47,30 @@ if (!function_exists('render')) {
     }
 }
 
+if (!function_exists('render_livewire')) {
+    function render_livewire($view)
+    {
+        return view($view)
+            ->extends('core::template.index')
+            ->section('content');
+    }
+}
+
+if (!function_exists('render_component')) {
+    function render_component(Component $component)
+    {
+        return $component->render()->with($component->data());
+    }
+}
+
+if (!function_exists('add_module_style')) {
+    function add_module_style($href, $async = false)
+    {
+        $href = 'modules/' . $href;
+        return Core::addStyle($href, $async);
+    }
+}
+
 if (!function_exists('add_style')) {
     /**
      * Add style resource to template
@@ -87,11 +110,18 @@ if (!function_exists('response_success')) {
 }
 
 if (!function_exists('response_error')) {
-    function response_error($error, $status_code = 500)
+    function response_error($error, $status_code = 422)
     {
         return response()->json([
             'success' => false,
             'error' => $error
         ], $status_code);
+    }
+}
+
+if (!function_exists('current_user_roles')) {
+    function current_user_roles()
+    {
+        return auth()->user()->roles;
     }
 }

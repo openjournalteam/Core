@@ -42,8 +42,6 @@ class Role extends Models
     static function getParentConstants()
     {
         $rc = new \ReflectionClass(get_parent_class(static::class));
-        $consts = $rc->getConstants();
-
-        return $consts;
+        return $rc->getConstants();
     }
 }

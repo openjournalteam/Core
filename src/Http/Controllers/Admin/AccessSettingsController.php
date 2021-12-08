@@ -89,14 +89,12 @@ class AccessSettingsController extends AdminController
     public function user_save(Request $request)
     {
         $validationArray = [
+            'username' => ['required', 'string', 'max:255', 'unique:users', 'regex:/^\S*$/u'],
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
         ];
 
-        $inputArray = [
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-        ];
+        $inputArray = $request->only(['username', 'name', 'email']);
 
         if ($request->input('password')) {
             $inputArray = array_merge($inputArray, [
@@ -295,7 +293,7 @@ class AccessSettingsController extends AdminController
             return abort(401);
         }
 
-        if ($role->name === Auth::ROLE_ADMIN) {
+        if ($role->name === Role::SUPER_ADMIN) {
             return abort(401, 'Admin role cant be removed');
         }
 
@@ -308,14 +306,7 @@ class AccessSettingsController extends AdminController
     {
         $search = $request->input('search');
 
-        $roles = Role::orderBy('name')->select(['id', 'name'])->where('name', 'like', '%' . $search . '%')->limit(5)->get();
-
-        $roles = $roles->map(function ($role) {
-            return [
-                'id' => $role['id'],
-                'text' => $role['name'],
-            ];
-        });
+        $roles = Role::orderBy('name')->select(['id', 'name as text'])->where('name', 'like', '%' . $search . '%')->limit(5)->get();
 
         return response()->json([
             'results' => $roles,

@@ -29,20 +29,21 @@ class AuthController extends BaseController
         if ($request->ajax()) {
             // Ajax Request here
             $request->validate([
+                'username' => ['required', 'string', 'max:255', 'unique:users', 'regex:/^\S*$/u'],
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => ['required', Rules\Password::defaults()],
             ]);
 
             $userModel = config('auth.providers.users.model', User::class);
-
             $user = $userModel::create([
+                'username' => $request->username,
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
 
-            $user->assignRole(Role::SUPER_ADMIN);
+            $user->assignRole(Role::USER);
 
             Auth::login($user);
 
@@ -56,7 +57,15 @@ class AuthController extends BaseController
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $credentials = [$fieldType => $request->email, 'password' => $request->password];
+
+        // User tidak aktif, tidak bisa login
+        $user = User::where($fieldType, $request->email)->firstOr(fn () => false);
+
+        if (!$user) {
+            return response_error("Email or Password incorrect");
+        }
 
         // User tidak aktif, tidak bisa login
         $user = User::where('email', $request->email)->where('status', User::ACTIVE)->firstOr(fn () => false);
