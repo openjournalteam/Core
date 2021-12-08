@@ -61,7 +61,7 @@ class MenuSeeder extends Seeder
         DB::table('menus')->insert([
             'token' => Str::random(40),
             'parent_id' => 2,
-            'name' => 'Plugins',
+            'name' => 'List Plugins',
             'order' => 2,
             'route' => 'core.admin.plugins.index',
             'show' => 1,
