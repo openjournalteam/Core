@@ -1,13 +1,13 @@
 <script>
     @if (config('core.path'))
         const baseUrl = "{{ url('/') . '/' . config('core.path') }}";
-        const apiUrl = baseUrl + '/api/v1';
+        const apiUrl = baseUrl.replace("/{{config('core.path') }}", '') + '/api/v1';
     @else
         const baseUrl = "{{ url('/') }}";
         const apiUrl = baseUrl + '/api/v1';
     @endif
 
-    const adminUrl = baseUrl + '/admin';
+    const adminUrl = baseUrl;
 </script>
 
 <!-- Tabler Core -->

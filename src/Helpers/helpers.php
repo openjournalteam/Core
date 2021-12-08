@@ -11,6 +11,27 @@ if (!function_exists('user')) {
     }
 }
 
+if (!function_exists('getDirContents')) {
+    function getDirContents($dir, $includeHiddenFiles = false, &$results = array())
+    {
+        $files = scandir($dir);
+
+        foreach ($files as $key => $value) {
+            if (!$includeHiddenFiles) {
+                if (strpos($value, '.') === 0) continue;
+            }
+            $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
+            if (!is_dir($path)) {
+                $results[] = $path;
+            } else if ($value != "." && $value != "..") {
+                getDirContents($path, $results);
+                $results[] = $path;
+            }
+        }
+        return $results;
+    }
+}
+
 if (!function_exists('render')) {
     /**
      * Render the template Backend
@@ -34,6 +55,14 @@ if (!function_exists('add_style')) {
     function add_style($href, $async = false)
     {
         return Core::addStyle($href, $async);
+    }
+}
+
+if (!function_exists('add_module_script')) {
+    function add_module_script($src, $defer = false)
+    {
+        $src = 'modules/' . $src;
+        return Core::addScript($src, $defer);
     }
 }
 

@@ -3,11 +3,14 @@
 namespace OpenJournalTeam\Core\Providers;
 
 use OpenJournalTeam\Core\Http\Middleware\Authenticate;
+use OpenJournalTeam\Core\Http\Middleware\LogHandler;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
+use Facade\Ignition\Facades\Flare;
+use Facade\FlareClient\Report;
 
 class ModuleServiceProvider extends ServiceProvider
 {
@@ -27,6 +30,12 @@ class ModuleServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->registerMigration();
         $this->registerServiceProviders();
+
+        // dd(method_exists('Flare', 'registerMiddleware'));
+        // Flare::registerMiddleware(function (Report $report, $next) {
+        //     $context = $report->allContext();
+        //     return $next($report);
+        // });
     }
 
 

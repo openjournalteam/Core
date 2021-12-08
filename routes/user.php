@@ -14,6 +14,10 @@ Route::group(['prefix' => 'attachment', 'as' => 'attachment.'], function (): voi
 });
 
 Route::group(['prefix' => '/list-plugins', 'as' => 'plugins.'], function (): void {
+  /* PluginController */
+
+  /* PluginSettingsController */
+  Route::get('/install/{slug}', 'PluginSettingsController@installPlugin')->name('install');
   Route::get('/', 'PluginSettingsController@index')->name('index');
   Route::post('/toggle', 'PluginSettingsController@toggle')->name('toggle');
   Route::post('/migrate', 'PluginSettingsController@migrate')->name('migrate');

@@ -21,7 +21,7 @@ class MenuSideBarComponent extends Component
   public function render()
   {
     $this->menus = Cache::rememberForever('menus', function () {
-      return Menu::with('childs')->where('parent_id', 0)->orderBy('order')->get();
+      return Menu::with('childs')->where('parent_id', 0)->where('show', 1)->orderBy('order')->get();
     });
 
     return view('core::livewire.menu.sidebar');

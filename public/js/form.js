@@ -21,7 +21,9 @@ var OJTForm = (function () {
     Toast.fire({
       icon: "error",
       title:
-        json?.message ?? "Something went wrong,please contact the developer",
+        json?.message ??
+        json?.error ??
+        "Something went wrong,please contact the developer",
     });
 
     unblockForm(form);
@@ -125,12 +127,19 @@ var OJTForm = (function () {
           }
 
           unblockForm($(form));
-          $(".modal").modal("hide");
+
+          if ($(form)?.attr("prevent-close") !== "true") {
+            $(".modal").modal("hide");
+          }
 
           if (typeof callback !== typeof undefined && callback !== false) {
             if (callback.includes(".")) {
               let callBackArray = callback.split(".");
-              window[callBackArray[0]][callBackArray[1]](form, payLoad);
+              window[callBackArray[0]][callBackArray[1]](
+                form,
+                payLoad,
+                response
+              );
             } else {
               window[callback]();
             }
