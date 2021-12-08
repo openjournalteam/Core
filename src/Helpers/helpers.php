@@ -10,6 +10,27 @@ if (!function_exists('user')) {
     }
 }
 
+if (!function_exists('getDirContents')) {
+    function getDirContents($dir, $includeHiddenFiles = false, &$results = array())
+    {
+        $files = scandir($dir);
+
+        foreach ($files as $key => $value) {
+            if (!$includeHiddenFiles) {
+                if (strpos($value, '.') === 0) continue;
+            }
+            $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
+            if (!is_dir($path)) {
+                $results[] = $path;
+            } else if ($value != "." && $value != "..") {
+                getDirContents($path, $results);
+                $results[] = $path;
+            }
+        }
+        return $results;
+    }
+}
+
 if (!function_exists('render')) {
     /**
      * Render the template Backend

@@ -20,6 +20,11 @@ class CheckPermissionsByRoute
      */
     public function handle(Request $request, \Closure $next)
     {
+        /* Tidak diperlukan di userpanel */
+        if ((bool) env('USER_PANEL')) {
+            return $next($request);
+        }
+
         $current_route = Route::getCurrentRoute()->getName();
         if (empty($current_route)) {
             return $next($request);

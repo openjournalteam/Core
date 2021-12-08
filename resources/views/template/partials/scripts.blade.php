@@ -7,7 +7,7 @@
         const apiUrl = baseUrl + '/api/v1';
     @endif
 
-    const adminUrl = baseUrl + '/admin';
+    const adminUrl = baseUrl;
 </script>
 
 <!-- Tabler Core -->
