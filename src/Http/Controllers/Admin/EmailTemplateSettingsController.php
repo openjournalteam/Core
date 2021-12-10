@@ -51,6 +51,7 @@ class EmailTemplateSettingsController extends AdminController
       'key' => 'required|string|max:255',
       'subject' => 'required|string|max:255',
       'html_template' => 'string',
+      'mailable' => 'required|string|'
     ];
 
     $request->validate($validationArray);

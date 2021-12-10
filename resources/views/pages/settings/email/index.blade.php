@@ -43,12 +43,28 @@
                         </form>
                     </div>
                     <div id="tab-templates" class="tab-pane">
+                        <div class="d-flex justify-content-end pb-2">
+                            <a href="#" class="btn btn-outline-primary" href="#" data-bs-toggle="modal"
+                                data-bs-target="#modal-form-email-template">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <rect x="4" y="4" width="16" height="4" rx="1" />
+                                    <rect x="4" y="12" width="6" height="8" rx="1" />
+                                    <line x1="14" y1="12" x2="20" y2="12" />
+                                    <line x1="14" y1="16" x2="20" y2="16" />
+                                    <line x1="14" y1="20" x2="20" y2="20" />
+                                </svg>
+                                Add Template
+                            </a>
+                        </div>
                         <table class="table table-borderless datatables w-100 table-template"
                             data-ajax="{{ route('core.admin.email.index') }}">
                             <thead>
                                 <tr>
-                                    <th class="text-center" style="width:5%" data-data="DT_RowIndex"
-                                        data-name="index" data-orderable="false" data-searchable="false"
+                                    <th class="text-center" style="width:5%" data-data="DT_RowIndex" data-name="index"
+                                        data-orderable="false" data-searchable="false"
                                         data-class="text-center font-weight-bold">No
                                     </th>
                                     <th data-data="key" class="font-weight-bold">Email Templates
@@ -75,7 +91,8 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="id">
-                    <input type="hidden" name="key">
+                    <input type="hidden" name="key" value="SUBSCRIPTION_MAIL">
+                    <input type="hidden" name="mailable" value="App\Modules\Shop\Mail\Order\SubscriptionMail">
                     <div class="mb-3">
                         <label class="form-label">Description</label>
                         <input name="description" type="text" class="form-control" disabled>
