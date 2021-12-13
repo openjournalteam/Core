@@ -45,7 +45,7 @@
                     <div id="tab-templates" class="tab-pane">
                         <div class="d-flex justify-content-end pb-2">
                             <a href="#" class="btn btn-outline-primary" href="#" data-bs-toggle="modal"
-                                data-bs-target="#modal-form-email-template">
+                                data-bs-target="#modal-form-email-template" id="add-template">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                     stroke-linecap="round" stroke-linejoin="round">
@@ -84,15 +84,14 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form action="{{ route('core.admin.email.save_template') }}" method="POST" data-control="form"
-                autocomplete="off">
+                autocomplete="off" id="form-add-template">
                 <div class="modal-header">
                     <h5 class="modal-title">Form Email Template</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="id">
-                    <input type="hidden" name="key" value="SUBSCRIPTION_MAIL">
-                    <input type="hidden" name="mailable" value="App\Modules\Shop\Mail\Order\SubscriptionMail">
+                    <input type="hidden" name="key">
                     <div class="mb-3">
                         <label class="form-label">Description</label>
                         <input name="description" type="text" class="form-control" disabled>
