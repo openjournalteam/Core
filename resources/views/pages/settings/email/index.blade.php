@@ -102,7 +102,18 @@
                         <input name="subject" type="text" class="form-control" placeholder="Enter subject" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Body</label>
+                        <div class="row">
+                            <div class="col-9 pt-2">
+                                <label class="form-label">Body</label>
+                            </div>
+                            <div class="col-3 pb-2 text-end">
+                                <select class="form-select">
+                                    <option selected disabled>Variable</option>
+                                    <option value="name">Name</option>
+                                    <option value="domain">Domain</option>
+                                  </select>
+                            </div>
+                        </div>
                         <textarea name="html_template" type="text" class="form-control" data-control="summernote"
                             placeholder="Enter body"></textarea>
                     </div>
