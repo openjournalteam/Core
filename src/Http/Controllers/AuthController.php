@@ -60,16 +60,21 @@ class AuthController extends BaseController
         $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
         $credentials = [$fieldType => $request->email, 'password' => $request->password];
 
-        // User tidak aktif, tidak bisa login
         $user = User::where($fieldType, $request->email)->firstOr(fn () => false);
 
         if (!$user) {
             return response_error("Email or Password incorrect");
         }
 
+        // User tidak aktif, tidak bisa login
+        if (!$user->status) {
+            return response_error("Failed to login");
+        }
+
         if (Auth::attempt($credentials, $request->input('remember_me', false))) {
 
             $request->session()->regenerate();
+
 
             $data = ['msg' => 'Login Success..', 'redirect' => route('core.home')];
 
