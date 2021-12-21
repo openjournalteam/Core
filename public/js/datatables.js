@@ -74,7 +74,7 @@ var OJTDatatables = (function () {
     },
     reload: function () {
       data.forEach(function (datatable) {
-        datatable.ajax.reload(null, false);
+        datatable.ajax?.reload(null, false);
       });
     },
     recalc: function () {
