@@ -9,3 +9,4 @@ Route::get('/register', 'AuthController@register')->name('register');
 Route::post('/register', 'AuthController@register')->name('register.post');
 Route::get('/login', 'AuthController@index')->name('login');
 Route::post('/login', 'AuthController@login')->name('login.post');
+Route::get('/login/google', 'AuthController@loginGoogle')->name('login.google');
