@@ -7,7 +7,7 @@
         </div>
     </a>
     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-        <a href="#" class="dropdown-item">Profile &amp; account</a>
+        <a href="{{ route('google.index') }}" class="dropdown-item">Profile &amp; account</a>
         <div class="dropdown-divider"></div>
         <a href="#" class="dropdown-item">Settings</a>
         <a href="{{ route('core.logout') }}" class=" dropdown-item">Logout</a>
