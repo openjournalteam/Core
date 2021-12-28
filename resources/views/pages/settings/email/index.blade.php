@@ -100,20 +100,21 @@
                         <label class="form-label">Subject</label>
                         <input name="subject" type="text" class="form-control" placeholder="Enter subject" required>
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3" x-data="data_variable">
                         <div class="row">
                             <div class="col-9 pt-2">
                                 <label class="form-label">Body</label>
                             </div>
                             <div class="col-3 pb-2 text-end">
-                                <select class="form-select">
+                                <select class="form-select" @change="setVariable()" x-model="value">
                                     <option selected disabled>Variable</option>
                                     <option value="name">Name</option>
-                                    <option value="domain">Domain</option>
+                                    <option value="server">Server</option>
+                                    <option value="days">Days</option>
                                   </select>
                             </div>
                         </div>
-                        <textarea name="html_template" type="text" class="form-control" data-control="summernote"
+                        <textarea name="html_template" type="text" class="form-control" data-control="summernote" id="template"
                             placeholder="Enter body"></textarea>
                     </div>
                 </div>
@@ -125,3 +126,20 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('data_variable', () => ({
+            open: false,
+ 
+            value: '',
+            setVariable() {
+                let template = $("#template");
+
+                template.summernote('editor.restoreRange');
+                template.summernote('editor.focus');
+                template.summernote('editor.insertText', `@{{ ${this.value} }}`);
+            }
+        }))
+    })
+</script>
