@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Laravel\Socialite\Facades\Socialite;
+use OpenJournalTeam\Core\Models\Config;
 use OpenJournalTeam\Core\Models\Role;
 use OpenJournalTeam\Core\Models\User;
 
@@ -84,6 +86,11 @@ class AuthController extends BaseController
         return response_error('Email or Password incorrect');
     }
 
+    public function loginGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
     /**
      * Log the user out of the application.
      */
@@ -96,6 +103,7 @@ class AuthController extends BaseController
         $request->session()->regenerateToken();
 
         if ($request->ajax()) {
+
             $data = ['msg' => 'Logout Success..', 'redirect' => route('core.home')];
 
             return response_success($data);

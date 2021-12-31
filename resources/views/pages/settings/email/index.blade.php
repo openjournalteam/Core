@@ -43,12 +43,28 @@
                         </form>
                     </div>
                     <div id="tab-templates" class="tab-pane">
+                        <div class="d-flex justify-content-end pb-2">
+                            <a href="#" class="btn btn-outline-primary" href="#" data-bs-toggle="modal"
+                                data-bs-target="#modal-form-email-template" id="add-template">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <rect x="4" y="4" width="16" height="4" rx="1" />
+                                    <rect x="4" y="12" width="6" height="8" rx="1" />
+                                    <line x1="14" y1="12" x2="20" y2="12" />
+                                    <line x1="14" y1="16" x2="20" y2="16" />
+                                    <line x1="14" y1="20" x2="20" y2="20" />
+                                </svg>
+                                Add Template
+                            </a>
+                        </div>
                         <table class="table table-borderless datatables w-100 table-template"
                             data-ajax="{{ route('core.admin.email.index') }}">
                             <thead>
                                 <tr>
-                                    <th class="text-center" style="width:5%" data-data="DT_RowIndex"
-                                        data-name="index" data-orderable="false" data-searchable="false"
+                                    <th class="text-center" style="width:5%" data-data="DT_RowIndex" data-name="index"
+                                        data-orderable="false" data-searchable="false"
                                         data-class="text-center font-weight-bold">No
                                     </th>
                                     <th data-data="key" class="font-weight-bold">Email Templates
@@ -68,7 +84,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form action="{{ route('core.admin.email.save_template') }}" method="POST" data-control="form"
-                autocomplete="off">
+                autocomplete="off" id="form-add-template">
                 <div class="modal-header">
                     <h5 class="modal-title">Form Email Template</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -84,9 +100,21 @@
                         <label class="form-label">Subject</label>
                         <input name="subject" type="text" class="form-control" placeholder="Enter subject" required>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Body</label>
-                        <textarea name="html_template" type="text" class="form-control" data-control="summernote"
+                    <div class="mb-3" x-data="data_variable">
+                        <div class="row">
+                            <div class="col-9 pt-2">
+                                <label class="form-label">Body</label>
+                            </div>
+                            <div class="col-3 pb-2 text-end">
+                                <select class="form-select" @change="setVariable()" x-model="value">
+                                    <option selected disabled>Variable</option>
+                                    <option value="name">Name</option>
+                                    <option value="server">Server</option>
+                                    <option value="days">Days</option>
+                                  </select>
+                            </div>
+                        </div>
+                        <textarea name="html_template" type="text" class="form-control" data-control="summernote" id="template"
                             placeholder="Enter body"></textarea>
                     </div>
                 </div>
@@ -98,3 +126,20 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('data_variable', () => ({
+            open: false,
+ 
+            value: '',
+            setVariable() {
+                let template = $("#template");
+
+                template.summernote('editor.restoreRange');
+                template.summernote('editor.focus');
+                template.summernote('editor.insertText', `@{{ ${this.value} }}`);
+            }
+        }))
+    })
+</script>

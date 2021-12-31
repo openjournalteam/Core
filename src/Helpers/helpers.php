@@ -130,3 +130,12 @@ if (!function_exists('current_user_roles')) {
         return auth()->user()->roles;
     }
 }
+
+if (!function_exists('currency_format')) {
+    function currency_format($number, $decimals = 0, $prefix = false)
+    {
+        $hadValue   = ($number != 0 && !is_null($number));
+        $integer    = !$hadValue ? 0 : number_format($number, $decimals, '.', ',');
+        return $prefix ? ($hadValue ? $prefix . $integer : $number) : $integer;
+    }
+}
