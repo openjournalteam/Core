@@ -32,7 +32,9 @@ class GenerateRequiredData extends Command
     $userModel = config('auth.providers.users.model');
     $user = $userModel::create([
       'name' => 'Super Admin',
+      'username' => 'admin',
       'email' => 'admin@opensynergic.com',
+      'status' => 1,
       'password' => Hash::make('admin')
     ]);
 
