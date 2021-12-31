@@ -102,6 +102,11 @@ if (!function_exists('add_script')) {
 if (!function_exists('response_success')) {
     function response_success($data = [])
     {
+        if (!is_array($data)) {
+            $data = [
+                'msg' => $data,
+            ];
+        }
         return response()->json([
             'success' => true,
             'data' => $data

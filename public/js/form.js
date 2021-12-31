@@ -287,7 +287,7 @@ var OJTForm = (function () {
       }
     });
   };
-  
+
   var initDeleteConfirm = function () {
     $(document).on(
       "click",
@@ -306,15 +306,21 @@ var OJTForm = (function () {
     );
   };
 
-  var deleteConfirm = function (url, callback = false) {
-    Swal.fire({
+  var deleteConfirm = function (url, callback = false, swalOptions = false) {
+    var defaultOptions = {
       title: "Are you sure want to delete this ?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Delete",
-    }).then(function (result) {
+    };
+
+    if (swalOptions) {
+      defaultOptions = Object.assign(defaultOptions, swalOptions);
+    }
+
+    Swal.fire(defaultOptions).then(function (result) {
       if (result.isConfirmed) {
         $.ajax({
           type: "DELETE",
@@ -480,8 +486,8 @@ var OJTForm = (function () {
     initFormValidation: function (dom) {
       initFormValidation(dom);
     },
-    deleteConfirm: function (url, callback) {
-      deleteConfirm(url, callback);
+    deleteConfirm: function (url, callback, swalOptions = false) {
+      deleteConfirm(url, callback, swalOptions);
     },
     assignFormInputByJsonKey: function (form, json) {
       assignFormInputByJsonKey(form, json);
