@@ -7,7 +7,6 @@ namespace OpenJournalTeam\Core\Providers;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use OpenJournalTeam\Core\Http\Middleware\Authenticate;
-use OpenJournalTeam\Core\Http\Middleware\LogHandler;
 use OpenJournalTeam\Core\Models\Role;
 
 class RouteServiceProvider extends ServiceProvider

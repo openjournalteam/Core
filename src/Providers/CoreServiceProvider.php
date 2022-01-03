@@ -6,14 +6,15 @@ namespace OpenJournalTeam\Core\Providers;
 
 include_once __DIR__ . '/../Helpers/helpers.php';
 
-use OpenJournalTeam\Core\Core;
 use App\Http\Kernel;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use OpenJournalTeam\Core\Console\GenerateRequiredData;
 use OpenJournalTeam\Core\Console\InstallCommand;
 use OpenJournalTeam\Core\Console\PublishCommand;
 use OpenJournalTeam\Core\Console\PublishModuleAssets;
+use OpenJournalTeam\Core\CoreManager;
 use OpenJournalTeam\Core\Http\Livewire\Admin\MailTemplatePage;
 use OpenJournalTeam\Core\Http\Middleware\CheckPermissionsByRoute;
 use OpenJournalTeam\Core\Http\Middleware\RoleMiddleware;
@@ -59,8 +60,8 @@ class CoreServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../../config/config.php', 'core');
 
         // Register the main class to use with the facade
-        $this->app->singleton('core', function () {
-            return new Core();
+        $this->app->singleton('core', function (): CoreManager {
+            return new CoreManager();
         });
     }
 

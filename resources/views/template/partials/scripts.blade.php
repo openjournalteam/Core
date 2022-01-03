@@ -1,5 +1,5 @@
 <script>
-    @if (config('core.path'))
+  @if (config('core.path'))
         const baseUrl = "{{ url('/') . '/' . config('core.path') }}";
         const apiUrl = baseUrl.replace("/{{config('core.path') }}", '') + '/api/v1';
     @else
@@ -19,8 +19,7 @@
 <script src="{{ asset('vendor/core/libs/pusher/pusher.min.js') }}"></script>
 
 <script>
-
-    // Enable pusher logging - don't include this in production
+  // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
 
     var pusher = new Pusher('b7d9914eb73974f7c387', {
@@ -31,10 +30,10 @@
     channel.bind('my-event', function(data) {
       alert(JSON.stringify(data));
     });
-  </script>
-  
+</script>
+
 @livewireScripts
 
-{!! Core::renderScript() !!}
+{!! \OpenJournalTeam\Core\Core::renderScript() !!}
 
 @yield('scripts')
