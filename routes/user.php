@@ -23,3 +23,7 @@ Route::group(['prefix' => '/list-plugins', 'as' => 'plugins.'], function (): voi
   Route::post('/migrate', 'PluginSettingsController@migrate')->name('migrate');
   Route::post('/delete', 'PluginSettingsController@delete')->name('delete');
 });
+
+Route::group(['prefix' => 'widget', 'as' => 'widget.'], function (): void {
+  Route::post('/update-setting', 'WidgetController@updateSetting')->name('update-setting');
+});

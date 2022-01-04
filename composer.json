@@ -47,7 +47,10 @@
     "autoload": {
         "psr-4": {
             "OpenJournalTeam\\Core\\": "src"
-        }
+        },
+        "files": [
+            "src/Helpers/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

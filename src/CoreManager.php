@@ -2,6 +2,10 @@
 
 namespace OpenJournalTeam\Core;
 
+use Illuminate\Support\Collection;
+use OpenJournalTeam\Core\Models\Config;
+use OpenJournalTeam\Core\Widgets\Widget;
+
 class CoreManager
 {
   protected array $navigationItems = [];
@@ -41,5 +45,35 @@ class CoreManager
     //   });
 
     return $this->navigationItems;
+  }
+
+  public function getWidgets(): ?Collection
+  {
+    $widgets = collect($this->widgets);
+    if ($widgets->isEmpty()) {
+      return null;
+    }
+
+    // get json config from database
+    $widgetConfig = Config::find('widgets');
+    if (!$widgetConfig) {
+      $widgetGroups  = [
+        '1' => [],
+        '2' => [],
+        '3' => [],
+      ];
+
+      foreach ($this->widgets as $widget) {
+        $widgetGroups[$widget::getColumn()][] = $widget;
+      }
+
+      $widgetsGroup = collect($widgetGroups)->map(function ($widgets, $column) {
+        return collect($widgets)
+          ->sortBy(fn (string $widget): int => $widget::getSort())
+          ->filter(fn (string $widget): bool => $widget::getEnabled());
+      });
+
+      return $widgetsGroup;
+    }
   }
 }
