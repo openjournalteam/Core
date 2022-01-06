@@ -10,6 +10,7 @@
         </div>
       </div>
       <div class="col-auto ms-auto d-print-none">
+        @if($widgetGroup)
         <button class="btn btn-outline-primary" wire:click="toggleCustomize()" wire:loading.attr="disabled">
           @if(!$customize)
           <i class="bi bi-pen me-2"></i> Customize
@@ -17,6 +18,7 @@
           <i class="bi bi-check2 me-2"></i> Done
           @endif
         </button>
+        @endif
       </div>
     </div>
   </div>

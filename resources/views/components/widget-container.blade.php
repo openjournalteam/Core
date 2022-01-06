@@ -1,10 +1,11 @@
 <div class="card widget @if(!$widget::getEnabled()) bg-dark-lt @endif" data-id="{{ $widget }}">
   {{-- <div class="card-header" data-bs-toggle="collapse" data-bs-target="#{{ $id }}"> --}}
     <div class="card-header">
-      <div class="">
-        <h3 class="card-title">{{ $widget::getTitle() }}</h3>
-      </div>
+      <h3 class="card-title">{{ $widget::getTitle() }}</h3>
       <div class="card-toolbar">
+        <div class="widget-collapse" data-bs-toggle="collapse" data-bs-target="#{{ $id }}">
+          <i class="bi bi-caret-up-fill"></i>
+        </div>
         @if($customize)
         <label class="form-check form-check-single form-switch">
           <input class="form-check-input" type="checkbox" wire:click='toggleWidget(@json($widget))'
