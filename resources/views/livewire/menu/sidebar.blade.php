@@ -44,15 +44,13 @@
             @endif
         </li>
         @endforeach
-
-
-        @foreach ($hookMenu as $hm)
+        @foreach (\OpenJournalTeam\Core\Facades\Core::getNavigation() as $item)
         <li class="nav-item">
-            <a class="nav-link" href="{{ route($hm['route']) }}">
+            <a class="nav-link" href="{{ $item->getRoute() }}">
                 <span class="nav-link-icon d-inline-block">
-                    {!! $hm['icon'] !!}
+                    {!! $item->getIcon() !!}
                 </span>
-                {{ $hm['name'] }}
+                {{ $item->getLabel()}}
             </a>
         </li>
         @endforeach

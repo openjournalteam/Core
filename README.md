@@ -62,14 +62,6 @@ use Illuminate\Support\Facades\Gate;
 use OpenJournalTeam\Core\Models\Role;
 ```
 
-Seed Menu,Roles, and Super Admin user
-
-```php
-php artisan db:seed --class=MenuSeeder
-php artisan db:seed --class=RolesAndPermissionSeeder
-php artisan db:seed --class=SuperAdminSeeder
-```
-
 Serve Laravel
 
 ```php
