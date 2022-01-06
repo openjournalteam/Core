@@ -51,11 +51,11 @@ class CoreManager
     return $this->navigationItems;
   }
 
-  public function getWidgets($enableOnly = true): ?Collection
+  public function getWidgets($enableOnly = true): array|Collection
   {
     $widgets = collect($this->widgets);
     if ($widgets->isEmpty()) {
-      return null;
+      return [];
     }
 
     if ($enableOnly) {
@@ -71,6 +71,8 @@ class CoreManager
   public function getGroupedWidgets($enableOnly = true)
   {
     $widgets = $this->getWidgets($enableOnly);
+
+    if (!$widgets) return null;
 
     $widgetGroups  = [
       '1' => [],
