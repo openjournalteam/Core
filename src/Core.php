@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace OpenJournalTeam\Core;
 
 use Illuminate\Support\HtmlString;

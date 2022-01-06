@@ -36,7 +36,7 @@
         "spatie/crypto": "^2.0",
         "octopyid/laravel-impersonate": "2",
         "spatie/laravel-database-mail-templates": "^3.4",
-        "pusher/pusher-php-server":"^7.0"
+        "pusher/pusher-php-server": "^7.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
@@ -47,7 +47,10 @@
     "autoload": {
         "psr-4": {
             "OpenJournalTeam\\Core\\": "src"
-        }
+        },
+        "files": [
+            "src/Helpers/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -67,7 +70,7 @@
                 "OpenJournalTeam\\Core\\Providers\\CoreServiceProvider"
             ],
             "aliases": {
-                "Core": "OpenJournalTeam\\Core\\CoreFacade"
+                "Core": "OpenJournalTeam\\Core\\Facades\\Core"
             }
         }
     }

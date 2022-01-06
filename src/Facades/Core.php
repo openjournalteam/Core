@@ -2,14 +2,14 @@
 
 
 
-namespace OpenJournalTeam\Core;
+namespace OpenJournalTeam\Core\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
  * @see \OpenJournalTeam\Core\Skeleton\SkeletonClass
  */
-class CoreFacade extends Facade
+class Core extends Facade
 {
     /**
      * Get the registered name of the component.

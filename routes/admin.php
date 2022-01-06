@@ -1,7 +1,5 @@
 <?php
 
-
-
 use Illuminate\Support\Facades\Route;
 use OpenJournalTeam\Core\Http\Controllers\Admin\{
     AccessSettingsController,
@@ -9,7 +7,6 @@ use OpenJournalTeam\Core\Http\Controllers\Admin\{
     EmailTemplateSettingsController,
     MenuController
 };
-use OpenJournalTeam\Core\Http\Livewire\Admin\MailTemplatePage;
 
 Route::group(['prefix' => 'access', 'as' => 'access.'], function (): void {
     Route::get('/', [AccessSettingsController::class, 'index'])->name('index');

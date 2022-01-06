@@ -45,20 +45,6 @@
     display: none;
 }
 
-
-/* .dropzone-template {
-    background-color: #595E68;
-    color: white;
-} */
-
-/* .dropzone-template.dz-success {
-    background-color: #2fb344 !important;
-}
-
-.dropzone-template.dz-error {
-    background-color: #d9534f !important;
-} */
-
 .dropzone-template.dz-success .dz-success-mark {
     display: block;
 }
@@ -96,4 +82,124 @@
 
 .pagination {
     flex-wrap: wrap;
+}
+
+.widget-container-on-select {
+    border: 3px dashed rgb(12, 12, 12) !important;
+}
+
+/* #dashboard-widgets .widget-container:empty::after {
+    content: 'Drag widgets here';
+    height: 145px;
+    display: grid;
+    place-content: center;
+    border: 3px dashed #ddd;
+} */
+
+#dashboard-widgets .empty-container::after {
+    content: 'Drag widgets here';
+    height: 145px;
+    display: grid;
+    place-content: center;
+    border: 3px dashed #ddd;
+}
+
+/* #dashboard-widgets .empty-container {
+    display: none;
+} */
+
+/* @media (min-width: 992px) {
+
+    #dashboard-widgets .empty-container {
+        display: block;
+    }
+
+    #dashboard-widgets .empty-container::after {
+        display: grid;
+    }
+} */
+
+#dashboard-widgets .widget-container {
+    border: 3px dashed transparent;
+}
+
+.card .card-header .card-toolbar {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0;
+    flex-wrap: wrap;
+}
+
+.card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-wrap: wrap;
+    min-height: 50px;
+    padding: 0 1rem;
+    background-color: transparent;
+    border-bottom: 1px solid #eff2f5;
+}
+
+.card .card-header .card-title {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem;
+    margin-left: 0;
+}
+
+.widget-container .widget {
+    margin-bottom: 1rem;
+}
+
+.widget-container .widget:last-child {
+    margin-bottom: 0;
+}
+
+.widget.widget-drag .widget-block {
+    display: none;
+}
+
+.widget-collapse.collapsed i::before {
+    transform: rotate(180deg);
+}
+
+.accordion.accordion-icon-toggle .accordion-icon {
+    display: flex;
+    flex-shrink: 0;
+    transition: all .2s ease;
+    transform: rotate(90deg);
+    align-items: center;
+    justify-content: center
+}
+
+.accordion.accordion-icon-toggle .accordion-icon i {
+    color: #009ef7
+}
+
+.accordion.accordion-icon-toggle .accordion-icon .svg-icon svg [fill]:not(.permanent):not(g) {
+    transition: fill .3s ease;
+    fill: #009ef7
+}
+
+.accordion.accordion-icon-toggle .accordion-icon .svg-icon svg:hover [fill]:not(.permanent):not(g) {
+    transition: fill .3s ease
+}
+
+.accordion.accordion-icon-toggle .collapsed .accordion-icon {
+    transition: all .2s ease;
+    transform: rotate(0)
+}
+
+.accordion.accordion-icon-toggle .collapsed .accordion-icon i {
+    color: #a1a5b7
+}
+
+.accordion.accordion-icon-toggle .collapsed .accordion-icon .svg-icon svg [fill]:not(.permanent):not(g) {
+    transition: fill .3s ease;
+    fill: #a1a5b7
+}
+
+.accordion.accordion-icon-toggle .collapsed .accordion-icon .svg-icon svg:hover [fill]:not(.permanent):not(g) {
+    transition: fill .3s ease
 }
