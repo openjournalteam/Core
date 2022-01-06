@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Laravel\Socialite\Facades\Socialite;
-use OpenJournalTeam\Core\Models\Config;
 use OpenJournalTeam\Core\Models\Role;
 use OpenJournalTeam\Core\Models\User;
 
