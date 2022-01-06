@@ -34,7 +34,6 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapGuestRoutes(): void
     {
         Route::group([
-            'namespace' => 'OpenJournalTeam\Core\Http\Controllers',
             'prefix' => config('core.path'),
             'as' => 'core.',
             'middleware' => config('core.middleware', ['web']),
@@ -48,7 +47,6 @@ class RouteServiceProvider extends ServiceProvider
         $middleware = array_merge(config('core.middleware'), [Authenticate::class]);
 
         Route::group([
-            'namespace' => 'OpenJournalTeam\Core\Http\Controllers',
             'prefix' => config('core.path'),
             'as' => 'core.',
             'middleware' => $middleware,

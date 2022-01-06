@@ -4,46 +4,59 @@ namespace OpenJournalTeam\Core\Widgets;
 
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use OpenJournalTeam\Core\Facades\Core;
 use OpenJournalTeam\Core\Models\WidgetSetting;
 
-class Widget extends Component
+abstract class Widget extends Component
 {
-    protected static int $column = 1;
+    public static int $column = 1;
 
-    protected static bool $enabled = true;
+    public static bool $enabled = true;
 
-    protected static ?int $sort = null;
+    public static int $sort = 1;
+
+    public static string $title = '';
 
     protected static string $view;
 
-    public static function getSort(): int
+    public function __construct()
     {
-        if ($setting = static::getSetting('sort')) {
-            return $setting->value;
+        parent::__construct();
+
+        if (!static::getSystemSetting()) {
+            WidgetSetting::updateOrCreate([
+                'name' => static::class,
+                'setting' => 'system'
+            ], ['value' => static::getStaticProperties()]);
         }
-        return static::$sort ?? -1;
+    }
+
+    public static function getTitle(): string
+    {
+        return static::$title;
+    }
+
+    public static function getSort(): int|null
+    {
+        if ($setting = static::getSystemSetting()) return $setting->value['sort'];
+        return static::$sort;
+    }
+
+    public static function getSystemSetting()
+    {
+        return Core::getWidgetSettingByName(static::class);
     }
 
     public static function getEnabled(): bool
     {
-        if ($setting = static::getSetting('enabled')) {
-            return filter_var($setting->value, FILTER_VALIDATE_BOOLEAN);
-        }
-
+        if ($setting = static::getSystemSetting()) return filter_var($setting->value['enabled'], FILTER_VALIDATE_BOOLEAN);;
         return static::$enabled;
     }
 
     public static function getColumn(): int
     {
-        if ($setting = static::getSetting('column')) {
-            return $setting->value;
-        }
-        return static::$column;
-    }
-
-    public static function setColumn(int $column): void
-    {
-        static::setSetting('column', $column);
+        if ($setting = static::getSystemSetting()) return (int) $setting->value['column'];
+        return (int) static::$column;
     }
 
     protected function getViewData(): array
@@ -51,26 +64,30 @@ class Widget extends Component
         return [];
     }
 
-    public static function getSetting($key)
-    {
-        return WidgetSetting::where('name', static::class)->where('setting', $key)->first();
-    }
-
-    public static function setSetting($key, $value): void
-    {
-        $setting = static::getSetting($key);
-        if (!$setting) {
-            $setting = new WidgetSetting();
-            $setting->name = static::class;
-            $setting->setting = $key;
-        }
-        $setting->value = $value;
-        $setting->save();
-    }
-
     public function render(): View
     {
-
         return view(static::$view, $this->getViewData());
+    }
+
+    static function getStaticPropertyValue($key)
+    {
+        $rc = new \ReflectionClass(get_called_class());
+        return $rc->getStaticPropertyValue($key);
+    }
+
+    static function setStaticPropertyValue($key, $value)
+    {
+        // return static::$$key = $value;
+        $rc = new \ReflectionClass(get_called_class());
+        return $rc->setStaticPropertyValue($key, $value);
+    }
+
+    static function getStaticProperties()
+    {
+        $rc = new \ReflectionClass(get_called_class());
+        return array_filter($rc->getStaticProperties(), function ($consts) {
+            $ignore = ['view', 'macros'];
+            return !in_array($consts, $ignore);
+        }, ARRAY_FILTER_USE_KEY);
     }
 }

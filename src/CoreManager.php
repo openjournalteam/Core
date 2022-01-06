@@ -3,7 +3,9 @@
 namespace OpenJournalTeam\Core;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use OpenJournalTeam\Core\Models\Config;
+use OpenJournalTeam\Core\Models\WidgetSetting;
 use OpenJournalTeam\Core\Widgets\Widget;
 
 class CoreManager
@@ -11,6 +13,8 @@ class CoreManager
   protected array $navigationItems = [];
 
   protected array $widgets = [];
+
+  protected $widgetSettings = null;
 
   public function registerNavigationItems(array $items): void
   {
@@ -47,33 +51,65 @@ class CoreManager
     return $this->navigationItems;
   }
 
-  public function getWidgets(): ?Collection
+  public function getWidgets($enableOnly = true): ?Collection
   {
     $widgets = collect($this->widgets);
     if ($widgets->isEmpty()) {
       return null;
     }
 
-    // get json config from database
-    $widgetConfig = Config::find('widgets');
-    if (!$widgetConfig) {
-      $widgetGroups  = [
-        '1' => [],
-        '2' => [],
-        '3' => [],
-      ];
+    if ($enableOnly) {
 
-      foreach ($this->widgets as $widget) {
-        $widgetGroups[$widget::getColumn()][] = $widget;
-      }
-
-      $widgetsGroup = collect($widgetGroups)->map(function ($widgets, $column) {
-        return collect($widgets)
-          ->sortBy(fn (string $widget): int => $widget::getSort())
-          ->filter(fn (string $widget): bool => $widget::getEnabled());
+      $widgets = $widgets->filter(function ($widget) {
+        return $widget::getEnabled();
       });
-
-      return $widgetsGroup;
     }
+
+    return $widgets;
+  }
+
+  public function getGroupedWidgets($enableOnly = true)
+  {
+    $widgets = $this->getWidgets($enableOnly);
+
+    $widgetGroups  = [
+      '1' => [],
+      '2' => [],
+      '3' => [],
+    ];
+
+    foreach ($widgets as $widget) {
+      $widgetGroups[$widget::getColumn()][] = $widget;
+    }
+
+    $widgetsGroup = collect($widgetGroups)->map(function ($widgets, $column) {
+      return collect($widgets)
+        ->sortBy(function ($widget, $key) {
+          return $widget::getSort();
+        })->values()->all();
+    });
+
+    return $widgetsGroup;
+  }
+
+  public function getWidgetSettings()
+  {
+    if ($this->widgetSettings) {
+      return $this->widgetSettings;
+    }
+
+    return $this->widgetSettings = WidgetSetting::where('setting', 'system')->get();
+    // return $this->widgetSettings = Cache::remember('widgetSettingSystem', 1, fn () => WidgetSetting::where('setting', 'system')->get());
+  }
+
+  public function getWidgetSettingByName($name)
+  {
+    $widgetSettings = $this->getWidgetSettings();
+    $key = $widgetSettings->search(fn (WidgetSetting $setting): bool => $setting->name === $name);
+    if ($key === false) {
+      return WidgetSetting::where('name', $name)->where('setting', 'system')->first();
+    }
+
+    return $widgetSettings[$key];
   }
 }

@@ -18,6 +18,7 @@ class CreateWidgetSettingsTable extends Migration
             $table->string('name');
             $table->string('setting');
             $table->string('value')->nullable();
+            $table->string('type')->comment('(bool|int|float|string|array)');
             $table->timestamps();
         });
     }

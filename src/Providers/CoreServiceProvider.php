@@ -5,6 +5,7 @@ namespace OpenJournalTeam\Core\Providers;
 // include_once __DIR__ . '/../Helpers/helpers.php';
 
 use App\Http\Kernel;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use OpenJournalTeam\Core\Console\GenerateRequiredData;
@@ -13,6 +14,7 @@ use OpenJournalTeam\Core\Console\PublishCommand;
 use OpenJournalTeam\Core\Console\PublishModuleAssets;
 use OpenJournalTeam\Core\CoreManager;
 use OpenJournalTeam\Core\Http\Livewire\Admin\MailTemplatePage;
+use OpenJournalTeam\Core\Http\Livewire\DashboardPage;
 use OpenJournalTeam\Core\Http\Middleware\CheckPermissionsByRoute;
 use OpenJournalTeam\Core\Http\Middleware\RoleMiddleware;
 use OpenJournalTeam\Core\Http\Middleware\LogHandler;
@@ -52,6 +54,7 @@ class CoreServiceProvider extends ServiceProvider
         }
 
         $this->registerProviders();
+        $this->registerComponents();
         $this->registerLivewireComponent();
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__ . '/../../config/config.php', 'core');
@@ -113,5 +116,11 @@ class CoreServiceProvider extends ServiceProvider
         Livewire::component('core:notifications-dropdown', NotificationsDropdownComponent::class);
         Livewire::component('core:user-dropdown', UserDropdownComponent::class);
         Livewire::component('core:mailtemplatepage', MailTemplatePage::class);
+        Livewire::component(DashboardPage::getName(), DashboardPage::class);
+    }
+
+    private function registerComponents(): void
+    {
+        Blade::componentNamespace('OpenJournalTeam\\Core\\View\\Components', 'core');
     }
 }
