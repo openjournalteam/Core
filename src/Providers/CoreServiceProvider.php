@@ -10,6 +10,8 @@ use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use OpenJournalTeam\Core\Console\GenerateRequiredData;
 use OpenJournalTeam\Core\Console\InstallCommand;
+use OpenJournalTeam\Core\Console\Modules\MakeViewWidget;
+use OpenJournalTeam\Core\Console\Modules\MakeWidget;
 use OpenJournalTeam\Core\Console\PublishCommand;
 use OpenJournalTeam\Core\Console\PublishModuleAssets;
 use OpenJournalTeam\Core\CoreManager;
@@ -96,7 +98,9 @@ class CoreServiceProvider extends ServiceProvider
                 InstallCommand::class,
                 PublishCommand::class,
                 PublishModuleAssets::class,
-                GenerateRequiredData::class
+                GenerateRequiredData::class,
+                MakeWidget::class,
+                MakeViewWidget::class,
             ]);
         }
     }

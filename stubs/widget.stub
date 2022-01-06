@@ -1,0 +1,12 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use OpenJournalTeam\Core\Widgets\Widget;
+
+class $CLASS$ extends Widget
+{
+  public static string $title = '$WIDGETNAME$';
+
+  protected static string $view = '$LOWER_MODULE_NAME$::widgets.$LOWER_NAME$';
+}
