@@ -23,6 +23,7 @@ use Spatie\Permission\Middlewares\PermissionMiddleware;
 use OpenJournalTeam\Core\Http\Livewire\MenuComponent;
 use OpenJournalTeam\Core\Http\Livewire\MenuSideBarComponent;
 use OpenJournalTeam\Core\Http\Livewire\NotificationsDropdownComponent;
+use OpenJournalTeam\Core\Http\Livewire\TicketDetail;
 use OpenJournalTeam\Core\Http\Livewire\UserDropdownComponent;
 
 class CoreServiceProvider extends ServiceProvider
@@ -117,6 +118,7 @@ class CoreServiceProvider extends ServiceProvider
         Livewire::component('core:user-dropdown', UserDropdownComponent::class);
         Livewire::component('core:mailtemplatepage', MailTemplatePage::class);
         Livewire::component(DashboardPage::getName(), DashboardPage::class);
+        Livewire::component('core:ticket:single-ticket', TicketDetail::class);
     }
 
     private function registerComponents(): void
