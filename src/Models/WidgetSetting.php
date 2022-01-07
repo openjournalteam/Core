@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class WidgetSetting extends Model
 {
-  protected $fillable = ['name', 'setting', 'value', 'type'];
+  protected $fillable = ['name', 'setting', 'value', 'type', 'user_id'];
 
   public function getValueAttribute($value)
   {
@@ -86,5 +86,23 @@ class WidgetSetting extends Model
 
       $model->value = $value;
     });
+  }
+
+  public function scopeSettingSystemByUser($query, $userId = false)
+  {
+    if (!$userId) {
+      $userId = user()?->id;
+    }
+
+    return $query->where('setting', 'system')->where('user_id', $userId);
+  }
+
+  public function scopeSettingSystemByNameAndUser($query, $name, $userId = false)
+  {
+    if (!$userId) {
+      $userId = user()?->id;
+    }
+
+    return $query->settingSystemByUser($userId)->where('name', $name);
   }
 }

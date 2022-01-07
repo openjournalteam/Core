@@ -36,7 +36,7 @@ class DashboardPage extends Component
   function updateSortWidget($list, $column)
   {
     foreach ($list as $key => $widget) {
-      $widgetSetting = Core::getWidgetSettingByName($widget) ?? WidgetSetting::where('name', $widget)->where('setting', 'system')->first();
+      $widgetSetting = Core::getWidgetSettingByName($widget) ?? WidgetSetting::settingSystemByUser();
 
       $value = $widgetSetting->value;
       $value['column'] = $column;
@@ -46,7 +46,7 @@ class DashboardPage extends Component
       $widgetSetting->save();
     }
 
-    Cache::forget('widgetSettingSystem');
+    Core::forgetCache();
 
     $this->widgetGroup = Core::getGroupedWidgets(!$this->customize);
   }
@@ -59,6 +59,8 @@ class DashboardPage extends Component
 
     $widgetSetting->value = $value;
     $widgetSetting->save();
+
+    Core::forgetCache();
 
     $this->widgetGroup = Core::getGroupedWidgets(!$this->customize);
   }
