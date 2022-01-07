@@ -4,9 +4,7 @@ namespace OpenJournalTeam\Core;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use OpenJournalTeam\Core\Models\Config;
 use OpenJournalTeam\Core\Models\WidgetSetting;
-use OpenJournalTeam\Core\Widgets\Widget;
 
 class CoreManager
 {
