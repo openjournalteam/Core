@@ -100,8 +100,7 @@ class CoreManager
       return $this->widgetSettings;
     }
 
-    return $this->widgetSettings = WidgetSetting::where('setting', 'system')->get();
-    // return $this->widgetSettings = Cache::remember('widgetSettingSystem', 1, fn () => WidgetSetting::where('setting', 'system')->get());
+    return $this->widgetSettings = Cache::remember('widgetSettingSystem', 14400, fn () => WidgetSetting::where('setting', 'system')->get());
   }
 
   public function getWidgetSettingByName($name)

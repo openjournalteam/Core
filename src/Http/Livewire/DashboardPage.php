@@ -60,6 +60,8 @@ class DashboardPage extends Component
     $widgetSetting->value = $value;
     $widgetSetting->save();
 
+    Cache::forget('widgetSettingSystem');
+
     $this->widgetGroup = Core::getGroupedWidgets(!$this->customize);
   }
 }
