@@ -26,7 +26,8 @@ abstract class Widget extends Component
         if (!static::getSystemSetting()) {
             WidgetSetting::updateOrCreate([
                 'name' => static::class,
-                'setting' => 'system'
+                'setting' => 'system',
+                'user_id' => user()->id,
             ], ['value' => static::getStaticProperties()]);
         }
     }

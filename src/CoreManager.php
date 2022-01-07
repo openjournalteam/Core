@@ -100,7 +100,9 @@ class CoreManager
       return $this->widgetSettings;
     }
 
-    return $this->widgetSettings = Cache::remember('widgetSettingSystem', 14400, fn () => WidgetSetting::where('setting', 'system')->get());
+    $userid = user()->id ?? 0;
+
+    return $this->widgetSettings = Cache::remember('widgetSettingSystem' . $userid, 14400, fn () => WidgetSetting::settingSystemByUser($userid)->get());
   }
 
   public function getWidgetSettingByName($name)
@@ -108,9 +110,16 @@ class CoreManager
     $widgetSettings = $this->getWidgetSettings();
     $key = $widgetSettings->search(fn (WidgetSetting $setting): bool => $setting->name === $name);
     if ($key === false) {
-      return WidgetSetting::where('name', $name)->where('setting', 'system')->first();
+      return WidgetSetting::settingSystemByNameAndUser($name)->first();
     }
 
     return $widgetSettings[$key];
+  }
+
+  public function forgetCache()
+  {
+    $userid = user()->id ?? 0;
+
+    Cache::forget('widgetSettingSystem' . $userid);
   }
 }
