@@ -5,6 +5,7 @@ namespace OpenJournalTeam\Core;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use OpenJournalTeam\Core\Models\WidgetSetting;
+use OpenJournalTeam\Core\Navigation\NavigationItem;
 
 class CoreManager
 {
@@ -26,27 +27,33 @@ class CoreManager
 
   public function getNavigation(): array
   {
-    // $groupedItems = collect($this->navigationItems)
-    //   ->sortBy(fn (Navigation\NavigationItem $item): int => $item->getSort())
-    //   ->groupBy(fn (Navigation\NavigationItem $item): ?string => $item->getGroup());
-
-    // $sortedGroups = $groupedItems
-    //   ->keys()
-    //   ->sortBy(function (?string $group): int {
-    //     if (!$group) {
-    //       return -1;
-    //     }
-
-    //     $sort = array_search($group, $this->navigationGroups);
-
-    //     if ($sort === false) {
-    //       return count($this->navigationGroups);
-    //     }
-
-    //     return $sort;
-    //   });
-
     return $this->navigationItems;
+
+    $groupedItems = collect($this->navigationItems)
+      ->sortBy(fn (NavigationItem $item): int => $item->getSort())
+      ->groupBy(fn (NavigationItem $item): ?string => $item->getGroup());
+
+    $sortedGroups = $groupedItems
+      ->keys()
+      ->sortBy(function (?string $group): int {
+        if (!$group) {
+          return -1;
+        }
+
+        $sort = array_search($group, $this->navigationGroups);
+
+        if ($sort === false) {
+          return count($this->navigationGroups);
+        }
+
+        return $sort;
+      });
+
+    return $sortedGroups
+      ->mapWithKeys(function (?string $group) use ($groupedItems): array {
+        return [$group => $groupedItems->get($group)];
+      })
+      ->toArray();
   }
 
   public function getWidgets($enableOnly = true): array|Collection

@@ -189,7 +189,7 @@ class PluginSettingsController extends BaseController
 
         $json['msg'] = $request->enable === 'true' ? "Plugin {$request->name} enabled." : "Plugin {$request->name} disabled.";
 
-        return response()->json(new JsonResponse($json), Response::HTTP_OK);
+        return response_success($json);
     }
 
     public function delete(Request $request)
@@ -200,7 +200,7 @@ class PluginSettingsController extends BaseController
 
         $json['msg'] = "Plugin {$request->name} deleted.";
 
-        return response()->json(new JsonResponse($json), Response::HTTP_OK);
+        return response_success($json);
     }
 
     public function migrate(Request $request)

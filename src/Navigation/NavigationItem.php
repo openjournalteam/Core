@@ -6,9 +6,9 @@ use Closure;
 
 class NavigationItem
 {
-    protected ?string $group = null;
-
     protected ?Closure $isActiveWhen = null;
+
+    protected ?Closure $subNavigationItems = null;
 
     protected string $icon;
 
@@ -18,20 +18,13 @@ class NavigationItem
 
     protected ?string $route = null;
 
-    final public function __construct()
+    public function __construct()
     {
     }
 
     public static function make(): static
     {
         return new static();
-    }
-
-    public function group(?string $group): static
-    {
-        $this->group = $group;
-
-        return $this;
     }
 
     public function icon(string $icon, bool $isSvg = false): static
@@ -50,6 +43,13 @@ class NavigationItem
     public function isActiveWhen(Closure $callback): static
     {
         $this->isActiveWhen = $callback;
+
+        return $this;
+    }
+
+    public function subNavigationItems(Closure $callback): static
+    {
+        $this->subNavigationItems = $callback;
 
         return $this;
     }
@@ -75,11 +75,6 @@ class NavigationItem
         return $this;
     }
 
-    public function getGroup(): ?string
-    {
-        return $this->group;
-    }
-
     public function getIcon(): string
     {
         return $this->icon;
@@ -95,13 +90,28 @@ class NavigationItem
         return $this->sort ?? -1;
     }
 
-    public function getRoute(): ?string
+    public function getRoute($generateRoute = false): ?string
     {
+        if (!$generateRoute) {
+            return $this->route;
+        }
+
         if ($this->route) {
             return route($this->route);
         }
 
         return '#';
+    }
+
+    public function getSubNavigationItems()
+    {
+        $callback = $this->subNavigationItems;
+
+        if ($callback === null) {
+            return null;
+        }
+
+        return app()->call($callback);
     }
 
     public function isActive(): bool
