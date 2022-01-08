@@ -18,9 +18,9 @@
                         @can($subNav->getRoute())
                         <a class="dropdown-item" href="{{ $subNav->getRoute(true) }}">
                             <span class="nav-link-icon d-inline-block">
-                                {!! $nav->getIcon() !!}
+                                {!! $subNav->getIcon() !!}
                             </span>
-                            {{ $nav->getLabel()}}
+                            {{ $subNav->getLabel()}}
                         </a>
                         @endcan
                         @endforeach
