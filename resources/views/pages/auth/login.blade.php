@@ -28,7 +28,7 @@
                     <button type="submit" class="btn btn-primary btn-block">Sign in</button>
                     <div class="hr-text">or</div>
                     <div>
-                        <a href="{{ url('panel/login/google') }}" class="btn btn-ghost-primary">
+                        <a href="{{ url('panel/google/login') }}" class="btn btn-ghost-primary">
                             <svg class="Bz112c Bz112c-E3DyYd" xmlns="https://www.w3.org/2000/svg" viewBox="0 0 48 48" style="height: 20px; width: 20px; padding-right: 3px">
                                 <path fill="#4285F4"
                                     d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z">

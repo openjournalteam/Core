@@ -2,6 +2,7 @@
 
 namespace OpenJournalTeam\Core\Models;
 
+use App\Modules\Customer\Models\TicketDetail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -50,5 +51,10 @@ class User extends Authenticatable
   public function canImpersonate(): bool
   {
     return $this->hasRole(Role::SUPER_ADMIN);
+  }
+
+  public function customerTicketDetail()
+  {
+    return $this->hasMany(TicketDetail::class);
   }
 }

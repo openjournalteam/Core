@@ -1,1 +1,0 @@
-@include('core::pages.customer.components.ticket')

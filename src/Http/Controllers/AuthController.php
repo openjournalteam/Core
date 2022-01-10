@@ -85,11 +85,6 @@ class AuthController extends BaseController
         return response_error('Email or Password incorrect');
     }
 
-    public function loginGoogle()
-    {
-        return Socialite::driver('google')->redirect();
-    }
-
     /**
      * Log the user out of the application.
      */

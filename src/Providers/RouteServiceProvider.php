@@ -29,7 +29,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapGuestRoutes();
         $this->mapUserRoutes();
         $this->mapAdminRoutes();
-        $this->mapCustomerRoutes();
     }
 
     protected function mapGuestRoutes(): void
@@ -66,18 +65,6 @@ class RouteServiceProvider extends ServiceProvider
             'middleware' => $middleware,
         ], function (): void {
             $this->loadRoutesFrom(__DIR__ . '/../../routes/admin.php');
-        });
-    }
-
-    protected function mapCustomerRoutes(): void
-    {
-        Route::group([
-            // 'namespace' => 'OpenJournalTeam\Core\Http\Controllers',
-            'prefix' => '/customer',
-            'as' => 'core.customer.',
-            'middleware' => config('core.middleware', ['web']),
-        ], function (): void {
-            $this->loadRoutesFrom(__DIR__ . '/../../routes/customer.php');
         });
     }
 }
