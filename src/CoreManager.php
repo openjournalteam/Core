@@ -4,7 +4,9 @@ namespace OpenJournalTeam\Core;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use OpenJournalTeam\Core\Models\Config;
 use OpenJournalTeam\Core\Models\WidgetSetting;
+use OpenJournalTeam\Core\Navigation\NavigationItem;
 
 class CoreManager
 {
@@ -13,6 +15,8 @@ class CoreManager
   protected array $widgets = [];
 
   protected $widgetSettings = null;
+
+  protected $navigationSettings = null;
 
   public function registerNavigationItems(array $items): void
   {
@@ -24,29 +28,40 @@ class CoreManager
     $this->widgets = array_merge($this->widgets, $widgets);
   }
 
-  public function getNavigation(): array
+  public function getNavigation($enableOnly = true): array|Collection
   {
-    // $groupedItems = collect($this->navigationItems)
-    //   ->sortBy(fn (Navigation\NavigationItem $item): int => $item->getSort())
-    //   ->groupBy(fn (Navigation\NavigationItem $item): ?string => $item->getGroup());
+    $sortedItems = collect($this->navigationItems);
 
-    // $sortedGroups = $groupedItems
-    //   ->keys()
-    //   ->sortBy(function (?string $group): int {
-    //     if (!$group) {
-    //       return -1;
-    //     }
+    if ($enableOnly) {
+      $sortedItems = $sortedItems->filter(function ($item) {
+        return $item->getEnabled();
+      });
+    }
 
-    //     $sort = array_search($group, $this->navigationGroups);
+    return $sortedItems->sortBy(fn (NavigationItem $item): int => $item->getSort());
+  }
 
-    //     if ($sort === false) {
-    //       return count($this->navigationGroups);
-    //     }
+  public function getNavigationSettings()
+  {
+    if ($this->navigationSettings) {
+      return $this->navigationSettings;
+    }
 
-    //     return $sort;
-    //   });
+    return $this->navigationSettings = Config::where('key', 'like', 'menu.%')->get();
+  }
 
-    return $this->navigationItems;
+  public function getNavigationSettingByLabel($label)
+  {
+
+    $navSettings = $this->getNavigationSettings();
+    $label = 'menu.' . $label;
+
+    $key = $navSettings->search(fn ($setting): bool => $setting->key === $label);
+    if ($key === false) {
+      return Config::where('key', $label)->first();
+    }
+
+    return $navSettings[$key];
   }
 
   public function getWidgets($enableOnly = true): array|Collection

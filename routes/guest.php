@@ -4,7 +4,7 @@
 
 use Illuminate\Support\Facades\Route;
 use OpenJournalTeam\Core\Http\Controllers\AuthController;
-use OpenJournalTeam\Core\Http\Livewire\DashboardPage;
+use OpenJournalTeam\Core\Http\Livewire\Pages\DashboardPage;
 
 Route::get('/', DashboardPage::class)->name('home');
 Route::get('/register', [AuthController::class, 'register'])->name('register');

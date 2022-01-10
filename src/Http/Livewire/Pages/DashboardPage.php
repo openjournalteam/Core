@@ -1,8 +1,7 @@
 <?php
 
-namespace OpenJournalTeam\Core\Http\Livewire;
+namespace OpenJournalTeam\Core\Http\Livewire\Pages;
 
-use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use OpenJournalTeam\Core\Facades\Core;
 use OpenJournalTeam\Core\Models\WidgetSetting;

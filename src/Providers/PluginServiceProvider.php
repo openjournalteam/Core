@@ -9,8 +9,9 @@ use OpenJournalTeam\Core\Facades\Core;
 
 abstract class PluginServiceProvider extends ServiceProvider
 {
+  protected $moduleName;
 
-  public static string $name;
+  protected $moduleNameLower;
 
   protected array $widgets = [];
 

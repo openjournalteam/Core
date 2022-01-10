@@ -3,22 +3,29 @@
 namespace OpenJournalTeam\Core\Navigation;
 
 use Closure;
+use Illuminate\Support\Str;
+use OpenJournalTeam\Core\Facades\Core;
+use OpenJournalTeam\Core\Models\Config;
 
 class NavigationItem
 {
-    protected ?string $group = null;
-
-    protected ?Closure $isActiveWhen = null;
-
     protected string $icon;
 
     protected string $label;
+
+    protected bool $enabled = true;
+
+    protected ?string $permission = null;
+
+    protected ?Closure $isActiveWhen = null;
+
+    protected ?Closure $subNavigationItems = null;
 
     protected ?int $sort = null;
 
     protected ?string $route = null;
 
-    final public function __construct()
+    public function __construct()
     {
     }
 
@@ -27,11 +34,30 @@ class NavigationItem
         return new static();
     }
 
-    public function group(?string $group): static
+    public function enabled(bool $enabled)
     {
-        $this->group = $group;
+        $this->enabled = $enabled;
 
         return $this;
+    }
+
+    public function getEnabled(): bool
+    {
+        if ($setting = $this->getSetting()) return $setting->value['enabled'];
+
+        return $this->enabled;
+    }
+
+    public function permission(string $permission)
+    {
+        $this->permission = Str::start($permission, 'Menu ');
+
+        return $this;
+    }
+
+    public function getPermission()
+    {
+        return $this->permission;
     }
 
     public function icon(string $icon, bool $isSvg = false): static
@@ -50,6 +76,13 @@ class NavigationItem
     public function isActiveWhen(Closure $callback): static
     {
         $this->isActiveWhen = $callback;
+
+        return $this;
+    }
+
+    public function subNavigationItems(Closure $callback): static
+    {
+        $this->subNavigationItems = $callback;
 
         return $this;
     }
@@ -75,11 +108,6 @@ class NavigationItem
         return $this;
     }
 
-    public function getGroup(): ?string
-    {
-        return $this->group;
-    }
-
     public function getIcon(): string
     {
         return $this->icon;
@@ -92,16 +120,50 @@ class NavigationItem
 
     public function getSort(): int
     {
+        if ($setting = $this->getSetting()) return $setting->value['sort'];
+
         return $this->sort ?? -1;
     }
 
-    public function getRoute(): ?string
+    public function getSetting()
     {
+        $setting = Core::getNavigationSettingByLabel($this->getLabel());
+        if ($setting === null) {
+            $setting = Config::updateOrCreate([
+                'key' => 'menu.' . $this->getLabel(),
+            ], [
+                'value' => [
+                    'enabled' => $this->enabled,
+                    'sort' => $this->sort ?? -1,
+                ],
+            ]);
+        }
+
+        return $setting;
+    }
+
+    public function getRoute($generateRoute = false): ?string
+    {
+        if (!$generateRoute) {
+            return $this->route;
+        }
+
         if ($this->route) {
             return route($this->route);
         }
 
         return '#';
+    }
+
+    public function getSubNavigationItems()
+    {
+        $callback = $this->subNavigationItems;
+
+        if ($callback === null) {
+            return null;
+        }
+
+        return app()->call($callback);
     }
 
     public function isActive(): bool
