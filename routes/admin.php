@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Route;
 use OpenJournalTeam\Core\Http\Controllers\Admin\{
     AccessSettingsController,
     AdministrationController,
-    EmailTemplateSettingsController,
-    MenuController
+    EmailTemplateSettingsController
 };
 use OpenJournalTeam\Core\Http\Livewire\Pages\MenuPages;
 
