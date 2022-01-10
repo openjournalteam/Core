@@ -3,6 +3,7 @@
 namespace OpenJournalTeam\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Config extends Model
 {
@@ -51,10 +52,10 @@ class Config extends Model
     return $value;
   }
 
-  public static function boot()
+  public static function booted()
   {
     parent::boot();
-    self::creating(function ($model) {
+    static::creating(function ($model) {
       $model->type = gettype($model->value);
 
       $value = $model->value;
@@ -90,6 +91,9 @@ class Config extends Model
       }
 
       $model->value = $value;
+    });
+    static::saved(function ($model) {
+      Cache::forget('navigation_settings');
     });
   }
 }

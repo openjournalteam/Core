@@ -2,6 +2,7 @@
 
 namespace OpenJournalTeam\Core\Http\Livewire\Pages;
 
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use OpenJournalTeam\Core\Facades\Core;
 use OpenJournalTeam\Core\Models\WidgetSetting;
@@ -13,6 +14,10 @@ class DashboardPage extends Component
 
   function boot()
   {
+    if (!Auth::check()) {
+      return redirect()->route('core.login');
+    }
+
     $this->widgetGroup = Core::getGroupedWidgets(!$this->customize);
   }
 

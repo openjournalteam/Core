@@ -36,7 +36,6 @@ class MenuPages extends Component
             $navSetting->save();
         }
 
-        Cache::forget('navigation_settings');
 
         $this->emit('refreshMenu');
     }
@@ -51,7 +50,6 @@ class MenuPages extends Component
         $navSetting->value = $value;
         $navSetting->save();
 
-        Cache::forget('navigation_settings');
 
         $this->emit('refreshMenu');
     }
