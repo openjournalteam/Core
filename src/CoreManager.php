@@ -47,7 +47,7 @@ class CoreManager
       return $this->navigationSettings;
     }
 
-    return $this->navigationSettings = Config::where('key', 'like', 'menu.%')->get();
+    return $this->navigationSettings = Cache::remember('navigation_settings', 14440, fn () => Config::where('key', 'like', 'menu.%')->get());
   }
 
   public function getNavigationSettingByLabel($label)
