@@ -61,7 +61,7 @@ class RegisterModuleServiceProvider extends ServiceProvider
             // Route for Logged In User
             Route::group([
                 'prefix' => config('core.path'),
-                'middleware' => array_merge(config('core.middleware'), [Authenticate::class, 'permission_by_route']),
+                'middleware' => array_merge(config('core.middleware'), [Authenticate::class]),
             ], function (): void {
                 $paths = Cache::remember('routes_user_module_path', $this->cacheTime, function () {
                     return glob(app_path('Modules/*/Routes*/user.php'));

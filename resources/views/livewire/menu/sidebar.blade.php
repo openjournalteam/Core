@@ -1,7 +1,7 @@
 <div class="collapse navbar-collapse" id="navbar-menu">
     <ul class="navbar-nav pt-lg-3">
         @foreach (\OpenJournalTeam\Core\Facades\Core::getNavigation() as $nav)
-        @can($nav->getRoute())
+        @if(($nav->getPermission() === null) || user()->can($nav->getPermission()))
         <li class="nav-item @if($subNavs = $nav->getSubNavigationItems()) dropdown @endif">
             <a class="nav-link @if($subNavs) dropdown-toggle @endif" href="{{ $nav->getRoute(true) }}" @if($subNavs)
                 data-bs-toggle="dropdown" @endif role="button" aria-expanded="false">
@@ -15,21 +15,22 @@
                 <div class="dropdown-menu-columns">
                     <div class="dropdown-menu-column">
                         @foreach ($subNavs as $subNav)
-                        @can($subNav->getRoute())
+                        @if(!$subNav->getEnabled()) @continue @endif
+                        @if($subNav->getPermission() === null || user()->can($nav->getPermission()))
                         <a class="dropdown-item" href="{{ $subNav->getRoute(true) }}">
                             <span class="nav-link-icon d-inline-block">
                                 {!! $subNav->getIcon() !!}
                             </span>
                             {{ $subNav->getLabel()}}
                         </a>
-                        @endcan
+                        @endif
                         @endforeach
                     </div>
                 </div>
             </div>
             @endif
         </li>
-        @endcan
+        @endif
         @endforeach
     </ul>
     <div class="mt-auto">

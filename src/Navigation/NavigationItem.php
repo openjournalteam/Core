@@ -3,16 +3,23 @@
 namespace OpenJournalTeam\Core\Navigation;
 
 use Closure;
+use Illuminate\Support\Str;
+use OpenJournalTeam\Core\Facades\Core;
+use OpenJournalTeam\Core\Models\Config;
 
 class NavigationItem
 {
-    protected ?Closure $isActiveWhen = null;
-
-    protected ?Closure $subNavigationItems = null;
-
     protected string $icon;
 
     protected string $label;
+
+    protected bool $enabled = true;
+
+    protected ?string $permission = null;
+
+    protected ?Closure $isActiveWhen = null;
+
+    protected ?Closure $subNavigationItems = null;
 
     protected ?int $sort = null;
 
@@ -25,6 +32,32 @@ class NavigationItem
     public static function make(): static
     {
         return new static();
+    }
+
+    public function enabled(bool $enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getEnabled(): bool
+    {
+        if ($setting = $this->getSetting()) return $setting->value['enabled'];
+
+        return $this->enabled;
+    }
+
+    public function permission(string $permission)
+    {
+        $this->permission = Str::start($permission, 'Menu ');
+
+        return $this;
+    }
+
+    public function getPermission()
+    {
+        return $this->permission;
     }
 
     public function icon(string $icon, bool $isSvg = false): static
@@ -87,7 +120,26 @@ class NavigationItem
 
     public function getSort(): int
     {
+        if ($setting = $this->getSetting()) return $setting->value['sort'];
+
         return $this->sort ?? -1;
+    }
+
+    public function getSetting()
+    {
+        $setting = Core::getNavigationSettingByLabel($this->getLabel());
+        if ($setting === null) {
+            $setting = Config::updateOrCreate([
+                'key' => 'menu.' . $this->getLabel(),
+            ], [
+                'value' => [
+                    'enabled' => $this->enabled,
+                    'sort' => $this->sort ?? -1,
+                ],
+            ]);
+        }
+
+        return $setting;
     }
 
     public function getRoute($generateRoute = false): ?string

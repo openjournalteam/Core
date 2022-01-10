@@ -17,18 +17,18 @@ use OpenJournalTeam\Core\Console\PublishCommand;
 use OpenJournalTeam\Core\Console\PublishModuleAssets;
 use OpenJournalTeam\Core\CoreManager;
 use OpenJournalTeam\Core\Http\Livewire\Admin\MailTemplatePage;
-use OpenJournalTeam\Core\Http\Livewire\DashboardPage;
-use OpenJournalTeam\Core\Http\Middleware\CheckPermissionsByRoute;
+use OpenJournalTeam\Core\Http\Livewire\Pages\DashboardPage;
 use OpenJournalTeam\Core\Http\Middleware\RoleMiddleware;
 use OpenJournalTeam\Core\Http\Middleware\LogHandler;
 use Shohel\Pluggable\PluggableServiceProvider;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
-use OpenJournalTeam\Core\Http\Livewire\MenuComponent;
-use OpenJournalTeam\Core\Http\Livewire\MenuSideBarComponent;
-use OpenJournalTeam\Core\Http\Livewire\NotificationsDropdownComponent;
-use OpenJournalTeam\Core\Http\Livewire\UserDropdownComponent;
+use OpenJournalTeam\Core\Http\Livewire\Pages\MenuPages;
+use OpenJournalTeam\Core\Http\Livewire\Components\MenuSideBarComponent;
+use OpenJournalTeam\Core\Http\Livewire\Components\NotificationsDropdownComponent;
+use OpenJournalTeam\Core\Http\Livewire\Components\UserDropdownComponent;
 use OpenJournalTeam\Core\Models\Permission;
 use Illuminate\Contracts\Auth\Access\Gate;
+use OpenJournalTeam\Core\Facades\Core;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -51,7 +51,6 @@ class CoreServiceProvider extends ServiceProvider
     {
         app()->make('router')->aliasMiddleware('role', RoleMiddleware::class);
         app()->make('router')->aliasMiddleware('permission', PermissionMiddleware::class);
-        app()->make('router')->aliasMiddleware('permission_by_route', CheckPermissionsByRoute::class);
         app()->make('router')->aliasMiddleware('log_handler', LogHandler::class);
     }
 
@@ -74,6 +73,8 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->mergeConfigFrom(__DIR__ . '/../../config/config.php', 'core');
+
         if (!config('core.enabled')) {
             return;
         }
@@ -84,11 +85,19 @@ class CoreServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'core');
-        $this->mergeConfigFrom(__DIR__ . '/../../config/config.php', 'core');
+
+
 
         $this->registerProviders();
         $this->registerComponents();
+        $this->registerLivewirePages();
+        $this->registerNavigationItems();
         $this->registerLivewireComponent();
+    }
+
+    protected function registerNavigationItems()
+    {
+        Core::registerNavigationItems(config('core.navigation', []));
     }
 
 
@@ -133,11 +142,15 @@ class CoreServiceProvider extends ServiceProvider
 
     private function registerLivewireComponent(): void
     {
-        Livewire::component('core:menu', MenuComponent::class);
         Livewire::component('core:menu:sidebar', MenuSideBarComponent::class);
         Livewire::component('core:notifications-dropdown', NotificationsDropdownComponent::class);
         Livewire::component('core:user-dropdown', UserDropdownComponent::class);
         Livewire::component('core:mailtemplatepage', MailTemplatePage::class);
+    }
+
+    private function registerLivewirePages()
+    {
+        Livewire::component(MenuPages::getName(), MenuPages::class);
         Livewire::component(DashboardPage::getName(), DashboardPage::class);
     }
 

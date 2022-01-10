@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenJournalTeam\Core\Http\Livewire;
+namespace OpenJournalTeam\Core\Http\Livewire\Components;
 
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Auth;

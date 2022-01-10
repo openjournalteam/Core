@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenJournalTeam\Core\Http\Livewire;
+namespace OpenJournalTeam\Core\Http\Livewire\Components;
 
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;

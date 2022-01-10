@@ -7,6 +7,7 @@ use OpenJournalTeam\Core\Http\Controllers\Admin\{
     EmailTemplateSettingsController,
     MenuController
 };
+use OpenJournalTeam\Core\Http\Livewire\Pages\MenuPages;
 
 Route::group(['prefix' => 'access', 'as' => 'access.'], function (): void {
     Route::get('/', [AccessSettingsController::class, 'index'])->name('index');
@@ -45,13 +46,7 @@ Route::group(['prefix' => 'administrator', 'as' => 'administrator.'], function (
 });
 
 Route::group(['prefix' => 'menu', 'as' => 'menu.'], function (): void {
-    Route::get('/', [MenuController::class, 'index'])->name('index');
-    Route::post('/save', [MenuController::class, 'save'])->name('save');
-    Route::delete('/delete/{menu:token}', [MenuController::class, 'delete'])->name('delete');
-    Route::get('/edit/{menu:token}', [MenuController::class, 'edit'])->name('edit');
-    Route::post('/sort', [MenuController::class, 'sort'])->name('sort');
-    Route::get('/options', [MenuController::class, 'options'])->name('options');
-    Route::get('/permission_options', [MenuController::class, 'permission_options'])->name('permission_options');
+    Route::get('/', MenuPages::class)->name('index');
 });
 
 
