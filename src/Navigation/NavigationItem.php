@@ -60,9 +60,9 @@ class NavigationItem
         return $this->permission;
     }
 
-    public function icon(string $icon, bool $isSvg = false): static
+    public function icon(string $icon, bool $rawHtml = false): static
     {
-        if ($isSvg) {
+        if ($rawHtml) {
             $this->icon = $icon;
 
             return $this;
@@ -122,7 +122,7 @@ class NavigationItem
     {
         if ($setting = $this->getSetting()) return $setting->value['sort'];
 
-        return $this->sort ?? -1;
+        return $this->sort ?? 99;
     }
 
     public function getSetting()
@@ -134,7 +134,7 @@ class NavigationItem
             ], [
                 'value' => [
                     'enabled' => $this->enabled,
-                    'sort' => $this->sort ?? -1,
+                    'sort' => $this->sort ?? 99,
                 ],
             ]);
         }
