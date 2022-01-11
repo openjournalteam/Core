@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use OpenJournalTeam\Core\Models\Config;
 use OpenJournalTeam\Core\Models\WidgetSetting;
-use OpenJournalTeam\Core\Widgets\Widget;
+use OpenJournalTeam\Core\Navigation\NavigationItem;
 
 class CoreManager
 {
@@ -15,6 +15,8 @@ class CoreManager
   protected array $widgets = [];
 
   protected $widgetSettings = null;
+
+  protected $navigationSettings = null;
 
   public function registerNavigationItems(array $items): void
   {
@@ -26,29 +28,40 @@ class CoreManager
     $this->widgets = array_merge($this->widgets, $widgets);
   }
 
-  public function getNavigation(): array
+  public function getNavigation($enableOnly = true): array|Collection
   {
-    // $groupedItems = collect($this->navigationItems)
-    //   ->sortBy(fn (Navigation\NavigationItem $item): int => $item->getSort())
-    //   ->groupBy(fn (Navigation\NavigationItem $item): ?string => $item->getGroup());
+    $sortedItems = collect($this->navigationItems);
 
-    // $sortedGroups = $groupedItems
-    //   ->keys()
-    //   ->sortBy(function (?string $group): int {
-    //     if (!$group) {
-    //       return -1;
-    //     }
+    if ($enableOnly) {
+      $sortedItems = $sortedItems->filter(function ($item) {
+        return $item->getEnabled();
+      });
+    }
 
-    //     $sort = array_search($group, $this->navigationGroups);
+    return $sortedItems->sortBy(fn (NavigationItem $item): int => $item->getSort());
+  }
 
-    //     if ($sort === false) {
-    //       return count($this->navigationGroups);
-    //     }
+  public function getNavigationSettings()
+  {
+    if ($this->navigationSettings) {
+      return $this->navigationSettings;
+    }
 
-    //     return $sort;
-    //   });
+    return $this->navigationSettings = Cache::remember('navigation_settings', 14440, fn () => Config::where('key', 'like', 'menu.%')->get());
+  }
 
-    return $this->navigationItems;
+  public function getNavigationSettingByLabel($label)
+  {
+
+    $navSettings = $this->getNavigationSettings();
+    $label = 'menu.' . $label;
+
+    $key = $navSettings->search(fn ($setting): bool => $setting->key === $label);
+    if ($key === false) {
+      return Config::where('key', $label)->first();
+    }
+
+    return $navSettings[$key];
   }
 
   public function getWidgets($enableOnly = true)
@@ -71,6 +84,8 @@ class CoreManager
   public function getGroupedWidgets($enableOnly = true)
   {
     $widgets = $this->getWidgets($enableOnly);
+
+    if (!$widgets) return null;
 
     $widgetGroups  = [
       '1' => [],
@@ -98,8 +113,9 @@ class CoreManager
       return $this->widgetSettings;
     }
 
-    return $this->widgetSettings = WidgetSetting::where('setting', 'system')->get();
-    // return $this->widgetSettings = Cache::remember('widgetSettingSystem', 1, fn () => WidgetSetting::where('setting', 'system')->get());
+    $userid = user()->id ?? 0;
+
+    return $this->widgetSettings = Cache::remember('widgetSettingSystem' . $userid, 14400, fn () => WidgetSetting::settingSystemByUser($userid)->get());
   }
 
   public function getWidgetSettingByName($name)
@@ -107,9 +123,16 @@ class CoreManager
     $widgetSettings = $this->getWidgetSettings();
     $key = $widgetSettings->search(fn (WidgetSetting $setting): bool => $setting->name === $name);
     if ($key === false) {
-      return WidgetSetting::where('name', $name)->where('setting', 'system')->first();
+      return WidgetSetting::settingSystemByNameAndUser($name)->first();
     }
 
     return $widgetSettings[$key];
+  }
+
+  public function forgetCache()
+  {
+    $userid = user()->id ?? 0;
+
+    Cache::forget('widgetSettingSystem' . $userid);
   }
 }

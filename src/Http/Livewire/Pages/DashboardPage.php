@@ -1,8 +1,8 @@
 <?php
 
-namespace OpenJournalTeam\Core\Http\Livewire;
+namespace OpenJournalTeam\Core\Http\Livewire\Pages;
 
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use OpenJournalTeam\Core\Facades\Core;
 use OpenJournalTeam\Core\Models\WidgetSetting;
@@ -14,6 +14,10 @@ class DashboardPage extends Component
 
   function boot()
   {
+    if (!Auth::check()) {
+      return redirect()->route('core.login');
+    }
+
     $this->widgetGroup = Core::getGroupedWidgets(!$this->customize);
   }
 
@@ -36,7 +40,7 @@ class DashboardPage extends Component
   function updateSortWidget($list, $column)
   {
     foreach ($list as $key => $widget) {
-      $widgetSetting = Core::getWidgetSettingByName($widget) ?? WidgetSetting::where('name', $widget)->where('setting', 'system')->first();
+      $widgetSetting = Core::getWidgetSettingByName($widget) ?? WidgetSetting::settingSystemByUser();
 
       $value = $widgetSetting->value;
       $value['column'] = $column;
@@ -46,7 +50,7 @@ class DashboardPage extends Component
       $widgetSetting->save();
     }
 
-    Cache::forget('widgetSettingSystem');
+    Core::forgetCache();
 
     $this->widgetGroup = Core::getGroupedWidgets(!$this->customize);
   }
@@ -59,6 +63,8 @@ class DashboardPage extends Component
 
     $widgetSetting->value = $value;
     $widgetSetting->save();
+
+    Core::forgetCache();
 
     $this->widgetGroup = Core::getGroupedWidgets(!$this->customize);
   }

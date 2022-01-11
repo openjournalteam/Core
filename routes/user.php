@@ -7,7 +7,7 @@ use OpenJournalTeam\Core\Http\Controllers\AttachmentController;
 use OpenJournalTeam\Core\Http\Controllers\AuthController;
 use OpenJournalTeam\Core\Http\Controllers\PluginSettingsController;
 use OpenJournalTeam\Core\Http\Controllers\WidgetController;
-use OpenJournalTeam\Core\Http\Livewire\DashboardPage;
+use OpenJournalTeam\Core\Http\Livewire\Pages\DashboardPage;
 
 Route::get('/dashboard', DashboardPage::class)->name('index');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
