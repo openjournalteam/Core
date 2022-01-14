@@ -6,13 +6,14 @@ use App\Modules\Customer\Models\TicketDetail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 use Octopy\LaraPersonate\Models\Impersonate;
 use Spatie\Permission\Traits\HasRoles;
 
 
 class User extends Authenticatable
 {
-  use HasFactory, Notifiable, HasRoles, Impersonate;
+  use HasApiTokens, HasFactory, Notifiable, HasRoles, Impersonate;
 
   const ACTIVE = 1;
   const NOT_ACTIVE = 0;

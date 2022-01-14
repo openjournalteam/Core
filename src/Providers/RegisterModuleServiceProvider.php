@@ -83,6 +83,17 @@ class RegisterModuleServiceProvider extends ServiceProvider
                 }
             });
 
+            // Route for API with package laravel passport
+            Route::group([
+                'prefix' => 'api/v1',
+                'middleware' => ['auth:api'],
+            ], function (): void {
+                $paths = Cache::remember('routes_api_module_path', $this->cacheTime, fn () => glob(app_path('Modules/*/Routes*/passportApi.php')));
+                foreach ($paths as $router) {
+                    $this->loadRoutesFrom($router);
+                }
+            });
+
             // Route for guest user
             Route::group([
                 'prefix' => config('core.path'),
