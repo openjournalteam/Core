@@ -33,6 +33,7 @@
 </script>
 
 @livewireScripts
+<x-livewire-alert::scripts />
 
 {!! \OpenJournalTeam\Core\Core::renderScript() !!}
 

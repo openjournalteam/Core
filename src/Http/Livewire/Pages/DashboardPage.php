@@ -12,17 +12,21 @@ class DashboardPage extends Component
   public $widgetGroup;
   public $customize = false;
 
+  protected $listeners = ['refresh' => '$refresh'];
+
   function boot()
   {
-    if (!Auth::check()) {
-      return redirect()->route('core.login');
-    }
 
     $this->widgetGroup = Core::getGroupedWidgets(!$this->customize);
   }
 
   function mount()
   {
+    if (!Auth::check()) {
+      return redirect()->route('core.login');
+    }
+
+
     add_script('vendor/core/libs/sortablejs/sortablejs.bundle.js');
   }
 

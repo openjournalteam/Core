@@ -203,3 +203,7 @@
 .accordion.accordion-icon-toggle .collapsed .accordion-icon .svg-icon svg:hover [fill]:not(.permanent):not(g) {
     transition: fill .3s ease
 }
+
+.select2-container .select2-selection--multiple .select2-selection__rendered {
+    display: flex !important;
+}

@@ -40,6 +40,8 @@
     @endguest
 
 
+    @yield('modals')
+
     @include('core::template.partials.scripts')
 </body>
 

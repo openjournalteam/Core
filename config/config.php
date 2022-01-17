@@ -83,6 +83,10 @@ return [
       'defer' => true
     ],
     [
+      'src' => 'vendor/core/js/livewire-event.js',
+      'defer' => true
+    ],
+    [
       'src' => 'vendor/core/libs/datatables/datatables.min.js',
       'defer' => false
     ],
