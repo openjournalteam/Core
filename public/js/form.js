@@ -466,6 +466,61 @@ var OJTForm = (function () {
       }
     });
   };
+
+  var initGeneralConfirm = function () {
+      $(document).on("click", ".general_confirm", function (e) {
+          e.preventDefault();
+
+          let url = $(this).attr("data-route");
+          let icon = $(this).attr("data-icon");
+          let title = $(this).attr("data-title");
+          let callback = $(this).attr("data-callback");
+          generalConfirm(url, title, icon, callback)
+      })
+  };
+
+  var generalConfirm = function (url, title = false, icon = false, callback = false) {
+    if (url === undefined) {
+        console.log("url not found");
+        return;
+    }
+
+    icon = icon !== false ? icon : "warning";
+    title = title !== false ? title : "Are you sure want to do this ?";
+
+    Swal.fire({
+        title: title,
+        icon: icon,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+    }).then(function (result) {
+        if(result.success) {
+
+        }
+        if (result.isConfirmed) {
+            $.get(url, (response) => {
+                Toast.fire({
+                    icon: "success",
+                    title: response.data.msg,
+                });
+
+                if (typeof callback !== typeof undefined && callback !== false) {
+                  if (callback.includes(".")) {
+                    let callBackArray = callback.split(".");
+                    window[callBackArray[0]][callBackArray[1]]();
+                  } else {
+                    window[callback]();
+                  }
+                }
+                if(typeof OJTDatatables !== 'undefined') {
+                  OJTDatatables.reload();
+                }
+            })
+        }
+    });
+  };
   return {
     // public functions
     init: function () {
@@ -476,6 +531,13 @@ var OJTForm = (function () {
       initDeleteConfirm();
       initSelect2Ajax();
       initGenerateToken();
+      initGeneralConfirm();
+    },
+    initSelect2Ajax:function(dom) {
+      initSelect2Ajax(dom);
+    },
+    initGeneralConfirm:function() {
+      initGeneralConfirm();
     },
     initFormValidation: function (dom) {
       initFormValidation(dom);
