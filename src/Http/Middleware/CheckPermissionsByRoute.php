@@ -20,6 +20,7 @@ class CheckPermissionsByRoute
      */
     public function handle(Request $request, \Closure $next)
     {
+        dd($this);
         /* Tidak diperlukan di userpanel */
         if ((bool) env('USER_PANEL')) {
             return $next($request);

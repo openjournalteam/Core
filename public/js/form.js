@@ -444,7 +444,7 @@ var OJTForm = (function () {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Delete",
+      confirmButtonText: "Yes",
     }).then(function (result) {
       if (result.isConfirmed) {
         $.ajax({
@@ -465,7 +465,7 @@ var OJTForm = (function () {
           error: function (response) {
             Toast.fire({
               icon: "error",
-              title: response.responseJSON.message,
+              title: response.responseJSON.error,
             });
           },
         });

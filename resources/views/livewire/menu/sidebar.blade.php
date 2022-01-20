@@ -1,60 +1,36 @@
 <div class="collapse navbar-collapse" id="navbar-menu">
     <ul class="navbar-nav pt-lg-3">
-        @foreach ($menus as $menu)
-        @if(!$menu->show)
-        @continue
-        @endif
-        @php
-        $hasChilds = $menu->childs->count() > 0 ? true : false;
-        $route = $menu->route && Route::has($menu->route) ? route($menu->route) : '#';
-        @endphp
-        <li class="nav-item {{ $hasChilds ? 'dropdown' : '' }}">
-            <a class="nav-link {{ $hasChilds ? 'dropdown-toggle' : '' }}" href="{{ $hasChilds ? '#' : $route }}" {{
-                $hasChilds ? 'data-bs-toggle=dropdown' : '' }} role="button" aria-expanded="false">
+        @foreach (\OpenJournalTeam\Core\Facades\Core::getNavigation() as $nav)
+        @if(($nav->getPermission() === null) || user()->can($nav->getPermission()))
+        <li class="nav-item @if($subNavs = $nav->getSubNavigationItems()) dropdown @endif">
+            <a class="nav-link @if($subNavs) dropdown-toggle @endif" href="{{ $nav->getRoute(true) }}" @if($subNavs)
+                data-bs-toggle="dropdown" @endif role="button" aria-expanded="false">
                 <span class="nav-link-icon d-inline-block">
-                    @if (isset($menu->icon))
-                    {!! $menu->icon !!}
-                    @endif
+                    {!! $nav->getIcon() !!}
                 </span>
-                <span class="nav-link-title">
-                    {{ $menu->name }}
-                </span>
+                {{ $nav->getLabel()}}
             </a>
-            @if ($hasChilds)
+            @if($subNavs)
             <div class="dropdown-menu">
                 <div class="dropdown-menu-columns">
                     <div class="dropdown-menu-column">
-                        @foreach ($menu->childs as $subMenu)
-                        @if(!$subMenu->show)
-                        @continue
-                        @endif
-                        <a class="dropdown-item"
-                            href="{{ $subMenu->route && Route::has($subMenu->route) ? route($subMenu->route) : '#' }}">
-                            @if (isset($subMenu->icon))
+                        @foreach ($subNavs as $subNav)
+                        @if(!$subNav->getEnabled()) @continue @endif
+                        @if($subNav->getPermission() === null || user()->can($nav->getPermission()))
+                        <a class="dropdown-item" href="{{ $subNav->getRoute(true) }}">
                             <span class="nav-link-icon d-inline-block">
-                                {!! $subMenu->icon !!}
+                                {!! $subNav->getIcon() !!}
                             </span>
-                            @endif
-                            {{ $subMenu->name }}
+                            {{ $subNav->getLabel()}}
                         </a>
+                        @endif
                         @endforeach
                     </div>
                 </div>
             </div>
             @endif
         </li>
-        @endforeach
-
-
-        @foreach ($hookMenu as $hm)
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route($hm['route']) }}">
-                <span class="nav-link-icon d-inline-block">
-                    {!! $hm['icon'] !!}
-                </span>
-                {{ $hm['name'] }}
-            </a>
-        </li>
+        @endif
         @endforeach
     </ul>
     <div class="mt-auto">
