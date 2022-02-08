@@ -67,10 +67,7 @@ class AuthController extends BaseController
             return response_error("Email or Password incorrect");
         }
 
-        // User tidak aktif, tidak bisa login
-        $user = User::where('email', $request->email)->where('status', User::ACTIVE)->firstOr(fn () => false);
-
-        if (!$user) {
+        if ($user->status != User::ACTIVE) {
             return response_error("Failed to login");
         }
 
