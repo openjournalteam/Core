@@ -14,8 +14,7 @@ class AddUsersColumnsTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('username')->unique()->after('email');
-            $table->integer('status')->default(0);
+            $table->string('username')->unique()->after('email')->nullable();
         });
     }
 
