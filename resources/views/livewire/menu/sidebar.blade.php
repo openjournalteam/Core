@@ -32,10 +32,10 @@
         </li>
         @endif
         @endforeach
+        {{ apply_filters('core::template::partials::aside::ul', false) }}
     </ul>
     <div class="mt-auto">
         <ul class="navbar-nav">
-            {{ apply_filters('core::template::partials::aside::ul', false) }}
             <li class="nav-item">
                 <a class="nav-link">
                     <span class="nav-link-icon d-inline-block">
