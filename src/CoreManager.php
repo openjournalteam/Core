@@ -31,7 +31,6 @@ class CoreManager
   public function getNavigation($enableOnly = true): array|Collection
   {
     $sortedItems = collect($this->navigationItems);
-
     if ($enableOnly) {
       $sortedItems = $sortedItems->filter(function ($item) {
         return $item->getEnabled();

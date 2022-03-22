@@ -62,7 +62,6 @@ class AuthController extends BaseController
 
         // User tidak aktif, tidak bisa login
         $user = User::where($fieldType, $request->email)->firstOr(fn () => false);
-
         if (!$user) {
             return response_error("Email or Password incorrect");
         }

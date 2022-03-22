@@ -29,9 +29,13 @@ class NavigationItem
     {
     }
 
-    public static function make(): static
+    public static function make($label = false): static
     {
-        return new static();
+        $object = new static();
+        if ($label) {
+            $object->label($label);
+        }
+        return $object;
     }
 
     public function enabled(bool $enabled)
