@@ -172,7 +172,6 @@ class AccessSettingsController extends AdminController
     public function user_check_email(Request $request)
     {
         $user = User::where('email', $request->input('email'))->exists();
-
         if ($user) {
             return response()->json(false);
         }
