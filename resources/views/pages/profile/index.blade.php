@@ -18,6 +18,9 @@
                         <a href="#tab-preferences" class="nav-link active" data-bs-toggle="tab">
                             Preferences
                         </a>
+                        <a href="#tab-authentication" class="nav-link" data-bs-toggle="tab">
+                            Authentication
+                        </a>
                         <a href="#tab-api-token" class="nav-link" data-bs-toggle="tab">
                             API Tokens
                         </a>
@@ -48,6 +51,9 @@
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane" id="tab-authentication">
+                        @livewire('core:profile.authentication')
+                    </div>
                     <div class="tab-pane" id="tab-api-token">
                         @livewire('core:profile.api-token')
                     </div>
@@ -55,5 +61,4 @@
             </div>
         </div>
     </div>
-
 </div>
