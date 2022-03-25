@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use OpenJournalTeam\Core\Http\Controllers\AttachmentController;
 use OpenJournalTeam\Core\Http\Controllers\AuthController;
 use OpenJournalTeam\Core\Http\Controllers\PluginSettingsController;
+use OpenJournalTeam\Core\Http\Controllers\ProfileController;
 use OpenJournalTeam\Core\Http\Controllers\WidgetController;
 use OpenJournalTeam\Core\Http\Livewire\Pages\DashboardPage;
 
@@ -31,4 +32,8 @@ Route::group(['prefix' => '/list-plugins', 'as' => 'plugins.'], function (): voi
 
 Route::group(['prefix' => 'widget', 'as' => 'widget.'], function (): void {
   Route::post('/update-setting', [WidgetController::class, 'updateSetting'])->name('update-setting');
+});
+
+Route::group(['prefix' => 'profile', 'as' => 'profile.'], function (): void {
+  Route::get('/', [ProfileController::class, 'index'])->name('index');
 });
