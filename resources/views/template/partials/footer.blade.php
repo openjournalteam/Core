@@ -2,7 +2,7 @@
 
 <footer class="footer footer-transparent d-print-none p-0">
     <div class="container-fluid">
-        <div class="row text-center align-items-center flex-row-reverse">
+        <div class="row text-center align-items-center flex-row-reverse py-3">
             <div class="col-lg-auto ms-lg-auto">
 
             </div>
