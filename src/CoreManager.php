@@ -23,6 +23,16 @@ class CoreManager
     $this->navigationItems = array_merge($this->navigationItems, $items);
   }
 
+  public function setNavigationItems(array $items): void
+  {
+    $this->navigationItems = $items;
+  }
+
+  public function getNavigationItems(): array
+  {
+    return $this->navigationItems;
+  }
+
   public function registerWidgets(array $widgets): void
   {
     $this->widgets = array_merge($this->widgets, $widgets);
