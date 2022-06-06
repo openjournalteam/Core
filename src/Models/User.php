@@ -53,6 +53,12 @@ class User extends Authenticatable
     return $this->hasRole(Role::SUPER_ADMIN);
   }
 
+
+  public function isSuperAdmin(): bool
+  {
+    return $this->hasRole(Role::SUPER_ADMIN);
+  }
+  
   public function generateToken()
   {
     $this->api_token = Str::random(60);

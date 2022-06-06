@@ -1,6 +1,6 @@
 {{ apply_filters('core::template::partials::footer::before', '') }}
 
-<footer class="footer footer-transparent d-print-none p-0">
+<footer class="footer footer-transparent d-print-none p-1">
     <div class="container-fluid">
         <div class="row text-center align-items-center flex-row-reverse py-3">
             <div class="col-lg-auto ms-lg-auto">

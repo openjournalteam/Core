@@ -5,8 +5,7 @@
         </button>
         <h1 class="navbar-brand navbar-brand-autodark">
             <a href="{{ route('core.home') }}">
-                <img src="{{ asset('vendor/core/img/logo-white.svg') }}" width="110" height="32"
-                    alt="OpenJournalTeam Panel" class="navbar-brand-image">
+                <img src="{{ asset('vendor/core/img/logo_ojt.png') }}" width="110" height="32" alt="OpenJournalTeam Panel" class="navbar-brand-image" style="filter: drop-shadow(0 0 0.75rem crimson);">
             </a>
         </h1>
         <div class="navbar-nav flex-row d-lg-none">

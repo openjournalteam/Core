@@ -343,6 +343,26 @@ var OJTForm = (function () {
     });
   };
 
+  var initSelect2Tags = function () {
+    let dom = $('[data-control="select2-dynamic-tags"]');
+    dom.each(function () {
+      $(this).select2({
+        tags: true,
+        tokenSeparators: [",", " "],
+        createTag: function (tag) {
+          if (tag.term.length <= 0) {
+            return null;
+          }
+          return {
+            id: tag.term,
+            text: tag.term,
+            isNew: true,
+          };
+        },
+      });
+    });
+  };
+
   var initSelect2Ajax = function () {
     let dom = $('[data-control="select2ajax"]');
     dom.each(function () {
@@ -475,6 +495,7 @@ var OJTForm = (function () {
       initAjaxConfirm();
       initDeleteConfirm();
       initSelect2Ajax();
+      initSelect2Tags();
       initGenerateToken();
     },
     initFormValidation: function (dom) {

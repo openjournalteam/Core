@@ -37,7 +37,8 @@
         "octopyid/laravel-impersonate": "2",
         "spatie/laravel-database-mail-templates": "^3.4",
         "pusher/pusher-php-server": "^7.0",
-        "jantinnerezo/livewire-alert": "^2.2"
+        "jantinnerezo/livewire-alert": "^2.2",
+        "spatie/laravel-activitylog": "^4.5"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
