@@ -29,6 +29,8 @@ use OpenJournalTeam\Core\Http\Livewire\Components\UserDropdownComponent;
 use OpenJournalTeam\Core\Models\Permission;
 use Illuminate\Contracts\Auth\Access\Gate;
 use OpenJournalTeam\Core\Facades\Core;
+use OpenJournalTeam\Core\Http\Livewire\Components\Profile\ApiTokenComponent;
+use OpenJournalTeam\Core\Http\Livewire\Components\Profile\AuthenticationComponent;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -146,6 +148,8 @@ class CoreServiceProvider extends ServiceProvider
         Livewire::component('core:notifications-dropdown', NotificationsDropdownComponent::class);
         Livewire::component('core:user-dropdown', UserDropdownComponent::class);
         Livewire::component('core:mailtemplatepage', MailTemplatePage::class);
+        Livewire::component('core:profile.api-token', ApiTokenComponent::class);
+        Livewire::component('core:profile.authentication', AuthenticationComponent::class);
     }
 
     private function registerLivewirePages()

@@ -2,11 +2,12 @@
 
 namespace OpenJournalTeam\Core\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Str;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Octopy\LaraPersonate\Models\Impersonate;
-use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
 class User extends Authenticatable
@@ -52,8 +53,17 @@ class User extends Authenticatable
     return $this->hasRole(Role::SUPER_ADMIN);
   }
 
+
   public function isSuperAdmin(): bool
   {
     return $this->hasRole(Role::SUPER_ADMIN);
+  }
+  
+  public function generateToken()
+  {
+    $this->api_token = Str::random(60);
+    $this->save();
+
+    return $this->api_token;
   }
 }
