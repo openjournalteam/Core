@@ -68,10 +68,10 @@ var OJTDropzones = (function () {
     // Get option from dom
     var options = {
       url: jqDom.data("url") ?? baseUrl + "/attachment",
-      maxFilesize: jqDom.data("max-file-size") ?? 10,
+      maxFilesize: jqDom.data("max-file-size") ?? 500,
       acceptedFiles:
         jqDom.attr("accept") ??
-        ".csv,.txt,.xlx,.xls,.pdf,.gif,.jpeg,.jpg,.png,.pdf,.gif,.xls,.xlsx,.txt,.geojson,.doc,.docx",
+        ".csv,.txt,.xlx,.xls,.pdf,.gif,.jpeg,.jpg,.png,.pdf,.gif,.xls,.xlsx,.txt,.geojson,.doc,.docx,.zip,.rar,.tar.gz",
       maxFiles: jqDom.attr("multiple") ? null : 1,
       clickable: "#" + fileInputId, // Define the element that should be used as click trigger to select files.
     };
