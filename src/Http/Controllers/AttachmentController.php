@@ -14,8 +14,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class AttachmentController extends BaseController
 {
-  public const ALLOWED_FILE = 'zip,csv,txt,xlx,xls,pdf,gif,jpeg,jpg,png,pdf,gif,xls,xlsx,txt,geojson,doc,docx';
-  public const ALLOWED_MAX_SIZE = 1024 * 1024 * 10; // 10 MB;
+  public const ALLOWED_FILE = 'zip,rar,tar.gz,csv,txt,xlx,xls,pdf,gif,jpeg,jpg,png,pdf,gif,xls,xlsx,txt,geojson,doc,docx';
+  public const ALLOWED_MAX_SIZE = 1024 * 1024 * 500; // 500 MB;
   public AttachmentManager $attachmentManager;
 
   public function __construct()
