@@ -45,5 +45,6 @@ class ApiTokenComponent extends Component
     Auth::user()->tokens()->find($id)->delete();
 
     $this->alert('info', 'Token deleted successfully.');
+    $this->emit('saveFormModal');
   }
 }
