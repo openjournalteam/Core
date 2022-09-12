@@ -14,7 +14,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class AttachmentController extends BaseController
 {
-  public const ALLOWED_FILE = 'zip,rar,tar.gz,csv,txt,xlx,xls,pdf,gif,jpeg,jpg,png,pdf,gif,xls,xlsx,txt,geojson,doc,docx';
+  // public const ALLOWED_FILE = 'zip,rar,tar,gz,csv,txt,xlx,xls,pdf,gif,jpeg,jpg,png,pdf,gif,xls,xlsx,txt,geojson,doc,docx,application/x-gzip,application/octet-stream';
+  public const ALLOWED_FILE = "application/zip,application/x-gzip,image/jpeg,image/png,application/x-rar-compressed,text/plain";
   public const ALLOWED_MAX_SIZE = 1024 * 1024 * 500; // 500 MB;
   public AttachmentManager $attachmentManager;
 
@@ -36,12 +37,12 @@ class AttachmentController extends BaseController
    * @return \Illuminate\Http\JsonResponse
    *
    * @throws UploadMissingFileException
-   *
+   * TODO: mimes validation always wrong ( fix this )
    */
   public function upload(Request $request, FileReceiver $receiver)
   {
-    $request->validate(['file' => 'required|file|max:' . self::ALLOWED_MAX_SIZE . '|mimes:' . self::ALLOWED_FILE]);
-
+    $request->validate(['file' => 'required|file|max:' . self::ALLOWED_MAX_SIZE]);
+    // $request->validate(['file' => 'required|file|max:' . self::ALLOWED_MAX_SIZE . '|mimetypes:' . self::ALLOWED_FILE]);
 
     // check if the upload is success, throw exception or return response you need
     if ($receiver->isUploaded() === false) {
