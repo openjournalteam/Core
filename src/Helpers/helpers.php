@@ -48,9 +48,9 @@ if (!function_exists('render')) {
 }
 
 if (!function_exists('render_livewire')) {
-    function render_livewire($view)
+    function render_livewire($view, $data = [], $mergeData = [])
     {
-        return view($view)
+        return view($view, $data, $mergeData)
             ->extends('core::template.index')
             ->section('content');
     }
