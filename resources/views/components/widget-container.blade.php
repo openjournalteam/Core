@@ -14,7 +14,7 @@
         @endif
       </div>
     </div>
-    <div class="widget-body collapse show" id="{{ $id }}">
+    <div class="card-body widget-body collapse show" id="{{ $id }}">
       @livewire($widget::getName(), key($widget::getName()))
     </div>
   </div>
