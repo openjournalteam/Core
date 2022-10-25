@@ -1,6 +1,6 @@
 /*!
-* Tabler v1.0.0-beta6 (https://tabler.io)
-* @version 1.0.0-beta6
+* Tabler v1.0.0-beta14 (https://tabler.io)
+* @version 1.0.0-beta14
 * @link https://tabler.io
 * Copyright 2018-2022 The Tabler Authors
 * Copyright 2018-2022 codecalm.net Paweł Kuna
@@ -15,8 +15,8 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  border: 1px solid var(--tblr-border-color);
-  border-radius: 3px;
+  border: var(--tblr-border-size) var(--tblr-border-style) var(--tblr-border-color);
+  border-radius: var(--tblr-border-radius);
 }
 
 .flag-country-ad {
@@ -1044,8 +1044,8 @@
 }
 
 .flag-xs {
-  width: 1.25rem;
-  height: 0.9375rem;
+  width: 1.5rem;
+  height: 1.125rem;
 }
 
 .flag-sm {

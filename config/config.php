@@ -134,6 +134,10 @@ return [
       'src' => 'vendor/core/js/select2.js',
       'defer' => false
     ],
+    [
+      'src' => 'vendor/core/js/demo.min.js',
+      'defer' => false
+    ],
   ],
 
   'styles' => [
