@@ -133,7 +133,7 @@
 .card .card-header {
     display: flex;
     justify-content: space-between;
-    align-items: stretch;
+    align-items: center;
     flex-wrap: wrap;
     min-height: 50px;
     /* padding: 0 1rem; */
