@@ -24,7 +24,9 @@ class NavigationItem
     protected ?int $sort = null;
 
     protected ?string $route = null;
-
+    
+    protected bool | Closure | null $hidden = null;
+    
     public function __construct()
     {
     }
@@ -179,5 +181,19 @@ class NavigationItem
         }
 
         return app()->call($callback);
+    }
+
+    public function hidden(bool | Closure | null $isHidden = null): static
+    {
+        $this->hidden = $isHidden;
+        return $this;
+    }
+
+    public function isHidden(): ?bool
+    {
+        if($this->hidden instanceof Closure) {
+            return app()->call($this->hidden);
+        }
+        return $this->hidden;
     }
 }
